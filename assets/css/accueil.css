@@ -1,0 +1,407 @@
+/* =============================================================================
+   ACCUEIL.CSS — Styles propres à la page d'accueil (home.html)
+   =============================================================================
+
+   La page d'accueil a une mise en page très différente des autres pages
+   (grille plein écran à 3 colonnes : média | menu | titre vertical).
+   Elle ne charge donc PAS interior.css, mais charge common.css (réinitialisation,
+   variables globales, tiroir hamburger, mode sombre, police dyslexie…)
+   puis ce fichier.
+
+   Contenu :
+     1. Variables (:root) propres à l'accueil : certaines diffèrent
+        légèrement des valeurs par défaut de common.css (--col-dim,
+        --font-body, --transition) et --font-title est propre à cette page.
+        Ces déclarations, chargées APRÈS common.css, surchargent les
+        valeurs par défaut SANS toucher aux autres pages.
+     2. html, body : plein écran, pas de scroll.
+     3. Grille principale à 3 colonnes (.grid) + ses 3 panneaux.
+     4. Focus clavier.
+     5. Compléments mode sombre / police dyslexie, pour que ces deux
+        fonctionnalités (gérées globalement par le tiroir, voir
+        assets/js/drawer.js) s'appliquent aussi correctement ici.
+============================================================================= */
+
+:root {
+  /*
+    Valeurs propres à l'accueil (différentes de celles par défaut définies
+    dans common.css). --font-title n'existe que sur cette page (grand titre
+    vertical tronqué).
+  */
+  --col-dim:    #aaaaaa;       /* couleur des items de menu non-survolés */
+  --font-body:  'PoliceBody', Arial, sans-serif;
+  --font-title: 'PoliceTitle', Georgia, serif;
+  --transition: 0.35s ease;
+}
+
+html, body {
+  height: 100%;
+  font-family: var(--font-body);
+  background: var(--col-white);
+  overflow: hidden;             /* plein écran, pas de scroll */
+}
+
+  /* ── GRILLE PRINCIPALE ──────────────────────────────────────────────────── */
+  /*
+    La page est divisée en 3 colonnes :
+      1. .panel-media  → zone visuelle gauche (image / contenu dynamique)
+      2. .panel-nav    → menu blanc central
+      3. .panel-title  → grand titre vertical tronqué sur la droite
+
+    grid-template-columns : 72% | 18% | 10%  (proportions issues de la maquette)
+    height: 100dvh → occupe toute la hauteur de la fenêtre (dynamic viewport).
+  */
+  .grid {
+    display: grid;
+    grid-template-columns: 72fr 18fr 10fr;
+    grid-template-rows: 1fr;
+    height: 100dvh;
+    width: 100%;
+  }
+
+  /* ── COLONNE 1 : panneau média ──────────────────────────────────────────── */
+  .panel-media {
+    position: relative;
+    overflow: hidden;
+    background: #c0392b;          /* couleur de repli si aucune image */
+  }
+
+  /*
+    .media-layer  : chaque contenu (image de fond + slides) est une couche
+                    absolue empilée. On fait apparaître/disparaître via opacity.
+  */
+  .media-layer {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity var(--transition);
+    /*
+      Pas de flex ici : .media-text est positionné en absolu,
+      ancré en bas à hauteur fixe, ce qui garantit que le h2
+      de toutes les couches est exactement au même niveau.
+    */
+  }
+
+  .media-layer.active {
+    opacity: 1;
+  }
+
+  /*
+    .media-bg : image de fond de chaque couche.
+    object-fit: cover → l'image remplit le cadre sans déformation.
+    Remplacez src="" par votre propre chemin d'image.
+  */
+  .media-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  /*
+    Dégradé sombre en bas pour que le texte reste lisible sur l'image.
+  */
+  .media-layer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.55) 0%,
+      transparent 55%
+    );
+    pointer-events: none;
+  }
+
+  /* Texte affiché sur le panneau gauche au survol d'un item de menu */
+  .media-text {
+    /*
+      Position absolue ancrée en bas, à hauteur fixe identique pour toutes
+      les couches. Ainsi, quel que soit le contenu (plus ou moins de
+      texte selon la section), le h2 est toujours sur la même ligne
+      horizontale — c'est bottom qui fixe la hauteur du titre.
+    */
+    position: absolute;
+    bottom: 3rem;
+    left: 3rem;
+    right: 3rem;
+    z-index: 2;
+    color: var(--col-white);
+  }
+
+  .media-text h2 {
+    font-family: var(--font-title);
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    letter-spacing: 0.04em;
+    margin-bottom: 0.5rem;
+  }
+
+  .media-text p {
+    font-size: clamp(0.85rem, 1.2vw, 1rem);
+    font-weight: 300;
+    line-height: 1.6;
+    max-width: 40ch;
+    opacity: 0.9;
+  }
+
+  /* ── COLONNE 2 : panneau de navigation ──────────────────────────────────── */
+  .panel-nav {
+    background: var(--col-white);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;      /* centrage vertical des items */
+    padding: 0 2rem;
+    gap: 0;
+  }
+
+  /* ── Chaque item de menu ────────────────────────────────────────────────── */
+  .nav-item {
+    position: relative;
+    padding: 1.6rem 0 1rem;
+    cursor: pointer;
+    transition: color var(--transition);
+    color: var(--col-black);
+    text-decoration: none;
+    display: block;
+  }
+
+  /* Séparateur horizontal au-dessus de chaque item */
+  .nav-item::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: var(--col-rule);
+    margin-bottom: 0.75rem;
+  }
+
+  /* Libellé du menu */
+  .nav-item span {
+    font-size: clamp(0.95rem, 1.3vw, 1.1rem);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    transition: color var(--transition), letter-spacing var(--transition);
+  }
+
+  /*
+    État "atténué" : appliqué à tous les items quand l'un d'eux est survolé.
+    La classe .dimmed est ajoutée via JavaScript sur le .panel-nav.
+  */
+  .panel-nav.has-hover .nav-item {
+    color: var(--col-dim);
+  }
+
+  .panel-nav.has-hover .nav-item span {
+    letter-spacing: 0.01em;
+  }
+
+  /*
+    État "actif" : l'item actuellement survolé.
+    La classe .hovered est ajoutée via JavaScript sur l'item lui-même.
+  */
+  .panel-nav.has-hover .nav-item.hovered {
+    color: var(--col-black);
+  }
+
+  .panel-nav.has-hover .nav-item.hovered span {
+    font-weight: 500;
+    letter-spacing: 0.04em;      /* léger écartement pour "ressortir" */
+  }
+
+  /* ── COLONNE 3 : titre vertical ─────────────────────────────────────────── */
+  .panel-title {
+    position: relative;           /* ancre .site-subtitle, voir plus bas */
+    background: var(--col-white);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;             /* le titre dépasse volontairement */
+    padding-left: 0.25rem;
+  }
+
+  /*
+    Le nom du site, pivoted à 90° pour être lu de bas en haut,
+    puis décalé vers la droite pour que seule une partie soit visible,
+    reproduisant l'effet de la maquette où les lettres sont tronquées.
+  */
+  .site-title {
+    font-family: var(--font-title);
+    font-weight:600;
+    font-size: clamp(5rem, 10vw, 7.5rem);
+    color: var(--col-black);
+    white-space: nowrap;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg) translateX(-10%);
+    line-height: 1;
+    letter-spacing: 0.02em;
+    user-select: none;
+  }
+
+  /*
+    Petite légende discrète, elle aussi verticale (même writing-mode et
+    même rotation que .site-title, pour se lire dans le même sens), qui
+    "justifie" le titre. Positionnée en absolu, ancrée en bas de la
+    colonne : le grand titre tronqué occupe toute la hauteur visible en
+    son centre (voir le commentaire ci-dessus sur le débordement
+    volontaire), cette légende se loge donc sous lui, dans la marge
+    encore libre. Toujours en anglais (voir lang="en" posé en HTML) et
+    sans attribut data-i18n : elle n'est donc jamais traduite, tout comme
+    le nom du site lui-même.
+  */
+  .site-subtitle {
+    position: absolute;
+    left: 0.55rem;
+    bottom: 2.5rem;
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    color: var(--col-dim);
+    white-space: nowrap;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    line-height: 1;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  /* ── Accessibilité : focus clavier ──────────────────────────────────────── */
+  .nav-item:focus-visible {
+    outline: 2px solid var(--col-black);
+    outline-offset: 4px;
+  }
+
+/* ── Compléments MODE SOMBRE ──────────────────────────────────────────────
+   Le mode sombre lui-même est défini globalement dans common.css
+   (body.dark-mode redéfinit --col-white, --col-black, --col-dim, --col-rule).
+   Comme cette page utilise les mêmes variables, le mode sombre s'applique
+   déjà automatiquement. On ajoute juste une transition douce sur les
+   panneaux pour éviter un changement de couleur trop brutal.
+── */
+.grid, .panel-media, .panel-nav, .panel-title {
+  transition: background-color var(--transition), color var(--transition);
+}
+
+/* ── Compléments POLICE DYSLEXIE ──────────────────────────────────────────
+   common.css redéfinit --font-display et --font-body en mode dyslexie.
+   --font-title (propre à cette page, pour le grand titre vertical) n'est
+   pas couvert par common.css : on l'ajoute ici pour que le titre change
+   aussi de police.
+── */
+body.dyslexic-font {
+  --font-title: "Comic Sans MS", Verdana, sans-serif;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE — version mobile (≤ 600px, même seuil que le reste du site,
+   voir assets/css/common.css et assets/css/charte-graphique.css)
+   ═══════════════════════════════════════════════════════════════════════════
+
+   Sur petit écran, la grille à 3 colonnes (média 72 % | menu 18 % | titre
+   vertical 10 %) ne fonctionne plus : le menu devient trop étroit pour
+   rester élégant, et le titre vertical pivoté est tronqué de façon peu
+   lisible (l'effet de troncature n'a de sens que sur une colonne assez
+   haute pour l'accueillir).
+
+   On repasse donc en mise en page empilée (flex-direction: column), en
+   réordonnant les 3 blocs UNIQUEMENT en CSS (propriété "order"), sans
+   toucher au HTML ni au JavaScript :
+     1. le titre, redevenu horizontal et entier (plus de troncature ni de
+        rotation),
+     2. le menu, redevenu une ligne horizontale au lieu d'une colonne,
+     3. le panneau média, qui occupe tout l'espace restant — il reste
+        l'élément visuel dominant de la page, comme sur la version bureau.
+═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+
+  .grid {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+  }
+
+  /* ── 1. Titre : redevient une ligne horizontale, en haut ────────────── */
+  .panel-title {
+    order: 1;
+    flex: 0 0 auto;
+    width: 100%;
+    /* padding-right généreux : réserve la place du bouton hamburger
+       (.menu-btn, position fixe en haut à droite, voir common.css)
+       pour qu'il ne chevauche jamais le titre. */
+    padding: 1rem 3.5rem 0.85rem 1.25rem;
+    overflow: visible;          /* on ne tronque plus rien */
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+
+  .site-title {
+    writing-mode: horizontal-tb;
+    text-orientation: initial;
+    transform: none;
+    font-size: clamp(1.5rem, 8vw, 2.1rem);
+    letter-spacing: 0.01em;
+  }
+
+  /* La légende suit le titre sur la même ligne (ou repasse dessous si
+     l'écran est vraiment étroit, grâce à flex-wrap sur .panel-title) au
+     lieu d'être positionnée en absolu sous un titre vertical. */
+  .site-subtitle {
+    position: static;
+    writing-mode: horizontal-tb;
+    text-orientation: initial;
+    transform: none;
+    font-size: 0.68rem;
+  }
+
+  /* ── 2. Menu : redevient une ligne horizontale ───────────────────────── */
+  .panel-nav {
+    order: 2;
+    flex: 0 0 auto;
+    flex-direction: row;
+    padding: 0 1.1rem;
+    gap: 0.25rem;
+  }
+
+  .nav-item {
+    flex: 1;
+    padding: 0.8rem 0;
+    text-align: center;
+  }
+
+  /* Le séparateur horizontal n'a plus de sens entre des items côte à
+     côte ; on retire la ligne pour un rendu épuré. */
+  .nav-item::before {
+    display: none;
+  }
+
+  /* ── 3. Panneau média : occupe tout l'espace restant ─────────────────── */
+  .panel-media {
+    order: 3;
+    flex: 1 1 auto;
+    min-height: 0;       /* évite tout débordement flex */
+    width: 100%;
+  }
+
+  /* Le texte affiché au survol/focus d'un item de menu garde des marges
+     proportionnées à l'espace réduit du panneau sur mobile. */
+  .media-text {
+    bottom: 1.25rem;
+    left: 1.25rem;
+    right: 1.25rem;
+  }
+
+  .media-text h2 {
+    font-size: clamp(1.4rem, 7vw, 2.1rem);
+  }
+
+  .media-text p {
+    font-size: 0.82rem;
+    max-width: 100%;
+  }
+}

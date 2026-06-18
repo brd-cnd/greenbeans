@@ -1,0 +1,12 @@
+/* =============================================================================
+   APROPOS.CSS — Réglages propres à la page "à propos"
+   =============================================================================
+   Seul élément qui change d'une page intérieure à l'autre : la couleur et
+   la taille des petits rectangles décoratifs affichés dans la case en haut
+   à droite du "hero" (voir .aside-rects dans interior.css).
+
+   Chargé APRÈS common.css et interior.css.
+============================================================================= */
+
+.aside-rect-1 { width: 2.5rem; height: 6rem; background: #2b160d; }
+.aside-rect-2 { width: 2.5rem; height: 9rem; background: #6e3a1a; }

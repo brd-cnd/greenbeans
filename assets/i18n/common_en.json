@@ -1,0 +1,11 @@
+{
+  "drawer-accueil": "Home",
+  "drawer-projets": "Projects",
+  "drawer-notions": "Concepts",
+  "drawer-histoire": "History",
+  "drawer-apropos": "About",
+  "drawer-accessibilite": "Accessibility",
+  "a11y-dark-mode": "Dark mode",
+  "a11y-dyslexic-font": "Dyslexia-friendly font",
+  "hint-tap-again": "tap again to open"
+}

@@ -1,0 +1,730 @@
+/* =============================================================================
+   COMMON.CSS — Styles partagés par TOUTES les pages du site Greenbeans
+   =============================================================================
+
+   Ce fichier regroupe tout ce qui est rigoureusement IDENTIQUE d'une page
+   à l'autre :
+     1. Réinitialisation CSS de base (*, *::before, *::after)
+     2. Variables globales (:root) : palette, polices, transitions
+     3. Bouton hamburger (.menu-btn) + tiroir de navigation (.site-drawer)
+     4. Panneau d'accessibilité (mode sombre / police dyslexie) du tiroir
+     5. Sélecteur de langue (FR / DE / EN) du tiroir
+     6. Mode sombre (.dark-mode)            → redéfinit les variables couleur
+     7. Police adaptée dyslexie (.dyslexic-font) → redéfinit les polices
+     8. Fond semi-transparent derrière le tiroir (.drawer-overlay)
+     9. Respect du mode "mouvement réduit" (prefers-reduced-motion)
+
+   Il est chargé par TOUTES les pages (accueil, projets, notions, histoire,
+   apropos), AVANT les feuilles de styles spécifiques à chaque page.
+   Les pages "intérieures" (projets/notions/histoire/apropos) chargent en
+   plus interior.css, qui contient la mise en page du grand "hero".
+   La page d'accueil charge accueil.css, qui contient sa grille à 3 colonnes.
+
+   Le tiroir de navigation (.site-drawer), le bouton hamburger (.menu-btn)
+   et le fond semi-transparent (.drawer-overlay) sont injectés dans le DOM
+   par assets/js/drawer.js : il n'y a donc plus besoin de dupliquer leur
+   code HTML dans chaque page.
+============================================================================= */
+
+  /* ── Réinitialisation & variables globales ──────────────────────────────── */
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  :root {
+    /* ── Palette ──────────────────────────────────────────────────────────── */
+    --col-white:        #ffffff;
+    --col-black:        #111111;
+    --col-dim:          #b0b0b0;   /* couleur des items non-survolés */
+    --col-rule:         #cccccc;   /* séparateurs horizontaux du menu */
+
+    /*
+      Case décorative en haut à droite.
+      Changez cette valeur pour modifier sa teinte.
+      Ex. : #e8e8e8 (gris très clair), #f0ede8 (sable), #eaf0f5 (bleu pâle)…
+    */
+    --col-aside-bg:     #e8e8e8;
+
+    /* ── Typographie ──────────────────────────────────────────────────────── */
+    /*
+      Remplacez les noms entre guillemets par ceux de vos @font-face locaux.
+      Les fallbacks (Georgia, sans-serif) s'afficheront si le fichier
+      de police est introuvable.
+    */
+    --font-display: 'MaPoliceDisplay', Georgia, serif;
+    --font-body:    'MaPoliceBody',    Arial,   sans-serif;
+
+    /* ── Transitions ──────────────────────────────────────────────────────── */
+    --transition: 0.3s ease;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+     ICÔNE MENU GLOBAL (hamburger)
+     Positionnée en haut à droite, dans la case décorative.
+     Elle ouvre/ferme le tiroir de navigation globale .site-drawer.
+  ═══════════════════════════════════════════════════════════════════════════ */
+
+  /*
+    Bouton hamburger.
+    position: fixed → reste visible quelle que soit la position de scroll.
+    z-index élevé   → toujours au premier plan, même sur le tiroir ouvert.
+    top/right       → coin supérieur droit, avec un léger retrait.
+  */
+  .menu-btn {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.75rem;
+    z-index: 200;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.35rem;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: flex-end;   /* barres alignées à droite → effet asymétrique */
+  }
+
+  /*
+    Chaque barre du hamburger.
+    Les trois barres ont des largeurs différentes (100 %, 66 %, 45 %)
+    pour créer un motif asymétrique légèrement plus raffiné
+    qu'un hamburger classique à trois barres égales.
+  */
+  .menu-btn .bar {
+    display: block;
+    height: 1.5px;
+    background: var(--col-black);
+    border-radius: 1px;
+    transition: transform var(--transition), opacity var(--transition), width var(--transition);
+  }
+
+  .menu-btn .bar:nth-child(1) { width: 26px; }
+  .menu-btn .bar:nth-child(2) { width: 18px; }
+  .menu-btn .bar:nth-child(3) { width: 12px; }
+
+  /*
+    Animation du bouton en croix quand le tiroir est ouvert.
+    La classe .is-open est ajoutée par JavaScript sur .menu-btn.
+  */
+  .menu-btn.is-open .bar:nth-child(1) {
+    width: 22px;
+    transform: translateY(6.5px) rotate(45deg);
+  }
+  .menu-btn.is-open .bar:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  .menu-btn.is-open .bar:nth-child(3) {
+    width: 22px;
+    transform: translateY(-6.5px) rotate(-45deg);
+  }
+
+  /* Accessibilité : focus visible sur le bouton */
+  .menu-btn:focus-visible {
+    outline: 2px solid var(--col-black);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
+  /* ── Tiroir de navigation globale ─────────────────────────────────────── */
+  /*
+    Panneau qui glisse depuis la droite quand le bouton hamburger est activé.
+    transform: translateX(100%) → caché hors écran à droite par défaut.
+    La classe .is-open (ajoutée par JS) le ramène à translateX(0).
+  */
+  .site-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: min(320px, 80vw);
+    height: 100%;
+    background: var(--col-white);
+    z-index: 150;
+    transform: translateX(100%);
+    transition: transform var(--transition), background-color var(--transition);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem 3rem;
+    border-left: 1px solid var(--col-rule);
+    overflow-y: auto;
+  }
+
+  .site-drawer.is-open {
+    transform: translateX(0);
+  }
+
+  /*
+    Liens du tiroir.
+    Séparateur identique au menu secondaire pour cohérence visuelle.
+  */
+  .drawer-item {
+    position: relative;
+    padding-top: 1.1rem;
+    text-decoration: none;
+    color: var(--col-black);
+    display: block;
+    font-family: var(--font-body);
+    font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    transition: color var(--transition), letter-spacing var(--transition);
+  }
+
+  .drawer-item::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: var(--col-rule);
+    margin-bottom: 0.7rem;
+  }
+
+  .drawer-item:hover {
+    letter-spacing: 0.04em;
+  }
+
+  .drawer-item:focus-visible {
+    outline: 2px solid var(--col-black);
+    outline-offset: 4px;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+     ITEM "ACCESSIBILITÉ" DU TIROIR
+     Bouton à part (pas un lien) : même rythme visuel que .drawer-item
+     (séparateur, typographie), mais marqué d'une petite icône ⚙ pour
+     signaler qu'il déclenche un panneau plutôt qu'une navigation.
+  ═══════════════════════════════════════════════════════════════════════════ */
+  .drawer-accessibility {
+    margin-top: 1.5rem;
+  }
+
+  .drawer-accessibility-btn {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding-top: 1.1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font: inherit;
+    color: var(--col-black);
+    font-family: var(--font-body);
+    font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    transition: color var(--transition), letter-spacing var(--transition);
+  }
+
+  .drawer-accessibility-btn::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: var(--col-rule);
+    margin-bottom: 0.7rem;
+  }
+
+  /* Petite icône distinguant ce bouton des liens de navigation classiques */
+  .drawer-accessibility-btn::after {
+    content: '⚙';
+    float: right;
+    font-size: 0.8em;
+    opacity: 0.55;
+  }
+
+  .drawer-accessibility-btn:hover,
+  .drawer-accessibility-btn:focus-visible {
+    letter-spacing: 0.04em;
+  }
+
+  .drawer-accessibility-btn:focus-visible {
+    outline: 2px solid var(--col-black);
+    outline-offset: 4px;
+  }
+
+  /* ── Panneau déroulant : interrupteurs d'accessibilité ──────────────────── */
+  .accessibility-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 1.1rem;
+  }
+
+  .accessibility-panel[hidden] {
+    display: none;
+  }
+
+  .a11y-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: clamp(0.85rem, 1.2vw, 1rem);
+    font-weight: 400;
+    color: var(--col-black);
+  }
+
+  /* Interrupteur (case à cocher stylisée en switch) */
+  .a11y-switch {
+    position: relative;
+    display: inline-block;
+    flex-shrink: 0;
+    width: 2.4rem;
+    height: 1.3rem;
+  }
+
+  .a11y-switch input {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .a11y-switch .a11y-track {
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--col-black);
+    border-radius: 999px;
+    transition: background-color var(--transition);
+  }
+
+  .a11y-switch .a11y-thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: calc(1.3rem - 6px);
+    height: calc(1.3rem - 6px);
+    border-radius: 50%;
+    background: var(--col-black);
+    transition: transform var(--transition), background-color var(--transition);
+  }
+
+  .a11y-switch input:checked ~ .a11y-track {
+    background: var(--col-black);
+  }
+
+  .a11y-switch input:checked ~ .a11y-thumb {
+    background: var(--col-white);
+    transform: translateX(1.1rem);
+  }
+
+  .a11y-switch input:focus-visible ~ .a11y-track {
+    outline: 2px solid var(--col-black);
+    outline-offset: 2px;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+     SÉLECTEUR DE LANGUE (FR / DE / EN)
+     Rangée de boutons texte, légèrement isolée en bas du tiroir.
+     La langue active est mise en évidence par .active.
+  ═══════════════════════════════════════════════════════════════════════════ */
+  .drawer-langs {
+    position: relative;
+    display: flex;
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+    padding-top: 1.1rem;
+  }
+
+  .drawer-langs::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: var(--col-rule);
+  }
+
+  .lang-item {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: clamp(0.85rem, 1.1vw, 1rem);
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    color: var(--col-dim);
+    transition: color var(--transition), font-weight var(--transition);
+  }
+
+  .lang-item.active {
+    color: var(--col-black);
+    font-weight: 700;
+  }
+
+  .lang-item:hover,
+  .lang-item:focus-visible {
+    color: var(--col-black);
+  }
+
+  .lang-item:focus-visible {
+    outline: 2px solid var(--col-black);
+    outline-offset: 4px;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+     MODE SOMBRE
+     Activé via la classe .dark-mode posée par JavaScript sur <html> ET
+     <body> (assets/js/drawer.js, et un script de préchargement dans
+     <head> pour l'appliquer dès le premier rendu). On redéfinit
+     simplement les variables de couleur : comme tout le site s'appuie
+     sur elles, l'ensemble de la mise en page s'adapte automatiquement.
+
+     Pourquoi sur <html> ET <body> ? Posées sur <html>, les variables
+     cascadent naturellement vers <body> et tout le reste de la page, et
+     permettent au fond de <html> lui-même de suivre le mode sombre (voir
+     correctif ci-dessous : sans cela, <html> garderait un fond clair par
+     défaut, visible si <body> ne remplit pas toute la hauteur de la
+     fenêtre). Posées en plus sur <body>, elles couvrent aussi le cas où
+     seule cette classe serait présente.
+  ═══════════════════════════════════════════════════════════════════════════ */
+  html.dark-mode,
+  body.dark-mode {
+    --col-white:    #121212;
+    --col-black:    #f1f1f1;
+    --col-dim:      #6e6e6e;
+    --col-rule:     #3a3a3a;
+    --col-aside-bg: #1e1e1e;
+  }
+
+  /*
+    ── Correctif fond gris/blanc en mode sombre ───────────────────────────
+    <html> (parent de <body>) garde son fond blanc par défaut tant que
+    rien ne le redéfinit. Si le contenu de <body> ne remplit pas toute la
+    hauteur de la fenêtre (page courte, rebond de défilement sur mobile,
+    etc.), ce fond clair apparaît sous le texte clair du mode sombre, le
+    rendant illisible.
+
+    On évite le sélecteur :has() (récent, pas supporté par tous les
+    navigateurs) : comme assets/js/drawer.js pose la classe "dark-mode"
+    directement sur <html>, il suffit de redéfinir son fond ici.
+  */
+  html.dark-mode {
+    background: #121212;
+  }
+
+  body.dark-mode {
+    min-height: 100vh;
+  }
+
+  /*
+    ── Transition douce des couleurs lors du basculement du mode sombre ──
+    IMPORTANT : cette transition ne doit s'appliquer qu'aux changements
+    déclenchés APRÈS le chargement complet de la page (bascule manuelle
+    du mode sombre, de la police dyslexie, etc.).
+
+    Si elle s'appliquait dès le premier rendu, le moindre écart de
+    timing entre le script de préchargement (qui pose .dark-mode sur
+    <html> avant même que common.css soit prêt) et l'application des
+    règles CSS provoquerait un "fondu" visible entre l'état clair et
+    l'état sombre — c'est le flash observé.
+
+    La classe "js-ready" est ajoutée sur <html> à la fin de
+    SiteApp.initDrawer() (assets/js/drawer.js), une fois que tout est
+    chargé et stable. Tant qu'elle n'est pas présente, aucune transition
+    de couleur n'a lieu : le premier affichage est donc instantané, dans
+    le bon thème dès la première image.
+  */
+  html.js-ready,
+  html.js-ready body,
+  html.js-ready .site-drawer,
+  html.js-ready .hero-aside,
+  html.js-ready .drawer-overlay {
+    transition: background-color var(--transition), color var(--transition), border-color var(--transition);
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+     POLICE ADAPTÉE AUX PERSONNES DYSLEXIQUES
+     Activée via la classe .dyslexic-font posée par JavaScript sur <html>
+     ET <body> (même mécanisme que le mode sombre, voir ci-dessus).
+     Remplace les polices par une police plus lisible et accentue
+     l'espacement, recommandé pour la lecture en cas de dyslexie.
+     Remplacez "Comic Sans MS" par "OpenDyslexic" si vous l'auto-hébergez.
+  ═══════════════════════════════════════════════════════════════════════════ */
+  @font-face {
+  font-family: "OpenDyslexic";
+  src: url("../fonts/OpenDyslexic-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "OpenDyslexic";
+  src: url("../fonts/OpenDyslexic-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+  html.dyslexic-font,
+  body.dyslexic-font {
+    --font-display: "OpenDyslexic", Verdana, sans-serif;
+    --font-body:    "OpenDyslexic", Verdana, sans-serif;
+  }
+
+  body.dyslexic-font p,
+  body.dyslexic-font .hero-description,
+  body.dyslexic-font .project-item p,
+  body.dyslexic-font .drawer-item,
+  body.dyslexic-font .a11y-option {
+    letter-spacing: 0.03em;
+    line-height: 1.9;
+  }
+
+  /*
+    Fond semi-transparent derrière le tiroir.
+    Cliquable pour refermer le tiroir (géré en JS).
+    opacity: 0 + pointer-events: none → invisible et non-cliquable par défaut.
+  */
+  .drawer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.18);
+    z-index: 140;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition);
+  }
+
+  .drawer-overlay.is-open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* ── Respect du mode "mouvement réduit" ─────────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      transition: none !important;
+    }
+
+    /*
+      Le défilement "doux" (scroll-behavior: smooth) des listes de projets
+      paginées (.project-list--paged, voir interior.css et assets/js/
+      project-list-paging.js) n'est pas une "transition" CSS : la règle
+      ci-dessus ne le neutralise pas. On le fait explicitement ici, pour
+      que le passage d'un groupe de 3 cases au suivant soit instantané
+      pour les personnes ayant activé "mouvement réduit".
+    */
+    .project-list--paged {
+      scroll-behavior: auto;
+    }
+  }
+
+  /* ── Contenu réservé aux lecteurs d'écran ───────────────────────────────
+     Masque visuellement un élément tout en le laissant accessible
+     (ex. en-tête de colonne "Langue" du tableau des CV).
+  ── */
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+     FENÊTRE D'INTRODUCTION (première visite)
+     ═══════════════════════════════════════════════════════════════════════════
+     Message plein écran, fond entièrement blanc, affiché une seule fois par
+     session de navigation (voir assets/js/intro-overlay.js). Construit et
+     injecté en JavaScript, comme le tiroir de navigation.
+
+       1. .intro-overlay      → calque plein écran, fond blanc, masqué
+                                  (opacity: 0 / visibility: hidden) au départ.
+       2. .intro-content       → bloc centré (titre + bouton + langues),
+                                  lui-même masqué (opacity: 0, léger décalage
+                                  vertical) puis révélé après un court délai :
+                                  c'est le "bref instant d'écran blanc" avant
+                                  l'apparition du texte.
+       3. .intro-close         → bouton de fermeture, inactif au départ
+                                  (texte et ligne grisés, curseur "interdit"),
+                                  qui devient actif après quelques secondes
+                                  (texte et ligne en noir, curseur pointeur).
+       4. .intro-langs         → un bloc par langue (FR / EN / DE), code de
+                                  langue dans le style du sélecteur du tiroir,
+                                  puis un paragraphe.
+  ═══════════════════════════════════════════════════════════════════════════ */
+
+  .intro-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 500;                 /* au-dessus du tiroir (150) et du menu (200) */
+    background: var(--col-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease;
+    /*
+      Permet de défiler si le contenu (.intro-content) est plus haut que
+      l'écran, par ex. si un message plus long est ajouté pour une langue.
+    */
+    overflow-y: auto;
+  }
+
+  .intro-overlay.is-visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Empêche le défilement de la page sous la fenêtre d'introduction */
+  body.intro-open {
+    overflow: hidden;
+  }
+
+  /* Bloc central : titre, bouton, puis langues */
+  .intro-content {
+    width: 100%;
+    max-width: 34rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5rem;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    /*
+      Marge verticale automatique : centre le bloc quand il est plus petit
+      que l'écran, et lui laisse de l'espace pour défiler sans être collé
+      aux bords quand il est plus grand.
+    */
+    margin: auto;
+  }
+
+  /* Révélation du contenu, après le court délai d'écran blanc */
+  .intro-overlay.is-visible .intro-content {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Titre du site, dans la police de titre */
+  .intro-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--col-black);
+  }
+
+  /*
+    Bouton de fermeture : même esprit épuré que le tiroir (ligne fine
+    au-dessus, texte en capitales espacées). Inactif par défaut :
+    texte et ligne grisés (--col-dim / --col-rule), curseur "interdit".
+  */
+  .intro-close {
+    position: relative;
+    width: 100%;
+    max-width: 16rem;
+    padding-top: 1rem;
+    background: none;
+    border: none;
+    font: inherit;
+    font-family: var(--font-body);
+    font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    color: var(--col-dim);
+    cursor: not-allowed;
+    transition: color var(--transition), letter-spacing var(--transition);
+  }
+
+  .intro-close::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: var(--col-rule);
+    margin-bottom: 0.7rem;
+    transition: background-color var(--transition);
+  }
+
+  /* État actif : disponible après quelques secondes (cf. JS) */
+  .intro-close.is-enabled {
+    color: var(--col-black);
+    cursor: pointer;
+  }
+
+  .intro-close.is-enabled::before {
+    background: var(--col-black);
+  }
+
+  .intro-close.is-enabled:hover,
+  .intro-close.is-enabled:focus-visible {
+    letter-spacing: 0.09em;
+  }
+
+  .intro-close:focus-visible {
+    outline: 2px solid var(--col-black);
+    outline-offset: 4px;
+  }
+
+  /* Un bloc par langue : code (FR/EN/DE) + paragraphe, tous centrés */
+  .intro-langs {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+  }
+
+  .intro-lang-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* Code de langue : même style que .lang-item (tiroir) */
+  .intro-lang-code {
+    font-family: var(--font-body);
+    font-size: clamp(0.85rem, 1.1vw, 1rem);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--col-black);
+  }
+
+  .intro-lang-block p {
+    font-family: var(--font-body);
+    font-size: clamp(0.85rem, 1.1vw, 1rem);
+    line-height: 1.6;
+    color: var(--col-black);
+    max-width: 32rem;
+  }
+
+  /* ── Responsive ──────────────────────────────────────────────────────── */
+  @media (max-width: 600px) {
+    .intro-overlay {
+      padding: 1.5rem;
+    }
+
+    .intro-content {
+      gap: 2rem;
+    }
+
+    .intro-title {
+      font-size: clamp(1.8rem, 10vw, 2.6rem);
+    }
+
+    .intro-langs {
+      gap: 1.25rem;
+    }
+  }
+

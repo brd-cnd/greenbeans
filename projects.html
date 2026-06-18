@@ -1,0 +1,440 @@
+<!--
+=============================================================================
+  PROJECTS.HTML — Page "projets" de Greenbeans
+  (anciennement nommée projets.html ; le fichier a été renommé en anglais
+  pour que l'URL soit compréhensible par tous les visiteurs.)
+  =============================================================================
+
+  Cette page a été réorganisée pour séparer le VISUEL (CSS, structure HTML,
+  comportements JavaScript) du CONTENU (textes, traductions).
+
+  Fichiers chargés :
+    - assets/css/common.css    → réinitialisation, variables, tiroir
+                                  hamburger, mode sombre, police dyslexie...
+                                  (partagé par TOUTES les pages du site)
+    - assets/css/interior.css  → mise en page du "hero" + panneaux de
+                                  contenu (partagé par les 4 pages
+                                  intérieures : projets/notions/histoire/apropos)
+    - assets/css/projets.css    → couleurs des rectangles décoratifs propres
+                                  à cette page
+
+    - assets/js/i18n.js          → moteur de traduction FR/DE/EN
+    - assets/js/drawer.js        → tiroir de navigation + bouton hamburger
+                                    (injectés en JS, partagés par toutes les pages)
+    - assets/js/interior-nav.js  → sous-menu du "hero" + panneaux de contenu
+                                    (partagé par les 4 pages intérieures)
+    - assets/js/project-list-paging.js → pagination par groupes de 3 des
+                                    listes .project-list qui dépassent 3
+                                    éléments (défilement à la molette,
+                                    génériquement appliqué partout)
+
+  data-page="projets" : indique à i18n.js quel fichier de traductions
+  charger (projets_<lang>.json) en complément du fichier commun
+  (common_<lang>.json, utilisé par le tiroir de navigation).
+=============================================================================
+-->
+
+<!DOCTYPE html>
+<!--
+  lang="fr" : indique la langue principale aux lecteurs d'écran et moteurs
+              de recherche. Mis à jour dynamiquement par i18n.js lors d'un
+              changement de langue.
+-->
+<html lang="fr">
+
+<head>
+  <!--
+    charset="UTF-8"  : encodage universel (accents, caractères spéciaux).
+    viewport         : adaptation mobile.
+                       width=device-width → largeur réelle de l'écran.
+                       initial-scale=1   → pas de zoom forcé.
+    description      : résumé affiché dans les résultats de recherche (SEO).
+    author           : auteur du document.
+    theme-color      : couleur de la barre de navigation sur Android/Chrome.
+    title            : texte affiché dans l'onglet du navigateur.
+  -->
+  <meta charset="UTF-8" />
+  <!--
+    ── Préférences d'accessibilité mémorisées (mode sombre / police dyslexie) ──
+    Applique immédiatement les classes "dark-mode" / "dyslexic-font" sur
+    <html>, AVANT le rendu de la page, à partir des préférences mémorisées
+    par assets/js/drawer.js (sessionStorage, puis localStorage, puis
+    cookie). Voir assets/css/common.css : les transitions de couleur sont
+    désactivées jusqu'à l'ajout de la classe "js-ready" (posée plus tard,
+    une fois la page chargée), donc ce premier rendu ne peut pas
+    "flasher" entre clair et sombre, quel que soit l'ordre de chargement
+    du CSS/JS.
+  -->
+  <script>
+  (function () {
+    function read(key) {
+      try {
+        var v = sessionStorage.getItem(key);
+        if (v !== null) return v;
+      } catch (e) {}
+      try {
+        var v2 = localStorage.getItem(key);
+        if (v2 !== null) return v2;
+      } catch (e) {}
+      var m = document.cookie.match(new RegExp('(?:^|; )' + key + '=([^;]*)'));
+      return m ? decodeURIComponent(m[1]) : null;
+    }
+    if (read('greenbeans-dark-mode') === '1') {
+      document.documentElement.classList.add('dark-mode');
+    }
+    if (read('greenbeans-dyslexic-font') === '1') {
+      document.documentElement.classList.add('dyslexic-font');
+    }
+  })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Greenbeans — laboratoires, projets professionnels et projets personnels." />
+  <meta name="author" content="Greenbeans" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>Projets — Greenbeans</title>
+
+  <!-- ── CSS partagé (variables, tiroir, mode sombre, dyslexie...) ── -->
+  <link rel="stylesheet" href="assets/css/common.css" />
+  <!-- ── CSS partagé entre les 4 pages intérieures (hero + panneaux) ── -->
+  <link rel="stylesheet" href="assets/css/interior.css" />
+  <!-- ── CSS propre à cette page (couleurs des rectangles décoratifs) ── -->
+  <link rel="stylesheet" href="assets/css/projets.css" />
+</head>
+
+<!--
+  data-page="projets" : utilisé par i18n.js et drawer.js pour savoir sur
+  quelle page on se trouve (chargement des traductions, mise en évidence
+  du lien actif dans le tiroir de navigation).
+-->
+<body data-page="projets">
+
+<!-- =============================================================================
+     HTML
+     Le tiroir de navigation (hamburger, accessibilité, langue) est injecté
+     par assets/js/drawer.js : il n'apparaît plus ici "en dur".
+============================================================================= -->
+<header class="hero" role="banner">
+
+  <!-- ── COLONNE GAUCHE (s'étend sur 2 lignes) ──────────────────────────── -->
+  <div class="hero-left">
+
+    <!-- Zone image -->
+    <div class="hero-image-wrap">
+      <!--
+        Pour remplacer l'image :
+        1. Modifiez src="…" avec le chemin de votre fichier.
+        2. Renseignez alt="…" si l'image a un sens descriptif.
+        3. La mise en page s'adapte automatiquement (object-fit: cover).
+        Si aucune image n'est fournie, la couleur de fond --col-aside-bg
+        appliquée sur .hero-image-wrap s'affiche.
+      -->
+      <img
+        class="hero-image"
+        src=""
+        alt=""
+        style="background: linear-gradient(135deg, #0d2b3e 0%, #1a5276 40%, #ca6f1e 100%);"
+      />
+    </div>
+
+    <!-- Zone titre + description -->
+    <div class="hero-body">
+
+      <!--
+        Titre principal : "greenbeans · projets"
+        Adaptez le texte selon votre charte.
+        .separator → le point médian "·" entre les deux mots.
+        Le second mot est traduit dynamiquement (voir data-i18n plus bas et
+        la clé "hero-title-word2" dans projets_<lang>.json).
+      -->
+      <h1 class="hero-headline">
+        greenbeans<span class="separator">&middot;</span><span data-i18n="hero-title-word2">projets</span>
+      </h1>
+
+      <!--
+        Description affichée en bas à droite du bloc texte.
+        Statique : ne change plus au survol des items du sous-menu.
+        Remplacez ce paragraphe par votre propre contenu.
+      -->
+      <div class="hero-description-wrap">
+
+        <p class="hero-description" data-i18n="desc-default">
+          Ici, vous trouverez des travaux pratiques, permettant 
+          d'appréhender des notions de cours, des projets 
+          répondant à des demandes professionnelles ou 
+          scolaires, ainsi que d'autres, plus personnels, à des 
+          fins d'expérimentation.
+        </p>
+
+      </div>
+
+    </div><!-- /.hero-body -->
+
+  </div><!-- /.hero-left -->
+
+  <!-- ── COLONNE DROITE — ligne 1 : case décorative ─────────────────────── -->
+  <!--
+    Zone réservée en haut à droite.
+    Sa couleur est contrôlée par --col-aside-bg dans :root (CSS).
+    Ajoutez du contenu ici quand vous serez prêt.
+  -->
+  <div class="hero-aside" aria-hidden="true">
+    <!-- Contenu futur -->
+  </div>
+
+  <!-- ── COLONNE DROITE — ligne 2 : menu ───────────────────────────────── -->
+  <!--
+    role="navigation" + aria-label : indique aux lecteurs d'écran
+    que ce bloc est un menu de navigation secondaire.
+  -->
+  <nav class="hero-nav" role="navigation" aria-label="Sous-navigation projets">
+
+    <!--
+      Chaque .nav-item est un lien <a>.
+      data-target="…" : identifiant utilisé par JavaScript pour l'effet hover.
+      Adaptez href="…" à votre arborescence de pages.
+    -->
+    <a class="nav-item" href="projects-laboratoires.html" data-target="laboratoires">
+      <span data-i18n="nav1">laboratoires</span>
+    </a>
+
+    <a class="nav-item" href="projects-pro.html" data-target="pro">
+      <span data-i18n="nav2">projets professionnels</span>
+    </a>
+
+    <a class="nav-item" href="projects-perso.html" data-target="perso">
+      <span data-i18n="nav3">projets personnels</span>
+    </a>
+
+  </nav>
+
+</header><!-- /.hero -->
+
+<section>
+
+  <!--
+    ── Panneaux de contenu ───────────────────────────────────────────────
+    Chaque .section-panel correspond à un nav-item du <header> via
+    data-panel="laboratoires|pro|perso" (même valeurs que data-target).
+    Seul le panneau portant la classe .active est visible (voir CSS).
+    Le panneau "laboratoires" est actif par défaut.
+    Contenu fictif, à remplacer par vos propres projets.
+  -->
+
+  <div class="section-panel active" data-panel="laboratoires">
+    <h2 data-i18n="panel-nav1-title">Laboratoires</h2>
+
+    <p class="section-intro" data-i18n="panel-nav1-intro">
+      Les travaux pratiques présentés dans cette section 
+      ont pour but de mettre en avant l'aspect technique 
+      des cyberattaques et de les décomposer.
+    </p>
+
+    <div class="panel-body">
+
+    <div class="project-list">
+
+      <div class="project-item" data-canvas="laboratoires-1" data-href="projects-laboratoires-craquage-mot-de-passe.html" tabindex="0" role="link" aria-label="Craquage de mot de passe — voir plus">
+        <h3 data-i18n="item1-1-title">Craquage de mot de passe</h3>
+        <p data-i18n="item1-1-desc">
+          Quelle espérance de vie donnez-vous à votre mot de passe ?
+        </p>
+        <span class="project-link-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 17 17 7"/>
+            <path d="M9 7h8v8"/>
+          </svg>
+        </span>
+      </div>
+
+      <div class="project-item" data-canvas="laboratoires-2" data-href="projects-laboratoires-trafic-reseau.html" tabindex="0" role="link" aria-label="Analyse de trafic réseau — voir plus">
+        <h3 data-i18n="item1-2-title">Analyse de trafic réseau</h3>
+        <p data-i18n="item1-2-desc">
+          Wireshark et tcpdump
+        </p>
+        <span class="project-link-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 17 17 7"/>
+            <path d="M9 7h8v8"/>
+          </svg>
+        </span>
+      </div>
+
+      <div class="project-item" data-canvas="laboratoires-3" data-href="projects-laboratoires-ddos.html" tabindex="0" role="link" aria-label="DDoS — voir plus">
+        <h3 data-i18n="item1-3-title">DDoS</h3>
+        <p data-i18n="item1-3-desc">
+          Distributed Denial of Service
+        </p>
+        <span class="project-link-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 17 17 7"/>
+            <path d="M9 7h8v8"/>
+          </svg>
+        </span>
+      </div>
+
+    </div>
+
+    <div class="project-canvas-area">
+
+      <div class="project-canvas active" data-canvas="laboratoires-1">
+        <!-- Toile réservée pour « Craquage de mot de passe ».
+             Ajoutez ici votre propre contenu (texte, image, etc.). -->
+      </div>
+
+      <div class="project-canvas" data-canvas="laboratoires-2">
+        <!-- Toile réservée pour « Analyse de trafic réseau ».
+             Ajoutez ici votre propre contenu (texte, image, etc.). -->
+      </div>
+
+      <div class="project-canvas" data-canvas="laboratoires-3">
+        <!-- Toile réservée pour « DDoS ».
+             Ajoutez ici votre propre contenu (texte, image, etc.). -->
+      </div>
+
+    </div>
+
+    </div>
+  </div>
+
+  <div class="section-panel" data-panel="pro">
+    <h2 data-i18n="panel-nav2-title">Projets professionnels</h2>
+
+    <p class="section-intro" data-i18n="panel-nav2-intro">
+      Travaux réalisés dans le cadre de devoirs ou au cours d'expériences professionnelles
+    </p>
+
+    <div class="panel-body">
+
+    <div class="project-list">
+
+      <div class="project-item" data-canvas="pro-1" data-href="projects-pro-ateliers-cned.html" tabindex="0" role="link" aria-label="ateliers du CNED — voir plus">
+        <h3 data-i18n="item2-1-title">Ateliers du CNED</h3>
+        <p data-i18n="item2-1-desc">
+          Ateliers professionnels réalisés au cours du BTS SIO SISR.
+        </p>
+        <span class="project-link-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 17 17 7"/>
+            <path d="M9 7h8v8"/>
+          </svg>
+        </span>
+      </div>
+
+      <div class="project-item" data-canvas="pro-2" data-href="projects-pro-portfolios.html" tabindex="0" role="link" aria-label="Portfolios — voir plus">
+        <h3 data-i18n="item2-2-title">Portfolios</h3>
+        <p data-i18n="item2-2-desc">
+          Présentation des étapes de création de l'ancien portfolio et de ce site
+        </p>
+        <span class="project-link-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 17 17 7"/>
+            <path d="M9 7h8v8"/>
+          </svg>
+        </span>
+      </div>
+
+    </div>
+
+    <div class="project-canvas-area">
+
+      <div class="project-canvas active" data-canvas="pro-1">
+        <!-- Toile réservée pour « ateliers du CNED ».
+             Ajoutez ici votre propre contenu (texte, image, etc.). -->
+      </div>
+
+      <div class="project-canvas" data-canvas="pro-2">
+        <!-- Toile réservée pour « Portfolios ».
+             Ajoutez ici votre propre contenu (texte, image, etc.). -->
+      </div>
+
+    </div>
+
+    </div>
+  </div>
+
+  <div class="section-panel" data-panel="perso">
+    <h2 data-i18n="panel-nav3-title">Projets personnels</h2>
+
+    <p class="section-intro" data-i18n="panel-nav3-intro">
+      Notes personnelles et infrastructures montées à des fins de test ou pour améliorer son environnement de travail. Découverte de logiciels bureautiques
+    </p>
+
+    <div class="panel-body">
+
+    <div class="project-list">
+
+      <div class="project-item" data-canvas="perso-1" data-href="projects-perso-environnement-travail.html" tabindex="0" role="link" aria-label="Environnement de travail — voir plus">
+        <h3 data-i18n="item3-1-title">Septembre 2026</h3>
+        <p data-i18n="item3-1-desc">
+          Il est temps de faire une petite infrastructure pour alléger mon ordinateur face aux postes que je vais virtualiser. Je dois aussi tenir compte de la contrainte physique de distance, comme je vais beaucoup bouger durant mon alternance
+        </p>
+        <span class="project-link-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 17 17 7"/>
+            <path d="M9 7h8v8"/>
+          </svg>
+        </span>
+      </div>
+
+      <div class="project-item" data-canvas="perso-2" data-href="projects-perso-environnement-travail.html" tabindex="0" role="link" aria-label="Alternative à MS Office — voir plus">
+        <h3 data-i18n="item3-2-title">À la recherche d'une alternative à MS Office</h3>
+        <p data-i18n="item3-2-desc">
+          Nextcloud, Calligra, OnlyOffice, LibreOffice, LaTeX
+        </p>
+        <span class="project-link-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 17 17 7"/>
+            <path d="M9 7h8v8"/>
+          </svg>
+        </span>
+      </div>
+
+
+    </div>
+
+    <div class="project-canvas-area">
+
+      <div class="project-canvas active" data-canvas="perso-1">
+        <!-- Toile réservée pour « Environnement de travail ».
+             Ajoutez ici votre propre contenu (texte, image, etc.). -->
+      </div>
+
+      <div class="project-canvas active" data-canvas="perso-2">
+        <!-- Toile réservée pour « Environnement de travail ».
+             Ajoutez ici votre propre contenu (texte, image, etc.). -->
+      </div>
+
+    </div>
+
+    </div>
+  </div>
+
+</section>
+
+<!-- =============================================================================
+     JAVASCRIPT
+============================================================================= -->
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/drawer.js"></script>
+<script src="assets/js/interior-nav.js"></script>
+<script src="assets/js/project-list-paging.js"></script>
+<script src="assets/js/intro-overlay.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    SiteApp.initDrawer();
+    SiteApp.initInteriorNav();
+    SiteApp.initProjectCanvases();
+    SiteApp.initProjectListPaging();
+    SiteApp.initIntroOverlay();
+  });
+</script>
+
+</body>
+</html>
