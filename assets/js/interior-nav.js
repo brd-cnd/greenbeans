@@ -18,7 +18,7 @@
         → affiche le panneau de contenu correspondant
           (.section-panel[data-panel="..."]) et masque les autres.
 
-     3. Survol / clic des ".project-item" (cases "portraits", "histoire",
+     3. Survol / clic des ".item" (cases "portraits", "histoire",
         etc. dans chaque panneau)
         → au survol/focus d'une case, la "toile" correspondante
           (.project-canvas[data-canvas="..."]) est affichée à droite,
@@ -82,43 +82,20 @@ window.SiteApp = window.SiteApp || {};
   }
 
   /* ───────────────────────────────────────────────────────────────────────
-     "Toiles" des ".project-item" : aperçu → page
+     "Toiles" des ".item" : survol → aperçu à droite, clic → page
      ───────────────────────────────────────────────────────────────────────
      Chaque .section-panel peut contenir une .project-list (cases
-     .project-item, chacune avec un attribut data-canvas="..." et
+     .item, chacune avec un attribut data-canvas="..." et
      data-href="...") et une .project-canvas-area (plusieurs
      .project-canvas[data-canvas="..."], une seule visible à la fois).
-
-     Le comportement diffère selon que l'appareil permet un vrai survol
-     (souris) ou non (mobile, tablette tactile) :
-
-       - AVEC survol réel (hover: none → false) : comportement inchangé.
-         Survol/focus d'une case → affiche sa toile à droite. Clic →
-         navigue directement vers la page (l'utilisateur a déjà vu
-         l'aperçu en survolant).
-
-       - SANS survol réel (hover: none → true, donc tactile) : il est
-         impossible de "survoler" avant de toucher. On affiche donc la
-         toile au PREMIER appui (la case prend la classe .is-revealed,
-         voir assets/css/interior.css pour son indice visuel), et on ne
-         navigue qu'au SECOND appui sur cette même case déjà révélée.
-         Toucher une autre case réinitialise et révèle celle-ci à son
-         tour (toujours un premier appui = aperçu).
-
-     window.matchMedia('(hover: none)') reste à jour si l'appareil change
-     de profil de pointage en cours de session (ex. tablette branchée à
-     une souris) : on écoute son évènement "change" pour effacer les
-     éventuels états "révélés", qui ne feraient plus sens.
 
      Le traitement est fait panneau par panneau, pour que chaque section
      (ex : "portraits" / "histoire" sur la page éponyme) ait son propre jeu
      de toiles indépendant.
   ─────────────────────────────────────────────────────────────────────── */
   function initProjectCanvases() {
-    const noHoverMQ = window.matchMedia('(hover: none)');
-
     document.querySelectorAll('.section-panel').forEach(panel => {
-      const items    = panel.querySelectorAll('.project-item');
+      const items    = panel.querySelectorAll('.item');
       const canvases = panel.querySelectorAll('.project-canvas');
 
       if (items.length === 0 || canvases.length === 0) return;
@@ -135,84 +112,32 @@ window.SiteApp = window.SiteApp || {};
         canvases.forEach(c => c.classList.remove('active'));
       }
 
-      /* ── Efface l'état "révélé" de toutes les cases du panneau ───────── */
-      function clearRevealed() {
-        items.forEach(el => el.classList.remove('is-revealed'));
-      }
-
-      /* La toile disparaît dès que la souris n'est plus sur le panneau —
-         pertinent uniquement sur un appareil à survol réel : sur mobile,
-         rien ne doit se refermer simplement parce que le doigt n'est
-         plus là, sous peine de fermer la toile sitôt révélée. */
-      panel.addEventListener('mouseleave', () => {
-        if (!noHoverMQ.matches) hideCanvases();
-      });
+      /* La toile disparaît dès que la souris n'est plus sur le panneau,
+         qu'elle survole une case (.item) ou la toile elle-même. */
+      panel.addEventListener('mouseleave', hideCanvases);
 
       items.forEach(item => {
         const key  = item.dataset.canvas;
         const href = item.dataset.href;
 
-        /*
-          Petit indice visuel ajouté automatiquement dans chaque case,
-          invisible tant que la case n'a pas été touchée une première
-          fois (voir .project-tap-hint dans assets/css/interior.css).
-          data-i18n permet sa traduction si l'utilisateur change de
-          langue après l'avoir révélée (clé commune à toutes les pages,
-          voir assets/i18n/common_<lang>.json).
-        */
-        if (href && !item.querySelector('.project-tap-hint')) {
-          const hint = document.createElement('span');
-          hint.className = 'project-tap-hint';
-          hint.setAttribute('aria-hidden', 'true');
-          hint.dataset.i18n = 'hint-tap-again';
-          hint.textContent = 'appuyez encore pour ouvrir';
-          item.appendChild(hint);
-        }
+        /* Survol / focus clavier → bascule la toile affichée à droite */
+        item.addEventListener('mouseenter', () => showCanvas(key));
+        item.addEventListener('focus',       () => showCanvas(key));
 
-        /* Survol / focus clavier → bascule la toile affichée à droite
-           (uniquement pertinent avec un pointeur permettant un vrai
-           survol ; sur mobile, voir la gestion du clic ci-dessous). */
-        item.addEventListener('mouseenter', () => {
-          if (!noHoverMQ.matches) showCanvas(key);
-        });
-        item.addEventListener('focus', () => {
-          if (!noHoverMQ.matches) showCanvas(key);
-        });
+        /* Clic → navigation vers la page (chemin fictif data-href) */
+        if (href) {
+          item.addEventListener('click', () => {
+            window.location.href = href;
+          });
 
-        item.addEventListener('click', () => {
-          if (noHoverMQ.matches) {
-            /* ── Tactile : 1er appui = aperçu, 2e appui = page ────────── */
-            if (!item.classList.contains('is-revealed')) {
-              clearRevealed();
-              item.classList.add('is-revealed');
-              showCanvas(key);
-              return; // on s'arrête là : pas de navigation à ce stade
+          /* Accessibilité clavier : Entrée ou Espace = clic */
+          item.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              window.location.href = href;
             }
-            if (href) window.location.href = href;
-            return;
-          }
-
-          /* ── Souris : clic = navigation directe, comme avant ─────────── */
-          if (href) window.location.href = href;
-        });
-
-        /* Accessibilité clavier : Entrée ou Espace = clic (redéclenche
-           exactement la même logique, tactile ou non, via item.click()). */
-        item.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            item.click();
-          }
-        });
-      });
-    });
-
-    /* Si l'appareil change de profil de pointage en cours de session
-       (ex. tablette rebranchée à une souris), les états "révélés" en
-       cours n'auraient plus de sens : on les efface. */
-    noHoverMQ.addEventListener('change', () => {
-      document.querySelectorAll('.project-item.is-revealed').forEach(el => {
-        el.classList.remove('is-revealed');
+          });
+        }
       });
     });
   }

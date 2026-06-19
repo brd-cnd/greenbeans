@@ -337,7 +337,7 @@
     display: grid;
     gap: 0;
     max-width: 65ch;
-    /* compense la suppression du padding-top des cases (cf. .project-item) */
+    /* compense la suppression du padding-top des cases (cf. .item) */
     margin-top: 1.25rem;
   }
 
@@ -345,7 +345,7 @@
     Chaque entrée de projet : séparateur identique au menu/tiroir.
 
     ── Survolable / cliquable ────────────────────────────────────────────
-    La zone grisée (.project-item) doit occuper exactement l'espace entre
+    La zone grisée (.item) doit occuper exactement l'espace entre
     deux lignes séparatrices : pas de padding-top (la ligne ::before est
     donc collée au bord supérieur de la case) et un padding-bottom qui
     sert d'espacement avant la ligne suivante (gap: 0 sur .project-list).
@@ -355,7 +355,7 @@
     cursor: pointer + tabindex/role (HTML) → indique que l'élément est
     actionnable, y compris au clavier.
   */
-  .project-item {
+  .item {
     padding: 0 1rem 1.75rem 1rem;
     margin: 0 -1rem;
     position: relative;
@@ -364,7 +364,7 @@
     transition: background-color var(--transition), transform var(--transition);
   }
 
-  .project-item::before {
+  .item::before {
     content: '';
     display: block;
     width: 100%;
@@ -373,7 +373,7 @@
     margin-bottom: 1rem;
   }
 
-  .project-item h3 {
+  .item h3 {
     font-family: var(--font-display);
     font-size: clamp(1rem, 1.4vw, 1.2rem);
     font-weight: 700;
@@ -381,7 +381,7 @@
     letter-spacing: -0.005em;
   }
 
-  .project-item p {
+  .item p {
     margin: 0;
     /* laisse un peu de place pour l'icône de lien en haut à droite */
     padding-right: 1.75rem;
@@ -394,13 +394,13 @@
     Comme les cases sont désormais jointives (gap: 0), le zoom reste très
     modéré pour éviter tout chevauchement visuel avec la case voisine.
   */
-  .project-item:hover,
-  .project-item:focus-visible {
+  .item:hover,
+  .item:focus-visible {
     background-color: var(--col-aside-bg);
     transform: scale(1.01);
   }
 
-  .project-item:focus-visible {
+  .item:focus-visible {
     outline: 2px solid var(--col-black);
     outline-offset: 2px;
   }
@@ -433,8 +433,8 @@
     height: 100%;
   }
 
-  .project-item:hover .project-link-icon,
-  .project-item:focus-visible .project-link-icon {
+  .item:hover .project-link-icon,
+  .item:focus-visible .project-link-icon {
     opacity: 0.55;
     transform: translate(0, 0) scale(1);
     transition-delay: 0.6s;
@@ -451,11 +451,11 @@
      Cette classe n'est jamais posée sur un appareil à survol réel : ces
      règles restent donc invisibles sur ordinateur de bureau.
   ── */
-  .project-item.is-revealed {
+  .item.is-revealed {
     background-color: var(--col-aside-bg);
   }
 
-  .project-item.is-revealed .project-link-icon {
+  .item.is-revealed .project-link-icon {
     opacity: 0.55;
     transform: translate(0, 0) scale(1);
     transition-delay: 0s;
@@ -463,10 +463,10 @@
 
   /*
     Indice textuel discret, ajouté automatiquement par JavaScript dans
-    chaque .project-item (voir initProjectCanvases). Invisible par défaut
+    chaque .item (voir initProjectCanvases). Invisible par défaut
     (aussi bien sur ordinateur que sur mobile tant que la case n'a pas
     été touchée) ; logé dans la marge basse de la case (padding-bottom
-    réservé par .project-item) pour ne jamais chevaucher le titre ou la
+    réservé par .item) pour ne jamais chevaucher le titre ou la
     description, quelle que soit leur longueur.
   */
   .project-tap-hint {
@@ -486,14 +486,14 @@
     pointer-events: none;
   }
 
-  .project-item.is-revealed .project-tap-hint {
+  .item.is-revealed .project-tap-hint {
     opacity: 0.85;
     transform: translateY(0);
   }
 
   /* ── Liste de projets paginée par groupes de 3 ────────────────────────────
      ───────────────────────────────────────────────────────────────────────
-     Quand une .project-list contient PLUS de 3 .project-item (n'importe
+     Quand une .project-list contient PLUS de 3 .item (n'importe
      quelle section, n'importe quelle page : Réseaux, Mathématiques,
      Ressources, Portraits, Laboratoires, Crédits…), assets/js/
      project-list-paging.js :
@@ -503,21 +503,21 @@
           ligne, en JS, et réajustée à chaque arrêt de défilement — car
           elle dépend du contenu réel : langue, police dyslexie, largeur
           d'écran, et longueur de texte propre à chaque groupe),
-       3. pose la classe .project-item--snap-start sur la 1ère case de
+       3. pose la classe .item--snap-start sur la 1ère case de
           chaque groupe de 3 (case n°1, 4, 7, 10…), pour que tout
           défilement (molette de souris, trackpad, glissé tactile,
           clavier) s'arrête TOUJOURS pile au début d'un groupe — jamais
           au milieu.
-     S'il y a 3 .project-item ou moins (cas par défaut actuel), aucune de
+     S'il y a 3 .item ou moins (cas par défaut actuel), aucune de
      ces classes n'est posée : la liste reste identique à avant, sans
      aucun défilement — rien ne change tant que vous n'ajoutez pas une
      4e case dans le HTML. Ce mécanisme est donc entièrement automatique
      et ne nécessite AUCUNE modification de ce fichier CSS, quel que soit
-     le nombre de .project-item ajoutées par la suite.
+     le nombre de .item ajoutées par la suite.
   ── */
   /*
     ── Réserve horizontale anti-rognage ───────────────────────────────────
-    .project-item "déborde" volontairement de 1rem de chaque côté (cf.
+    .item "déborde" volontairement de 1rem de chaque côté (cf.
     margin/padding négatifs plus haut) pour élargir sa zone de survol, et
     grossit encore très légèrement au survol (transform: scale(1.01)).
     Sans cette réserve, overflow-x: hidden ci-dessous (nécessaire pour
@@ -616,14 +616,14 @@
                                  groupe de 3 est obligatoirement marqué
                                  un par un, jamais deux à la fois.
   */
-  .project-item--snap-start {
+  .item--snap-start {
     scroll-snap-align: start;
     scroll-snap-stop: always;
   }
 
   /* ── Toile de contenu (à droite) ──────────────────────────────────────────
      Réserve un espace de taille cohérente où afficher, au survol d'un
-     .project-item, du contenu libre (texte, image, etc.).
+     .item, du contenu libre (texte, image, etc.).
      Une seule .project-canvas est visible à la fois (.active),
      les autres restent en display: none.
      Si la souris quitte .section-panel, plus aucune toile n'est active

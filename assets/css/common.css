@@ -476,7 +476,7 @@
 
   body.dyslexic-font p,
   body.dyslexic-font .hero-description,
-  body.dyslexic-font .project-item p,
+  body.dyslexic-font .item p,
   body.dyslexic-font .drawer-item,
   body.dyslexic-font .a11y-option {
     letter-spacing: 0.03em;
