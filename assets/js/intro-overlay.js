@@ -74,7 +74,7 @@ window.SiteApp = window.SiteApp || {};
       intro: "[17.06.2026] – INFORMATIONS : Site récent (date de création : 10.06.2026), qui remplace un ancien portfolio.",
       points: [
         "Traduction en cours",
-        "Pour télécharger des documents de l'école (calendrier, contrat) : menu (☰) > À propos > Informations personnelles > Page recrutement"
+        "Pour télécharger des documents de l'école (calendrier, contrat) : menu (☰) > À propos > Informations personnelles > Page recrutement",
         "Le contenu affiché est pour l'instant fictif et temporaire, à l'exception des mentions légales : menu (☰) > À propos > Mentions légales."
       ],
       outro: "Merci pour votre patience !",
