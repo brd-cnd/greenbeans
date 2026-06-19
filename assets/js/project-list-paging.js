@@ -10,10 +10,10 @@
 
    Principe
    ─────────
-   Tant qu'une .project-list contient 3 .project-item ou moins, rien ne
+   Tant qu'une .project-list contient 3 .item ou moins, rien ne
    change : elle reste affichée comme avant (pas de défilement).
 
-   Dès qu'une .project-list contient PLUS de 3 .project-item, ce script :
+   Dès qu'une .project-list contient PLUS de 3 .item, ce script :
      1. fixe la hauteur de la liste à la hauteur EXACTE du groupe de 3
         cases actuellement affiché (et la réajuste à chaque arrêt de
         défilement, puisque tous les groupes n'ont pas forcément
@@ -22,7 +22,7 @@
      2. la rend défilante verticalement (classe CSS .project-list--paged,
         voir assets/css/interior.css pour le détail du style),
      3. marque le début de chaque groupe de 3 (classe
-        .project-item--snap-start) comme point d'ancrage de défilement,
+        .item--snap-start) comme point d'ancrage de défilement,
      4. intercepte la molette de la souris / le trackpad pour faire
         avancer ou reculer le défilement d'un groupe ENTIER de 3 cases à
         chaque "cran" — jamais case par case, jamais à moitié.
@@ -39,7 +39,7 @@
    structure des cases.
 
    Aucune intervention manuelle n'est nécessaire lorsque vous ajoutez ou
-   retirez des .project-item dans le HTML : tout est recalculé tout seul,
+   retirez des .item dans le HTML : tout est recalculé tout seul,
    y compris lors d'un changement de langue (FR/DE/EN), de l'activation
    du mode sombre, de la police adaptée aux personnes dyslexiques, ou
    d'un redimensionnement de la fenêtre — voir le mécanisme de
@@ -81,7 +81,7 @@ window.SiteApp = window.SiteApp || {};
 
   function itemsOf(list) {
     return Array.from(list.children).filter(el =>
-      el.classList.contains('project-item')
+      el.classList.contains('item')
     );
   }
 
@@ -96,7 +96,7 @@ window.SiteApp = window.SiteApp || {};
     if (items.length <= pageSize) {
       list.classList.remove('project-list--paged');
       list.style.height = '';
-      items.forEach(item => item.classList.remove('project-item--snap-start'));
+      items.forEach(item => item.classList.remove('item--snap-start'));
       return;
     }
 
@@ -105,7 +105,7 @@ window.SiteApp = window.SiteApp || {};
       (.section-panel sans la classe .active → display: none), ses
       dimensions mesurées seraient nulles : on annule ce calcul, il sera
       refait automatiquement par le ResizeObserver dès que le panneau
-      redeviendra visible (ses .project-item passeront alors d'une taille
+      redeviendra visible (ses .item passeront alors d'une taille
       de 0 à leur taille réelle, ce qui déclenche une nouvelle mesure).
     */
     const listRect = list.getBoundingClientRect();
@@ -114,7 +114,7 @@ window.SiteApp = window.SiteApp || {};
     /* Marque le début de chaque groupe de "pageSize" cases. */
     items.forEach((item, index) => {
       item.classList.toggle(
-        'project-item--snap-start',
+        'item--snap-start',
         index % pageSize === 0
       );
     });
@@ -183,7 +183,7 @@ window.SiteApp = window.SiteApp || {};
   }
 
   function snapPositions(list) {
-    return Array.from(list.querySelectorAll(':scope > .project-item--snap-start'))
+    return Array.from(list.querySelectorAll(':scope > .item--snap-start'))
       .map(item => relativeTop(item, list));
   }
 
@@ -271,7 +271,7 @@ window.SiteApp = window.SiteApp || {};
   }
 
   /* ── Recalcul automatique ───────────────────────────────────────────────
-     Un ResizeObserver est posé sur CHAQUE .project-item (et non sur la
+     Un ResizeObserver est posé sur CHAQUE .item (et non sur la
      liste elle-même, dont la hauteur est justement figée par ce script) :
      ainsi, tout changement de hauteur d'une case — traduction plus longue
      dans une autre langue, police adaptée aux personnes dyslexiques,
