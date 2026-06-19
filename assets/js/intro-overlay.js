@@ -71,31 +71,31 @@ window.SiteApp = window.SiteApp || {};
   const MESSAGES = [
     {
       code: 'FR',
-      intro: "[17.06.2026] – INFORMATIONS : Site récent (date de création : 10.06.2026), qui remplace un ancien portfolio. Traduction en cours. Le contenu affiché est pour l'instant fictif et temporaire, à l'exception :",
+      intro: "[17.06.2026] – INFORMATIONS : Site récent (date de création : 10.06.2026), qui remplace un ancien portfolio.",
       points: [
-        "1) Des mentions légales : menu (☰) > À propos > Mentions légales.",
-        "2) Du CV, téléchargeable en plusieurs langues : menu (☰) > À propos > Contact > Informations personnelles > Curriculum Vitae",
-        "3) De l'ancien portfolio : menu (☰) > Projets professionnels > Portfolios"
+        "Traduction en cours",
+        "Pour télécharger des documents de l'école (calendrier, contrat) : menu (☰) > À propos > Informations personnelles > Page recrutement"
+        "Le contenu affiché est pour l'instant fictif et temporaire, à l'exception des mentions légales : menu (☰) > À propos > Mentions légales.",
       ],
       outro: "Merci pour votre patience !",
     },
     {
       code: 'EN',
-      intro: "[17.06.2026] – NOTICE: This is a brand-new website (creation date : 10.06.2026), replacing an older portfolio. Translation in progress. Most of the content you see is placeholder text for now, except for:",
+      intro: "[17.06.2026] – NOTICE: This is a brand-new website (creation date : 10.06.2026), replacing an older portfolio.",
       points: [
-        "1) The legal notice: menu (☰) > About > Legal notice.",
-        "2) The CV, downloadable in several languages: (☰) > About > Contact.",
-        "3) The old portfolio : menu (☰) > Projects > Personal projects > Portfolios"
+        "Translation in progress",
+        "Most of the content you see is placeholder text for now, except for the legal notice: menu (☰) > About > Legal notice.",
+        "Downloading documents from the engineering school (calendar, contract) : menu (☰) > About > Personal informations > Hiring page"
       ],
       outro: "Thank you for your patience!",
     },
     {
       code: 'DE',
-      intro: "[17.06.2026] – HINWEIS: Dies ist eine neue Website (Erstellungsdatum : 10.06.2026), die ein früheres Portfolio ersetzt. Übersetzung läuft. Die angezeigten Inhalte sind derzeit größtenteils Platzhalter und vorläufig, mit Ausnahme von:",
+      intro: "[17.06.2026] – HINWEIS: Dies ist eine neue Website (Erstellungsdatum : 10.06.2026), die ein früheres Portfolio ersetzt. Übersetzung läuft. ",
       points: [
-        "1) dem Impressum: Menü (☰) > Über mich > Impressum.",
-        "2) dem Lebenslauf, in mehreren Sprachen herunterladbar: Menü (☰) > Über mich > Kontakt.",
-        "3) das alte Portfolio: Menü (☰) > Projekte > Persönliche Projekte > Portfolios"
+        "Übersetzung läuft",
+        "Die angezeigten Inhalte sind derzeit größtenteils Platzhalter und vorläufig, mit Ausnahme von dem Impressum: Menü (☰) > Über mich > Impressum.",
+        "Unterlagen der Ingenieurs*schule herunterladen: Menü (☰) > Über mich > Persönliche Informationen > Seite Karriere"
       ],
       outro: "Vielen Dank für Ihre Geduld!",
     },
