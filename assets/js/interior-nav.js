@@ -82,6 +82,42 @@ window.SiteApp = window.SiteApp || {};
   }
 
   /* ───────────────────────────────────────────────────────────────────────
+     Bulle de conseil mobile : "Appuyez à nouveau pour ouvrir"
+     ─────────────────────────────────────────────────────────────────────── */
+
+  /*
+   * Affiche un message discret en bas de la case .item pour indiquer
+   * à l'utilisateur qu'un second appui ouvrira le lien.
+   * Le message est injecté dans le DOM sous forme d'un <span> portant la
+   * classe "mobile-tap-hint", stylisée inline pour ne pas toucher aux CSS.
+   */
+  function showMobileTip(item) {
+    if (item.querySelector('.mobile-tap-hint')) return; // déjà présent
+
+    const tip = document.createElement('span');
+    tip.className   = 'mobile-tap-hint';
+    tip.setAttribute('aria-live', 'polite');
+    tip.textContent = 'Appuyez à nouveau pour ouvrir';
+
+    Object.assign(tip.style, {
+      display:       'block',
+      marginTop:     '0.5rem',
+      fontSize:      '0.75rem',
+      fontStyle:     'italic',
+      opacity:       '0.65',
+      pointerEvents: 'none',
+      userSelect:    'none',
+    });
+
+    item.appendChild(tip);
+  }
+
+  function hideMobileTip(item) {
+    const tip = item.querySelector('.mobile-tap-hint');
+    if (tip) tip.remove();
+  }
+
+  /* ───────────────────────────────────────────────────────────────────────
      "Toiles" des ".item" : survol → aperçu à droite, clic → page
      ───────────────────────────────────────────────────────────────────────
      Chaque .section-panel peut contenir une .project-list (cases
@@ -116,6 +152,32 @@ window.SiteApp = window.SiteApp || {};
          qu'elle survole une case (.item) ou la toile elle-même. */
       panel.addEventListener('mouseleave', hideCanvases);
 
+      /*
+       * ── Détection mobile ─────────────────────────────────────────────
+       * On considère qu'on est sur mobile si la largeur de la fenêtre
+       * correspond au breakpoint mobile défini dans interior.css (≤ 1000 px).
+       * On relit cette valeur à chaque interaction (resize possible).
+       */
+      function isMobile() {
+        return window.matchMedia('(max-width: 1000px)').matches;
+      }
+
+      /*
+       * ── Ouvre un lien dans un nouvel onglet ──────────────────────────
+       * Attributs ajoutés pour la vie privée et la sécurité :
+       *   - noopener  : empêche la nouvelle page d'accéder à window.opener
+       *   - noreferrer : ne transmet pas l'URL référente (implique noopener)
+       */
+      function openLink(href) {
+        const a = document.createElement('a');
+        a.href     = href;
+        a.target   = '_blank';
+        a.rel      = 'noopener noreferrer';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+
       items.forEach(item => {
         const key  = item.dataset.canvas;
         const href = item.dataset.href;
@@ -126,15 +188,50 @@ window.SiteApp = window.SiteApp || {};
 
         /* Clic → navigation vers la page (chemin fictif data-href) */
         if (href) {
-          item.addEventListener('click', () => {
-            window.location.href = href;
+          /*
+           * Sur mobile : premier clic = affiche la toile + message discret
+           *              second clic  = ouvre le lien (nouvel onglet)
+           * Sur ordinateur : clic direct → nouvel onglet.
+           *
+           * La propriété _mobileReady est posée sur l'élément DOM pour
+           * conserver l'état entre deux clics sans variable externe.
+           */
+          item.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            if (isMobile()) {
+              if (!item._mobileReady) {
+                /* Premier clic : révèle la toile et affiche le message */
+                showCanvas(key);
+                item._mobileReady = true;
+                showMobileTip(item);
+
+                /* Réinitialise l'état si l'utilisateur touche ailleurs */
+                function resetOnOutside(ev) {
+                  if (!item.contains(ev.target)) {
+                    item._mobileReady = false;
+                    hideMobileTip(item);
+                    document.removeEventListener('click', resetOnOutside);
+                  }
+                }
+                document.addEventListener('click', resetOnOutside);
+
+              } else {
+                /* Second clic : navigue */
+                item._mobileReady = false;
+                hideMobileTip(item);
+                openLink(href);
+              }
+            } else {
+              openLink(href);
+            }
           });
 
           /* Accessibilité clavier : Entrée ou Espace = clic */
           item.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
               e.preventDefault();
-              window.location.href = href;
+              openLink(href);
             }
           });
         }

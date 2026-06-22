@@ -132,11 +132,11 @@ window.SiteApp = window.SiteApp || {};
   aria-label="Navigation principale"
   aria-hidden="true"
 >
-  <a class="drawer-item" href="home.html" data-page="accueil" data-i18n="drawer-accueil">accueil</a>
-  <a class="drawer-item" href="projects.html" data-page="projets" data-i18n="drawer-projets">projets</a>
-  <a class="drawer-item" href="concepts.html" data-page="notions" data-i18n="drawer-notions">notions</a>
-  <a class="drawer-item" href="history.html" data-page="histoire" data-i18n="drawer-histoire">histoire</a>
-  <a class="drawer-item" href="about.html" data-page="apropos" data-i18n="drawer-apropos">à propos</a>
+  <a class="drawer-item" href="home.html" data-page="accueil" data-i18n="drawer-accueil" target="_blank" rel="noopener noreferrer">accueil</a>
+  <a class="drawer-item" href="projects.html" data-page="projets" data-i18n="drawer-projets" target="_blank" rel="noopener noreferrer">projets</a>
+  <a class="drawer-item" href="concepts.html" data-page="notions" data-i18n="drawer-notions" target="_blank" rel="noopener noreferrer">notions</a>
+  <a class="drawer-item" href="history.html" data-page="histoire" data-i18n="drawer-histoire" target="_blank" rel="noopener noreferrer">histoire</a>
+  <a class="drawer-item" href="about.html" data-page="apropos" data-i18n="drawer-apropos" target="_blank" rel="noopener noreferrer">à propos</a>
 
   <!--
     ── Item "Accessibilité" ─────────────────────────────────────────────
