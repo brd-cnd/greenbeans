@@ -182,35 +182,48 @@ window.SiteApp = window.SiteApp || {};
   function initIntroOverlay() {
 
     /*
-      Lecture de sessionStorage dans un bloc try/catch : certains
-      navigateurs/configurations (mode privé très restrictif, ouverture en
-      file://...) peuvent bloquer son accès. Dans ce cas, on affiche tout de
-      même le message (par sécurité), mais sans pouvoir mémoriser qu'il a
-      déjà été vu.
+      ── Stratégie duale sessionStorage + localStorage ──────────────────
+      sessionStorage seule ne suffit pas : un lien ouvert dans un nouvel
+      onglet (target="_blank", utilisé pour les cases .item) crée une
+      session vierge → l'overlay réapparaîtrait.
+
+      Solution : on écrit aussi un horodatage dans localStorage (partagé
+      entre tous les onglets). Si cet horodatage date de moins de 24 h,
+      on considère la visite comme "déjà vue" et on ne ré-affiche pas
+      l'overlay. Au-delà de 24 h (ou clé absente), l'overlay réapparaît
+      normalement — ce qui reproduit le comportement "effacé à la
+      fermeture du navigateur" de sessionStorage.
     */
-    /*
-      Lecture de sessionStorage dans un bloc try/catch : certains
-      navigateurs/configurations (mode privé très restrictif, ouverture en
-      file://...) peuvent bloquer son accès. Dans ce cas, on affiche tout de
-      même le message (par sécurité), mais sans pouvoir mémoriser qu'il a
-      déjà été vu.
-    */
+    const SESSION_TTL = 24 * 60 * 60 * 1000; // 24 h en ms
+    const LS_KEY      = STORAGE_KEY + '-ts';  // "greenbeans-intro-seen-ts"
+
     let alreadySeen = false;
+
+    /* 1. Même onglet → sessionStorage */
     try {
       alreadySeen = sessionStorage.getItem(STORAGE_KEY) === '1';
-    } catch (err) {
-      alreadySeen = false;
+    } catch (err) { /* indisponible */ }
+
+    /* 2. Autre onglet de la même journée → localStorage horodaté */
+    if (!alreadySeen) {
+      try {
+        const ts = Number(localStorage.getItem(LS_KEY));
+        if (ts && Date.now() - ts < SESSION_TTL) {
+          alreadySeen = true;
+          /* Propage à sessionStorage pour les navigations suivantes dans cet onglet */
+          try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch (e) {}
+        } else if (ts) {
+          /* Clé expirée : on la supprime pour ne pas encombrer localStorage */
+          localStorage.removeItem(LS_KEY);
+        }
+      } catch (err) { /* localStorage indisponible */ }
     }
 
     if (alreadySeen) return;
 
-    // Mémorise immédiatement : si l'utilisateur change de page avant même
-    // d'avoir fermé le message, celui-ci ne réapparaîtra pas.
-    try {
-      sessionStorage.setItem(STORAGE_KEY, '1');
-    } catch (err) {
-      /* tant pis : le message pourra réapparaître sur la page suivante */
-    }
+    /* Mémorise dans les deux stockages avant même d'afficher l'overlay */
+    try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch (err) {}
+    try { localStorage.setItem(LS_KEY, String(Date.now())); } catch (err) {}
 
     const { overlay, closeBtn } = buildOverlay();
     document.body.appendChild(overlay);
