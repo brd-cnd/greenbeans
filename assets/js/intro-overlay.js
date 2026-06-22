@@ -14,29 +14,25 @@
        réapparaît (nouvelle "première visite").
 
    ── Comment la "première visite" est détectée ───────────────────────────
-   On utilise deux niveaux de stockage complémentaires :
-
-   1. sessionStorage :
-      - Partagée par toutes les pages du même onglet.
-      - Effacée à la fermeture de l'onglet/du navigateur.
-      - Suffit pour les navigations classiques (même onglet).
-      LIMITE : un lien ouvert avec target="_blank" crée un nouvel onglet
-      qui n'hérite PAS de la sessionStorage du parent → l'overlay
-      réapparaîtrait.
-
-   2. localStorage (horodaté, durée de vie : 24 h) :
-      - Partagée entre TOUS les onglets du même navigateur.
-      - Permet de propager l'état "déjà vu" aux nouveaux onglets.
-      - La durée limitée (24 h) reproduit le comportement "effacé à la
-        fermeture du navigateur" : revenir le lendemain → overlay visible.
+   On utilise sessionStorage, une mémoire clé/valeur fournie par le
+   navigateur :
+     - Elle est PARTAGÉE par toutes les pages du même site ouvertes dans le
+       même onglet (donc utilisable même si l'utilisateur n'arrive pas par
+       la page d'accueil : la clé est lue/écrite de la même façon partout).
+     - Elle est CONSERVÉE quand on navigue d'une page à l'autre du site
+       (contrairement à de simples variables JavaScript, qui seraient
+       réinitialisées à chaque chargement de page).
+     - Elle est EFFACÉE automatiquement quand l'onglet/la fenêtre est fermé,
+       ce qui correspond exactement à "tant qu'on n'a pas quitté le
+       navigateur".
 
    Au chargement de chaque page :
-     1. On regarde si "greenbeans-intro-seen" existe dans sessionStorage
-        (même onglet).
-     2. Sinon, on regarde si une clé horodatée existe dans localStorage
-        et date de moins de 24 h (autre onglet de la même session).
-     3. Si aucun des deux → on affiche le message et on écrit dans les
-        deux stockages.
+     1. On regarde si la clé "greenbeans-intro-seen" existe dans
+        sessionStorage.
+     2. Si elle existe → on ne fait rien, le message ne s'affiche pas.
+     3. Si elle n'existe pas → on construit et affiche le message, ET on
+        écrit immédiatement la clé, afin que les pages suivantes (même
+        avant la fermeture du message) sachent qu'il a déjà été montré.
 
    ── Le contenu (textes FR / EN / DE) ─────────────────────────────────────
    Pour l'instant, ce contenu n'est PAS lié au système de traduction
@@ -193,56 +189,28 @@ window.SiteApp = window.SiteApp || {};
       déjà été vu.
     */
     /*
-      ── Stratégie de détection "déjà vu" ───────────────────────────────
-      On lit dans cet ordre :
-        1. sessionStorage — partagé entre les pages d'un même onglet.
-           Problème : un nouvel onglet (target="_blank") n'hérite PAS de
-           la sessionStorage du parent → l'overlay réapparaîtrait.
-        2. localStorage — partagé entre TOUS les onglets du même navigateur
-           et conservé jusqu'à fermeture du navigateur (via une clé
-           horodatée, voir ci-dessous). On ne s'en sert que pour propager
-           l'état "déjà vu" aux nouveaux onglets ouverts dans la même
-           session de navigation.
-
-      ── Durée de validité ──────────────────────────────────────────────
-      On veut reproduire le comportement de sessionStorage (effacé à la
-      fermeture du navigateur) malgré l'utilisation de localStorage.
-      Pour cela, on stocke l'heure à laquelle l'overlay a été affiché et
-      on le considère comme "vu" uniquement si cette heure date de moins
-      de 24 heures. Ainsi :
-        - Rouvrir un lien dans un nouvel onglet dans la même session → pas
-          d'overlay (clé récente).
-        - Revenir le lendemain (ou après fermeture prolongée) → overlay
-          réapparaît (clé expirée ou absente).
+      Lecture de sessionStorage dans un bloc try/catch : certains
+      navigateurs/configurations (mode privé très restrictif, ouverture en
+      file://...) peuvent bloquer son accès. Dans ce cas, on affiche tout de
+      même le message (par sécurité), mais sans pouvoir mémoriser qu'il a
+      déjà été vu.
     */
-    const SESSION_TTL = 24 * 60 * 60 * 1000; // 24 heures en ms
-
     let alreadySeen = false;
-
-    /* 1. sessionStorage (onglet courant) */
     try {
       alreadySeen = sessionStorage.getItem(STORAGE_KEY) === '1';
-    } catch (err) { /* indisponible */ }
-
-    /* 2. localStorage (autres onglets de la même session) */
-    if (!alreadySeen) {
-      try {
-        const ts = localStorage.getItem(STORAGE_KEY + '-ts');
-        if (ts && Date.now() - Number(ts) < SESSION_TTL) {
-          alreadySeen = true;
-          /* Propage immédiatement à sessionStorage pour les navigations suivantes */
-          try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch (e) {}
-        }
-      } catch (err) { /* localStorage indisponible */ }
+    } catch (err) {
+      alreadySeen = false;
     }
 
     if (alreadySeen) return;
 
-    // Mémorise immédiatement dans les deux stockages :
-    //   - sessionStorage → pages suivantes du même onglet
-    //   - localStorage   → nouveaux onglets ouverts dans la même journée
-    try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch (err) {}
-    try { localStorage.setItem(STORAGE_KEY + '-ts', String(Date.now())); } catch (err) {}
+    // Mémorise immédiatement : si l'utilisateur change de page avant même
+    // d'avoir fermé le message, celui-ci ne réapparaîtra pas.
+    try {
+      sessionStorage.setItem(STORAGE_KEY, '1');
+    } catch (err) {
+      /* tant pis : le message pourra réapparaître sur la page suivante */
+    }
 
     const { overlay, closeBtn } = buildOverlay();
     document.body.appendChild(overlay);
