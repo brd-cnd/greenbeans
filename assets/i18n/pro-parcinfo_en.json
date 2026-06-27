@@ -1,0 +1,21 @@
+{
+  "p1": "Projects",
+  "p2": "ParcInfo",
+  "p3": "Professional workshop completed as part of the BTS SIO SISR programme at CNED. The goal: to design and deploy a secure, redundant IT asset management solution for the Chasseneuil shared workspace.",
+  "p4": "Context",
+  "p5": "The Chasseneuil shared workspace needed inventory management and incident tracking capabilities. The challenge was to propose an appropriate solution and secure it, including backup plans and encrypted communications. To optimise the work, all missions were outlined first, then reorganised into a coherent deployment plan: starting with physical network tasks before moving on to application-layer work.",
+  "p6": "The chosen solution is based on a LAMP stack installed on headless Debian Trixie (13.3.0) servers.",
+  "p7": "Deployed architecture",
+  "p8": "High availability with HaProxy",
+  "p9": "Two GLPI servers (SRVHDESK and SRVHDESK2) operate in load-balancing mode via HaProxy, deployed on a third server (SRVHAPROXY). The MariaDB database is hosted on a fourth server (SRVBDDGLPI), to which both GLPI servers point. All communications are secured with self-signed SSL certificates.",
+  "p10": "Skills covered",
+  "p11": "Block 1 (Support and service delivery): IT asset management through GLPI inventory, GLPI agent deployment via GPO, NAT configuration. Block 2 (Network and system infrastructure): server network architecture design, LAMP stack installation, high availability setup with HaProxy. Block 3 (Cybersecurity): securing communications with SSL/TLS certificates.",
+  "p12": "Deployment plan",
+  "p13": "The reorganised specification led to the following deployment order: installation of Debian virtual machines, installation and configuration of GLPI on SRVHDESK, database export to SRVBDDGLPI, HaProxy installation and SSL setup, then cloning SRVHDESK into SRVHDESK2 with configuration file adjustments.",
+  "p14": "GLPI configuration",
+  "p15": "GLPI is configured to synchronise its users with Active Directory: any change in AD (creation, deletion, group change) is automatically reflected in GLPI. The profiles Adherent, Employee, N1 and N2 were created, along with the User and Support groups, to differentiate incident ticket handling levels.",
+  "p16": "Agent deployment",
+  "p17": "The GLPI agent is deployed on Windows workstations via a GPO using the .msi file, following the same method as for Adobe Acrobat in the EvolSysWin workshop.",
+  "p18": "Summary",
+  "p19": "The final architecture includes two load-balanced GLPI servers pointing to a shared database server. A GPO deploys the MSI agent to all workstations. SSL certificates caused difficulties: Active Directory Certificates Services generated recurring errors, leading to the use of self-signed certificates instead. Potential improvements include a dedicated backup server and a Linux RAID scheme to strengthen data resilience."
+}

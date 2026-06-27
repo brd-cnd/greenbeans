@@ -1,0 +1,19 @@
+{
+  "p1": "Projects",
+  "p2": "Infrasite",
+  "p3": "Professional workshop completed as part of the BTS SIO SISR programme at CNED. The goal: to design the Chasseneuil shared workspace network using Packet Tracer, then deploy a virtual prototype in VirtualBox as a foundation for the EvolSysWin and ParcInfo workshops.",
+  "p4": "Context",
+  "p5": "Tierslieux86 is a company providing shared workspaces for external companies across several sites, with network addressing governed by specific rules. This workshop lays the groundwork for the Chasseneuil site's network infrastructure (site number 2, hence the recurring '2' in IP addresses). It is structured around two missions: the Packet Tracer mock-up and the virtual prototype.",
+  "p6": "Project tracking was handled with Trello. Technical documentation for each mission was written in LaTeX for consistent formatting and automated table of contents.",
+  "p7": "Mission 1 — Packet Tracer mock-up",
+  "p8": "Addressing plan and network configuration",
+  "p9": "The network is segmented into three subnets: DMZ (172.16.2.0/24), Servers (10.2.0.0/24) and Offices (192.168.2.0/24), each in a dedicated VLAN. A Layer 3 switch handles inter-VLAN routing and hosts the DHCP relay to SRVINTRA. Wi-Fi is secured with a WPA2-PSK key. Ping tests to 8.8.8.8 (Internet simulated via loopback) validated end-to-end connectivity.",
+  "p10": "Mission 2 — VirtualBox virtual prototype",
+  "p11": "Three virtual machines make up the prototype: a VyOS router, a Windows Server 2022 server (Active Directory domain controller, DHCP, DNS) and a Windows 11 Education workstation. VirtualBox internal networks replicate the network segmentation from the mock-up. The DHCP relay is configured on VyOS, whose Cisco-like syntax caused no major difficulty except for the DHCP relay itself — resolved with AI assistance due to outdated online documentation.",
+  "p12": "Active Directory and shares",
+  "p13": "A PowerShell script creates the Tierslieux86 domain tree. The server is promoted to domain controller, DHCP is configured and the Windows 11 workstation is joined to the domain. Shared folder permissions follow the AGDLP method: managers have modify rights, employees read-only access.",
+  "p14": "Foundation for subsequent workshops",
+  "p15": "This infrastructure serves directly as the starting point for the EvolSysWin workshop (integrating a client company into AD) and the ParcInfo workshop (deploying GLPI with high availability). The iSCSI target and server-side DHCP features were already anticipated at this stage.",
+  "p16": "Summary",
+  "p17": "All three virtual machines are operational and communicate correctly. PowerShell scripts saved time on AD tree creation, and shared folder permissions are correctly configured. The main difficulty was configuring the DHCP relay on VyOS, for which online documentation was outdated. A potential improvement would be to extend the Packet Tracer mock-up by configuring ACLs for the DMZ."
+}

@@ -1,0 +1,19 @@
+{
+  "p1": "Projekte",
+  "p2": "Infrasite",
+  "p3": "Beruflicher Workshop im Rahmen des BTS SIO SISR am CNED. Ziel: Modellierung des Netzwerks des ETP-Standorts Chasseneuil mit Packet Tracer und Bereitstellung eines virtuellen Prototyps unter VirtualBox als Grundlage für die Workshops EvolSysWin und ParcInfo.",
+  "p4": "Kontext",
+  "p5": "Tierslieux86 stellt Unternehmen gemeinsame Arbeitsräume an mehreren Standorten zur Verfügung, deren Netzwerkadressierung eigenen Regeln unterliegt. Dieser Workshop legt die Grundlagen für die Netzwerkinfrastruktur des Standorts Chasseneuil (Standortnummer 2, daher die wiederkehrende '2' in den Adressen). Er gliedert sich in zwei Missionen: das Packet-Tracer-Modell und den virtuellen Prototyp.",
+  "p6": "Das Projektmanagement erfolgte mit Trello. Die technische Dokumentation jeder Mission wurde in LaTeX verfasst, um ein einheitliches Layout und ein automatisiertes Inhaltsverzeichnis zu gewährleisten.",
+  "p7": "Mission 1 — Packet-Tracer-Modell",
+  "p8": "Adressierungsplan und Netzwerkkonfiguration",
+  "p9": "Das Netzwerk ist in drei Subnetze unterteilt: DMZ (172.16.2.0/24), Server (10.2.0.0/24) und Büros (192.168.2.0/24), jeweils in einem eigenen VLAN. Ein Layer-3-Switch übernimmt das Inter-VLAN-Routing und hostet den DHCP-Relay zu SRVINTRA. Das WLAN ist mit einem WPA2-PSK-Schlüssel gesichert. Ping-Tests auf 8.8.8.8 (Internet per Loopback simuliert) haben die durchgehende Konnektivität bestätigt.",
+  "p10": "Mission 2 — VirtualBox-Prototyp",
+  "p11": "Drei virtuelle Maschinen bilden den Prototyp: ein VyOS-Router, ein Windows-Server-2022-Server (Active-Directory-Domänencontroller, DHCP, DNS) und ein Windows-11-Education-Arbeitsplatz. Die internen VirtualBox-Netzwerke bilden die Netzwerksegmentierung des Modells nach. Der DHCP-Relay wird auf VyOS konfiguriert, dessen Cisco-ähnliche Syntax keine größeren Schwierigkeiten bereitete – mit Ausnahme des DHCP-Relays selbst, das mangels aktueller Dokumentation mit KI-Unterstützung gelöst wurde.",
+  "p12": "Active Directory und Freigaben",
+  "p13": "Ein PowerShell-Skript erstellt die Domänenstruktur von Tierslieux86. Der Server wird zum Domänencontroller heraufgestuft, DHCP wird konfiguriert und der Windows-11-Arbeitsplatz wird in die Domäne aufgenommen. Die Berechtigungen für freigegebene Ordner folgen der AGDLP-Methode: Verantwortliche haben Änderungsrechte, Mitarbeiter nur Leserechte.",
+  "p14": "Grundlage für die folgenden Workshops",
+  "p15": "Diese Infrastruktur dient direkt als Ausgangspunkt für den EvolSysWin-Workshop (Integration eines Kundenunternehmens in das AD) und den ParcInfo-Workshop (GLPI-Bereitstellung mit Hochverfügbarkeit). Das iSCSI-Ziel und die serverseitige DHCP-Funktion wurden bereits in diesem Workshop vorgesehen.",
+  "p16": "Fazit",
+  "p17": "Alle drei virtuellen Maschinen sind betriebsbereit und kommunizieren korrekt miteinander. PowerShell-Skripte haben Zeit bei der Erstellung der AD-Struktur gespart, und die Freigabeberechtigungen sind korrekt konfiguriert. Die größte Schwierigkeit war die Konfiguration des DHCP-Relays auf VyOS, da die Online-Dokumentation veraltet war. Eine mögliche Verbesserung wäre die Erweiterung des Packet-Tracer-Modells durch ACLs für die DMZ."
+}

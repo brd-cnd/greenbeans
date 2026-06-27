@@ -1,0 +1,19 @@
+{
+  "p1": "Projekte",
+  "p2": "EvolSysWin",
+  "p3": "Beruflicher Workshop im Rahmen des BTS SIO SISR am CNED. Ziel: Integration des Kundenunternehmens ValorElec in die Windows-Infrastruktur von Tierslieux86 unter weitestgehender Automatisierung der Aufgaben durch PowerShell-Skripte.",
+  "p4": "Kontext",
+  "p5": "Tierslieux86 stellt Unternehmen gemeinsame Arbeitsräume (ETP) zur Verfügung. Das Angebot umfasst u. a. die Integration in die Active-Directory-Domäne, gesicherter WLAN-Zugang, Dateispeicherung und die Erstellung von Benutzerkonten. Dieser Workshop befasst sich mit der Integration des Kundenunternehmens ValorElec gemäß einem Vier-Missionen-Plan.",
+  "p6": "Die bestehende Infrastruktur aus dem InfraSite-Workshop dient als Grundlage: ein VyOS-Router, ein Windows-Server-2022-Domänencontroller und ein Windows-11-Education-Arbeitsplatz.",
+  "p7": "Mission 1 — Systeminfrastruktur",
+  "p8": "PowerShell-Integrationsskripte",
+  "p9": "Ein generisches PowerShell-Skript integriert jedes Unternehmen in das AD: Es erstellt Organisationseinheiten, globale Gruppen (GG) und lokale Domänengruppen (DL) nach der AGDLP-Methode und liest dann eine CSV-Datei, um Benutzerkonten anzulegen. Jedes Konto erhält ein automatisch generiertes Kennwort (12 Zeichen, Mischung aus Ziffern, Großbuchstaben, Kleinbuchstaben und Sonderzeichen) und wird der seiner Abteilung und seinem Status entsprechenden Gruppe zugewiesen.",
+  "p10": "Mission 2 — iSCSI-Dateiserver",
+  "p11": "Eine virtuelle iSCSI-Festplatte wird erstellt und auf dem Domänencontroller freigegeben. Die freigegebenen Ordner sind von den Arbeitsplätzen aus zugänglich, mit modularen Rechten je nach Abteilungszugehörigkeit (Leitung, Vertrieb, Forschung und Entwicklung) und Status (Mitarbeiter oder Verantwortlicher). Eine Vergleichsstudie zwischen einer eigenständigen DFS-Stammbasis und einer domänennamensbasierten DFS-Stammbasis sprach sich für Letztere aus, aufgrund der Redundanz und der Kompatibilität mit der bestehenden AD-Infrastruktur.",
+  "p12": "Mission 3 — Automatisierung der Freigabeberechtigungen",
+  "p13": "Ein zweites PowerShell-Skript automatisiert die Erstellung lokaler Domänengruppen, die an eine freigegebene Ressource gebunden sind (Suffixe -L, -LM, -CT für Lesen, Lesen-Ändern und Vollzugriff), sowie die Zuweisung der entsprechenden globalen Gruppen. Nach mehreren Rückschlägen mit dem anfänglichen abteilungsbasierten Ansatz erstellt die endgültige Lösung die Gruppen ressourcenbezogen.",
+  "p14": "Mission 4 — GPO und PSO",
+  "p15": "Drei GPOs werden eingesetzt: die Default Domain Policy für die Kennwortrichtlinie, eine GPO zur Bereitstellung von Adobe Acrobat per .msi und eine GPO zur Einschränkung des Systemsteuerungszugriffs für ValorElec-Benutzer. Eine PSO (Password Settings Object) wendet strengere Regeln für die Leitungsabteilung an (mindestens 12 Zeichen, Verlauf von 24 Kennwörtern, Kontosperrung beim ersten fehlgeschlagenen Versuch).",
+  "p16": "Fazit",
+  "p17": "Die PowerShell-Skripte haben nicht nur die Anforderungen von ValorElec erfüllt, sondern lassen sich auch auf die Integration beliebiger Unternehmen in den ETP verallgemeinern. Die Automatisierung der Freigabeberechtigungen (Mission 3) war am aufwändigsten: Unerwartetes NTFS-Berechtigungsverhalten führte zu mehrfachen Strategiewechseln und einer Neuinstallation der Domäne. Die Skripte sind im dedizierten GitHub-Repository (PWSAD) verfügbar. Verbesserungspotenzial besteht bei der Fehlerbehandlung in den Skripten, dem Einsatz von ABE (Access-Based Enumeration) mit einer DFS-Stammbasis sowie einem Skript zur Abmeldung von Kundenunternehmen."
+}

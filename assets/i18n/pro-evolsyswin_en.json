@@ -1,0 +1,19 @@
+{
+  "p1": "Projects",
+  "p2": "EvolSysWin",
+  "p3": "Professional workshop completed as part of the BTS SIO SISR programme at CNED. The goal: to integrate the client company ValorElec into the Tierslieux86 Windows infrastructure, automating as many tasks as possible using PowerShell scripts.",
+  "p4": "Context",
+  "p5": "Tierslieux86 is a company providing shared workspaces (ETP) for client companies. Services offered include integration into the Active Directory domain, secured Wi-Fi access, file storage and user account creation. This workshop focuses on integrating client company ValorElec, following a four-mission plan.",
+  "p6": "The existing infrastructure from the InfraSite workshop serves as a foundation: a VyOS router, a Windows Server 2022 domain controller and a Windows 11 Education workstation.",
+  "p7": "Mission 1 — System infrastructure",
+  "p8": "Integration PowerShell scripts",
+  "p9": "A generic PowerShell script integrates any company into Active Directory: it creates organisational units, global groups (GG) and domain local groups (DL) following the AGDLP method, then reads a CSV file to create user accounts. Each account receives an automatically generated password (12 characters, mixing digits, uppercase, lowercase and special characters) and is assigned to the group matching their department and status.",
+  "p10": "Mission 2 — iSCSI file server",
+  "p11": "An iSCSI virtual disk is created and exposed on the domain controller. Shared folders are accessible from workstations, with modular rights based on department (management, sales, research and development) and status (employee or manager). A comparative study between a standalone DFS root and a domain-name DFS root concluded in favour of the latter for ValorElec, owing to its redundancy and compatibility with the existing AD infrastructure.",
+  "p12": "Mission 3 — Automating share permissions",
+  "p13": "A second PowerShell script automates the creation of domain local groups tied to a shared resource (suffixes -L, -LM, -CT for read, read-modify and full control) and the assignment of corresponding global groups. After several setbacks with the initial department-based approach, the final solution creates groups per resource.",
+  "p14": "Mission 4 — GPO and PSO",
+  "p15": "Three GPOs are deployed: the Default Domain Policy for the password policy, a GPO to deploy Adobe Acrobat via .msi, and a GPO restricting Control Panel access for ValorElec users. A PSO (Password Settings Object) applies stricter rules to the management department (minimum 12 characters, 24-password history, account lock on the first failed attempt).",
+  "p16": "Summary",
+  "p17": "The PowerShell scripts not only met ValorElec's needs but can be generalised to integrate any company into the ETP. The share permission automation task (mission 3) was the most complex: unexpected NTFS permission behaviour led to multiple strategy changes and rebuilding the domain from scratch. The scripts are available on the dedicated GitHub repository (PWSAD). Potential improvements include better error handling in the scripts, using ABE (Access-Based Enumeration) with a DFS root, and a client offboarding script."
+}

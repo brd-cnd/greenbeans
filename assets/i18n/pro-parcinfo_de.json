@@ -1,0 +1,21 @@
+{
+  "p1": "Projekte",
+  "p2": "ParcInfo",
+  "p3": "Beruflicher Workshop im Rahmen des BTS SIO SISR am CNED. Ziel: Entwurf und Bereitstellung einer sicheren, redundanten IT-Bestandsverwaltungslösung für den Standort Chasseneuil.",
+  "p4": "Kontext",
+  "p5": "Der Standort Chasseneuil benötigte eine Inventarverwaltung und eine Störungsverfolgung. Die Aufgabe bestand darin, eine geeignete Lösung vorzuschlagen und abzusichern – einschließlich Sicherungsplänen und verschlüsselter Kommunikation. Um die Arbeit zu optimieren, wurden alle Aufgaben zunächst vorgestellt und anschließend zu einem kohärenten Einsatzplan umstrukturiert: beginnend mit den physischen Netzwerkaufgaben, dann die Anwendungsebene.",
+  "p6": "Die gewählte Lösung basiert auf einem LAMP-Stack, der auf headlosen Debian-Trixie-Servern (13.3.0) installiert ist.",
+  "p7": "Eingesetzte Architektur",
+  "p8": "Hochverfügbarkeit mit HaProxy",
+  "p9": "Zwei GLPI-Server (SRVHDESK und SRVHDESK2) arbeiten dank HaProxy im Load-Balancing-Betrieb, das auf einem dritten Server (SRVHAPROXY) bereitgestellt ist. Die MariaDB-Datenbank wird auf einem vierten Server (SRVBDDGLPI) gehostet, auf den beide GLPI-Server verweisen. Die Kommunikation ist durch selbstsignierte SSL-Zertifikate gesichert.",
+  "p10": "Abgedeckte Kompetenzen",
+  "p11": "Block 1 (Support und Bereitstellung): IT-Bestandsverwaltung über das GLPI-Inventar, Bereitstellung des GLPI-Agenten per GPO, NAT-Konfiguration. Block 2 (Netzwerk- und Systeminfrastruktur): Entwurf der Server-Netzwerkarchitektur, Installation des LAMP-Stacks, Einrichtung der Hochverfügbarkeit mit HaProxy. Block 3 (Cybersicherheit): Absicherung der Kommunikation mit SSL/TLS-Zertifikaten.",
+  "p12": "Umsetzungsplan",
+  "p13": "Die Neustrukturierung des Pflichtenhefts führte zur folgenden Bereitstellungsreihenfolge: Installation der Debian-VMs, Installation und Konfiguration von GLPI auf SRVHDESK, Datenbankexport auf SRVBDDGLPI, Installation von HaProxy und SSL-Absicherung, dann Klonen von SRVHDESK zu SRVHDESK2 mit Anpassung der Konfigurationsdateien.",
+  "p14": "GLPI-Konfiguration",
+  "p15": "GLPI ist so konfiguriert, dass es seine Benutzer mit dem Active Directory synchronisiert: Jede Änderung im AD (Erstellung, Löschung, Gruppenänderung) wird automatisch in GLPI übernommen. Die Profile Mitglied, Mitarbeiter, N1 und N2 wurden erstellt, ebenso die Gruppen Benutzer und Support, um die Bearbeitungsstufen von Störungstickets zu unterscheiden.",
+  "p16": "Agent-Bereitstellung",
+  "p17": "Der GLPI-Agent wird auf Windows-Rechnern per GPO mit der .msi-Datei bereitgestellt, nach der gleichen Methode wie für Adobe Acrobat im EvolSysWin-Workshop.",
+  "p18": "Fazit",
+  "p19": "Die endgültige Architektur umfasst zwei GLPI-Server im Load-Balancing-Betrieb, die auf einen gemeinsamen Datenbankserver verweisen. Eine GPO stellt den MSI-Agenten auf allen Arbeitsplätzen bereit. Die SSL-Zertifikate bereiteten Schwierigkeiten: Active Directory Certificates Services erzeugte wiederholt Fehler, weshalb selbstsignierte Zertifikate verwendet wurden. Mögliche Verbesserungen: ein dedizierter Backup-Server und ein Linux-RAID-Schema zur Stärkung der Datensicherheit."
+}

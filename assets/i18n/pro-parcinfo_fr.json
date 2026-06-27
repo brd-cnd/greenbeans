@@ -1,0 +1,21 @@
+{
+  "p1": "Projets",
+  "p2": "ParcInfo",
+  "p3": "Atelier professionnel réalisé dans le cadre du BTS SIO SISR au CNED. L'objectif : proposer et déployer une solution de gestion de parc informatique pour l'ETP de Chasseneuil, sécurisée et redondante.",
+  "p4": "Contexte",
+  "p5": "L'ETP de Chasseneuil doit pouvoir assurer une gestion de l'inventaire et un suivi des incidents. Il faut proposer une solution à ce besoin et la sécuriser, notamment en élaborant des plans de sauvegarde et en sécurisant les échanges. Afin d'optimiser le travail, il a été jugé préférable de présenter toutes les missions dans un premier temps, puis de les réorganiser afin d'aboutir à un plan d'approche cohérent : partir des missions réseau physique pour s'occuper ensuite des applications.",
+  "p6": "La solution retenue s'appuie sur une architecture LAMP installée sur des serveurs Debian Trixie (13.3.0) sans interface graphique.",
+  "p7": "Architecture déployée",
+  "p8": "Haute disponibilité avec HaProxy",
+  "p9": "Deux serveurs GLPI (SRVHDESK et SRVHDESK2) fonctionnent en load-balancing grâce à HaProxy, déployé sur un troisième serveur (SRVHAPROXY). La base de données MariaDB est externalisée sur un quatrième serveur (SRVBDDGLPI), vers lequel les deux serveurs GLPI pointent. Les échanges sont sécurisés par des certificats SSL auto-signés.",
+  "p10": "Compétences couvertes",
+  "p11": "Bloc 1 (Support et mise à disposition) : gestion du patrimoine informatique via l'inventaire GLPI, déploiement de l'agent GLPI par GPO, mise en place du NAT. Bloc 2 (Infrastructures réseaux et systèmes) : conception de l'architecture réseau des serveurs, installation de l'architecture LAMP, mise en place de la haute disponibilité avec HaProxy. Bloc 3 (Cybersécurité) : sécurisation des échanges via certificats SSL/TLS.",
+  "p12": "Plan d'approche",
+  "p13": "La réorganisation du cahier des charges a conduit à l'ordre de déploiement suivant : installation des machines virtuelles Debian, installation et configuration de GLPI sur SRVHDESK, exportation de la base de données vers SRVBDDGLPI, installation de HaProxy et sécurisation SSL, puis clonage de SRVHDESK en SRVHDESK2 avec adaptation des fichiers de configuration.",
+  "p14": "Configuration de GLPI",
+  "p15": "GLPI est configuré pour synchroniser ses utilisateurs avec l'Active Directory : toute modification dans l'AD (création, suppression, changement de groupe) se répercute automatiquement dans GLPI. Les profils Adhérent, Employé, N1 et N2 ont été créés, ainsi que les groupes Utilisateur et Support, afin de distinguer les niveaux de traitement des tickets d'incident.",
+  "p16": "Déploiement de l'agent",
+  "p17": "L'agent GLPI est déployé sur les postes Windows via une GPO utilisant le fichier .msi, en suivant la même méthode que pour Adobe Acrobat dans l'atelier EvolSysWin.",
+  "p18": "Bilan",
+  "p19": "L'architecture finale comprend deux serveurs GLPI en load-balancing, pointant vers un serveur de base de données commun. Une GPO déploie l'agent MSI sur l'ensemble des postes des bureaux. Les certificats SSL ont posé problème : Active Directory Certificates Services générait des erreurs récurrentes, ce qui a conduit à se tourner vers des certificats auto-signés. En termes d'améliorations, un serveur dédié aux sauvegardes et un schéma RAID Linux pourraient renforcer la résilience des données."
+}
