@@ -1,0 +1,164 @@
+<!--
+=============================================================================
+  PRO-EVOLSYSWIN.HTML — « EvolSysWin »
+  (Projets > Projets professionnels > EvolSysWin)
+  =============================================================================
+  Page de présentation de l'atelier professionnel EvolSysWin, construit sur
+  le modèle page-template.html et dans la charte graphique de about-legal-notice.html.
+
+  data-page="pro-evolsyswin" : fichiers de traduction dédiés
+  assets/i18n/pro-evolsyswin_fr.json / _en.json / _de.json (en plus de
+  common_<lang>.json, toujours chargé pour le tiroir de navigation).
+  Tous les textes portent un attribut data-i18n numéroté séquentiellement.
+=============================================================================
+-->
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <script>
+  (function () {
+    function read(key) {
+      try {
+        var v = sessionStorage.getItem(key);
+        if (v !== null) return v;
+      } catch (e) {}
+      try {
+        var v2 = localStorage.getItem(key);
+        if (v2 !== null) return v2;
+      } catch (e) {}
+      var m = document.cookie.match(new RegExp('(?:^|; )' + key + '=([^;]*)'));
+      return m ? decodeURIComponent(m[1]) : null;
+    }
+    if (read('greenbeans-dark-mode') === '1') {
+      document.documentElement.classList.add('dark-mode');
+    }
+    if (read('greenbeans-dyslexic-font') === '1') {
+      document.documentElement.classList.add('dyslexic-font');
+    }
+  })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Greenbeans — EvolSysWin : atelier professionnel d'intégration Windows et Active Directory." />
+  <meta name="author" content="Greenbeans" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>EvolSysWin — Greenbeans</title>
+
+  <link rel="stylesheet" href="assets/css/common.css" />
+  <link rel="stylesheet" href="assets/css/charte-graphique.css" />
+</head>
+
+<body data-page="pro-evolsyswin">
+
+<main class="page-frame">
+
+  <a class="page-back" href="projects.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M15 18 9 12l6-6" />
+    </svg>
+    <span data-i18n="p1">Projets</span>
+  </a>
+
+  <header class="page-header">
+    <h1 data-i18n="p2">EvolSysWin</h1>
+    <p class="lead" data-i18n="p3">
+      Atelier professionnel réalisé dans le cadre du BTS SIO SISR au CNED. L'objectif :
+      intégrer l'entreprise cliente ValorElec dans l'infrastructure Windows de Tierslieux86,
+      en automatisant un maximum de tâches via des scripts PowerShell.
+    </p>
+  </header>
+
+  <section class="page-section">
+    <h2 data-i18n="p4">Contexte</h2>
+    <p data-i18n="p5">
+      Tierslieux86 est une entreprise qui met à disposition des espaces de travail partagé (ETP)
+      pouvant accueillir des entreprises clientes. Elle propose notamment l'intégration dans son
+      domaine Active Directory, un accès Wi-Fi sécurisé, un service de stockage de fichiers et
+      la création de comptes utilisateurs. Cet atelier concerne l'intégration de l'entreprise
+      cliente ValorElec, selon un plan en quatre missions.
+    </p>
+  </section>
+
+  <section class="media-row">
+    <div class="placeholder-media" role="img" aria-label="Emplacement réservé pour une image de l'arborescence Active Directory" style="background-image: url('assets/pictures/pro-evolsyswin-ad.png'); background-size: cover; background-position: center;"></div>
+    <div class="media-row__text">
+      <p data-i18n="p6">
+        L'infrastructure existante, issue de l'atelier InfraSite, sert de base : un routeur VyOS,
+        un contrôleur de domaine Windows Server 2022 et un poste Windows 11 Éducation.
+      </p>
+      <h2 data-i18n="p7">Mission 1 — Infrastructure système</h2>
+      <h3 data-i18n="p8">Scripts PowerShell d'intégration</h3>
+      <p data-i18n="p9">
+        Un script PowerShell générique intègre n'importe quelle entreprise dans l'AD : il crée
+        les unités d'organisation, les groupes globaux (GG) et domaine local (DL) selon la méthode
+        AGDLP, puis lit un fichier CSV pour créer les comptes utilisateurs. Chaque compte reçoit
+        un mot de passe généré automatiquement (12 caractères, mixant chiffres, majuscules,
+        minuscules et caractères spéciaux) et est affecté au groupe correspondant à son service
+        et son statut.
+      </p>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <h2 data-i18n="p10">Mission 2 — Serveur de fichiers iSCSI</h2>
+    <p data-i18n="p11">
+      Un disque virtuel iSCSI est créé et exposé sur le contrôleur de domaine. Les dossiers partagés
+      sont accessibles depuis les postes des bureaux, avec des droits modulaires en fonction de
+      l'appartenance à un service (direction, commerce, recherche et développement) et du statut
+      (employé ou responsable). Une étude comparée de la racine DFS autonome et de la racine de
+      nom de domaine a conclu en faveur de cette dernière pour ValorElec, pour sa redondance et
+      sa compatibilité avec l'infrastructure AD existante.
+    </p>
+  </section>
+
+  <section class="media-row">
+    <div class="placeholder-media" role="img" aria-label="Emplacement réservé pour une capture d'écran des GPO" style="background-image: url('assets/pictures/pro-evolsyswin-gpo.png'); background-size: cover; background-position: center;"></div>
+    <div class="media-row__text">
+      <h2 data-i18n="p12">Mission 3 — Automatisation des droits sur les partages</h2>
+      <p data-i18n="p13">
+        Un second script PowerShell automatise la création des groupes domaine local liés à une
+        ressource partagée (suffixes -L, -LM, -CT pour lecture, lecture-modification et contrôle
+        total) et l'affectation des groupes globaux correspondants. Après plusieurs contretemps
+        avec l'approche initiale par service, la solution finale crée les groupes par ressource.
+      </p>
+      <h3 data-i18n="p14">Mission 4 — GPO et PSO</h3>
+      <p data-i18n="p15">
+        Trois GPO sont mises en place : la Default Domain Policy pour la stratégie de mots de passe,
+        une GPO de déploiement d'Adobe Acrobat via .msi, et une GPO de restriction du panneau de
+        configuration pour les utilisateurs de ValorElec. Une PSO (Password Settings Object) applique
+        des règles plus strictes au service de direction (12 caractères minimum, historique de
+        24 mots de passe, verrouillage à la première tentative échouée).
+      </p>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <h2 data-i18n="p16">Bilan</h2>
+    <p data-i18n="p17">
+      Les scripts PowerShell ont non seulement répondu aux besoins de ValorElec, mais permettent
+      de généraliser l'intégration de toute entreprise à l'ETP. La tâche d'automatisation des droits
+      sur les partages (mission 3) a été la plus complexe : des comportements inattendus des droits
+      NTFS ont conduit à changer plusieurs fois de stratégie et à recréer le domaine. Les scripts sont
+      disponibles sur le dépôt GitHub dédié (PWSAD). Des pistes d'amélioration incluent la gestion
+      des erreurs dans les scripts, l'utilisation d'ABE (Access-Based Enumeration) couplé à une
+      racine DFS, et un script de retrait des entreprises clientes.
+    </p>
+  </section>
+
+</main>
+
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/drawer.js"></script>
+<script src="assets/js/intro-overlay.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    SiteApp.initDrawer();
+    SiteApp.initIntroOverlay();
+  });
+</script>
+
+</body>
+</html>
