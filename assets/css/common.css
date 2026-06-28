@@ -373,6 +373,26 @@
     outline-offset: 4px;
   }
 
+  /* ── Sélecteur de langue désactivé temporairement ───────────────────────
+     .lang-item--disabled bloque tout clic et affiche le curseur "interdit".
+     L'infobulle est portée par l'attribut title (natif, sans JS).
+     Les attributs data-lang et data-i18n sont conservés intacts pour
+     la reprise future de la fonctionnalité.
+     Note : pointer-events doit rester sur "auto" pour que le curseur
+     "not-allowed" et l'infobulle title soient visibles au survol ;
+     le clic est bloqué par aria-disabled + la suppression de l'écouteur
+     d'événement dans drawer.js (le bouton porte la classe avant que
+     le JS branche ses listeners). */
+  .lang-item--disabled,
+  .lang-item--disabled:hover,
+  .lang-item--disabled:focus-visible {
+    cursor: not-allowed;
+    opacity: 0.35;
+    color: var(--col-dim);
+    font-weight: 400;
+    outline: none;
+  }
+
   /* ═══════════════════════════════════════════════════════════════════════════
      MODE SOMBRE
      Activé via la classe .dark-mode posée par JavaScript sur <html> ET
