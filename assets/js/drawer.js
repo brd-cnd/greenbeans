@@ -132,11 +132,11 @@ window.SiteApp = window.SiteApp || {};
   aria-label="Navigation principale"
   aria-hidden="true"
 >
-  <a class="drawer-item" href="home.html" data-page="accueil" data-i18n="drawer-accueil">accueil</a>
-  <a class="drawer-item" href="projects.html" data-page="projets" data-i18n="drawer-projets">projets</a>
-  <a class="drawer-item" href="concepts.html" data-page="notions" data-i18n="drawer-notions">notions</a>
-  <a class="drawer-item" href="history.html" data-page="histoire" data-i18n="drawer-histoire">histoire</a>
-  <a class="drawer-item" href="about.html" data-page="apropos" data-i18n="drawer-apropos">à propos</a>
+  <a class="drawer-item" href="home.html" data-page="accueil" data-i18n="drawer-accueil" target="_blank" rel="noopener noreferrer">accueil</a>
+  <a class="drawer-item" href="projects.html" data-page="projets" data-i18n="drawer-projets" target="_blank" rel="noopener noreferrer">projets</a>
+  <a class="drawer-item" href="concepts.html" data-page="notions" data-i18n="drawer-notions" target="_blank" rel="noopener noreferrer">notions</a>
+  <a class="drawer-item" href="history.html" data-page="histoire" data-i18n="drawer-histoire" target="_blank" rel="noopener noreferrer">histoire</a>
+  <a class="drawer-item" href="about.html" data-page="apropos" data-i18n="drawer-apropos" target="_blank" rel="noopener noreferrer">à propos</a>
 
   <!--
     ── Item "Accessibilité" ─────────────────────────────────────────────
@@ -187,9 +187,9 @@ window.SiteApp = window.SiteApp || {};
     data-i18n (voir assets/js/i18n.js).
   -->
   <div class="drawer-langs" role="group" aria-label="Choix de la langue">
-    <button type="button" class="lang-item active" data-lang="fr" aria-pressed="true">FR</button>
-    <button type="button" class="lang-item" data-lang="de" aria-pressed="false">DE</button>
-    <button type="button" class="lang-item" data-lang="en" aria-pressed="false">EN</button>
+    <button type="button" class="lang-item lang-item--disabled active" data-lang="fr" aria-pressed="true" aria-disabled="true" title="La fonctionnalité de traduction n'est pas encore développée. Veuillez m'excuser pour cette gêne.">FR</button>
+    <button type="button" class="lang-item lang-item--disabled" data-lang="de" aria-pressed="false" aria-disabled="true" title="Die Übersetzungsfunktion ist noch nicht entwickelt. Ich entschuldige mich für die Unannehmlichkeiten.">DE</button>
+    <button type="button" class="lang-item lang-item--disabled" data-lang="en" aria-pressed="false" aria-disabled="true" title="The translation feature is not yet available. I apologise for the inconvenience.">EN</button>
   </div>
 </nav>
 
@@ -334,6 +334,7 @@ window.SiteApp = window.SiteApp || {};
 
     langButtons.forEach(btn => {
       btn.addEventListener('click', () => {
+        if (btn.classList.contains('lang-item--disabled')) return;
         if (window.SiteApp && typeof window.SiteApp.setLanguage === 'function') {
           window.SiteApp.setLanguage(btn.dataset.lang);
         }
