@@ -94,57 +94,6 @@
     </p>
   </header>
 
-  <!-- Compétences couvertes -->
-  <section class="page-section">
-    <h2 data-i18n="p4">Compétences couvertes</h2>
-    <ul>
-      <li data-i18n="p5">Bloc 1 : Support et mise à disposition de services informatiques
-        <ul>
-          <li data-i18n="p6">Gérer le patrimoine informatique
-            <ul>
-              <li data-i18n="p7">Mettre en place les niveaux d'habilitation : partage de ressources réseau</li>
-            </ul>
-          </li>
-          <li data-i18n="p8">Travailler en mode projet
-            <ul>
-              <li data-i18n="p9">Analyser les objectifs et les modalités d'organisation d'un projet</li>
-              <li data-i18n="p10">Mettre en place un suivi du projet</li>
-            </ul>
-          </li>
-          <li data-i18n="p11">Mettre à disposition des utilisateurs un service informatique
-            <ul>
-              <li data-i18n="p12">Déployer un service : Active Directory, serveur de fichier iSCSI</li>
-              <li data-i18n="p13">Accompagner les utilisateurs : fourniture des données de connexion avec indication de stratégie de mot de passe</li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-      <li data-i18n="p14">Bloc 2 : Solutions d'Infrastructures, Réseaux et Systèmes
-        <ul>
-          <li data-i18n="p15">Concevoir une solution d'infrastructure réseau
-            <ul>
-              <li data-i18n="p16">Étude et prototypage de l'infrastructure système Windows Active Directory d'une entreprise cliente : création et organisation des unités d'organisation</li>
-            </ul>
-          </li>
-          <li data-i18n="p17">Exploiter, dépanner et superviser une solution d'infrastructure réseau
-            <ul>
-              <li data-i18n="p18">Étude de l'automatisation des tâches d'administration système sous Windows : écriture de scripts PowerShell</li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-      <li data-i18n="p19">Bloc 3 : Cybersécurité des services informatiques
-        <ul>
-          <li data-i18n="p20">Assurer la cybersécurité d'une infrastructure réseau, d'un système, d'un service
-            <ul>
-              <li data-i18n="p21">Sécuriser l'infrastructure système pour l'entreprise cliente : mise en place de stratégies de mots de passe via des GPO</li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </section>
-
   <!-- Mission 1 -->
   <section class="page-section">
     <h2 data-i18n="p22">Mission 1 — Créer la maquette de l'infrastructure système</h2>
@@ -153,7 +102,7 @@
     <p data-i18n="p24">Le maître d'ouvrage, le CNED, a exprimé ses besoins via les contextes des ETP de Poitou et Chasseneuil. En tant qu'unique personne sur le projet, j'ai été maître d'œuvre et cheffe sur ce projet. Réalisé selon une méthode en cascade, ce dernier a connu un suivi via l'application en ligne Trello.</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran de l'application en ligne Trello"></div>
+      <img src="assets/pictures/AP2/trello.png" alt="Capture d'écran de Trello"/>
       <p class="fig-caption" data-i18n="p25">L'outil Trello, disponible en ligne, demande une création de compte pour les nouveaux utilisateurs</p>
     </div>
 
@@ -161,14 +110,14 @@
     <p data-i18n="p27">Nous nous appuyerons sur l'atelier précédent (InfraSite) pour ce travail. L'infrastructure utilisée a été maquettée avec Packet Tracer. Selon le contexte donné, nous sommes en présence d'un réseau segmenté en VLAN, avec un relais DHCP permettant la communication entre la salle serveurs et les bureaux. L'adresse publique du routeur est 10.36.253.20/24. Le Wi-Fi est sécurisé à l'aide d'une clé WPA2-PSK.</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran de la maquette réalisée dans l'atelier InfraSite"></div>
+      <img src="assets/pictures/AP2/reseauPKT.png" alt="Capture d'écran de la maquette réalisée dans l'atelier InfraSite"/>
       <p class="fig-caption" data-i18n="p28">Une représentation du réseau de l'ETP de Chasseneuil sous Packet Tracer</p>
     </div>
 
     <p data-i18n="p29">Pour simuler ce réseau de manière physique, nous nous sommes appuyés sur un prototype virtuel basé sur VirtualBox, et composé d'un routeur VyOS, d'un serveur Windows 2022 implanté dans le réseau des serveurs, et d'un poste Windows 11 Éducation qui sera dans le réseau des bureaux.</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran de la configuration réseau des machines sous VirtualBox"></div>
+      <img src="assets/pictures/AP2/configReseauVBOX.jpg" alt="Capture d'écran de la configuration réseau des machines sous VirtualBox"/>
       <p class="fig-caption" data-i18n="p30">Configuration réseau des machines sous VirtualBox</p>
     </div>
 
@@ -204,31 +153,31 @@
     <h3 data-i18n="p48">Résultats de la mission 1</h3>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran de l'arborescence du domaine de Tierslieux86 après exécution du script modifié"></div>
+      <img src="assets/pictures/AP2/OUdomaineLocal.png" alt="Capture d'écran de l'arborescence du domaine de Tierslieux86 après exécution du script modifié"/>
       <p class="fig-caption" data-i18n="p49">Nouvelle organisation basique d'une entreprise représentée dans l'arborescence du domaine Tierslieux86</p>
     </div>
 
     <p data-i18n="p50">Pour ce qui est de la modification du script, il a suffit de rajouter une chaîne de caractères, "Groupes domaine local", dans le tableau qui recense les unités d'organisation à créer pour intégrer une entreprise.</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran de l'exécution du script : création des unités d'organisation de l'entreprise"></div>
+      <img src="assets/pictures/AP2/derouleScript1.png" alt="Capture d'écran de l'exécution du script : création des unités d'organisation de l'entreprise"/>
       <p class="fig-caption" data-i18n="p51">Les unités d'organisation sont créées successivement, en informant de la réussite ou de l'échec de la création</p>
     </div>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran de l'exécution du script : intégration des utilisateurs"></div>
+      <img src="assets/pictures/AP2/derouleScript2.png" alt="Capture d'écran de l'exécution du script : intégration des utilisateurs"/>
       <p class="fig-caption" data-i18n="p52">Intégration des utilisateurs grâce aux informations d'un fichier CSV</p>
     </div>
 
     <p data-i18n="p53">Dans un cas réel, le fichier CSV peut être issu d'un fichier Excel, que l'ETP exige de la part de l'entreprise. Les logins sont par la suite stockés dans un dossier propre à l'entreprise sur le répertoire de l'administrateur : il faudra que ce dernier les communique aux utilisateurs.</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran des fichiers Word édités à l'aide du script Powershell"></div>
+      <img src="assets/pictures/AP2/fichiersWord.png" alt="Capture d'écran des fichiers Word édités à l'aide du script Powershell"/>
       <p class="fig-caption" data-i18n="p54">Ensemble des fichiers Word édités à l'issue de l'exécution du script</p>
     </div>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran d'un fichier Word contenant les informations de connexion de l'utilisateur"></div>
+      <img src="assets/pictures/AP2/fichierWord.png" alt="Capture d'écran d'un fichier Word contenant les informations de connexion de l'utilisateur"/>
       <p class="fig-caption" data-i18n="p55">Un fichier Word contenant les informations de connexion de l'utilisateur</p>
     </div>
   </section>
@@ -248,21 +197,21 @@
     <h3 data-i18n="p63">Résultats de la mission 2</h3>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran du récapitulatif de la création du disque virtuel"></div>
+      <img src="assets/pictures/AP2/recapDisqueVirtuel.png" alt="Capture d'écran du récapitulatif de la création du disque virtuel"/>
       <p class="fig-caption" data-i18n="p64">Disque virtuel amené à être exposé pour ValorElec</p>
     </div>
 
     <p data-i18n="p65">On a un disque virtuel qui apparaît dans le gestionnaire des disques. Il suffit de les formater et de les mettre en ligne.</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran du récapitulatif de la présence du disque virtuel dans le gestionnaire de disque"></div>
+      <img src="assets/pictures/AP2/disqueVirtuel.png" alt="Capture d'écran du récapitulatif de la présence du disque virtuel dans le gestionnaire de disque"/>
       <p class="fig-caption" data-i18n="p66">Le disque virtuel est bien créé</p>
     </div>
 
     <p data-i18n="p67">Depuis une session utilisateur, on peut vérifier que les dossiers créés et partagés sur ce disque apparaissent bien.</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran de l'apparition des partages depuis un poste des bureaux"></div>
+      <img src="assets/pictures/AP2/partageDisqueVHDX.png" alt="Capture d'écran de l'apparition des partages depuis un poste des bureaux"/>
       <p class="fig-caption" data-i18n="p68">La découverte réseau détecte les fichiers qui sont exposés sur le disque virtuel</p>
     </div>
   </section>
@@ -287,35 +236,35 @@
     <p data-i18n="p79">À l'exécution du script, on demande le chemin du fichier à partager. S'il n'existe pas, on peut choisir de le créer.</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran de l'exécution du script Powershell IntegrationAGDLP2.ps1"></div>
+      <img src="assets/pictures/AP2/PWSpartage1.png" alt="Capture d'écran de l'exécution du script Powershell IntegrationAGDLP2.ps1"/>
       <p class="fig-caption" data-i18n="p80">Exécution du script Powershell IntegrationAGDLP2.ps1</p>
     </div>
 
     <p data-i18n="p81">Le script va créer des groupes domaine local en fonction du nom de la ressource à partager.</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran de la création des groupes domaine local"></div>
+      <img src="assets/pictures/AP2/PWSpartage2.png" alt="Capture d'écran de la création des groupes domaine local"/>
       <p class="fig-caption" data-i18n="p82">Création des groupes domaine local avec le droit en question en suffixe</p>
     </div>
 
     <p data-i18n="p83">Les groupes globaux sont récupérés via une liste et il suffit d'indiquer par leur numéro lequel intégrer dans le groupe domaine local spécifié. Pour arrêter l'ajout concernant le groupe domaine local courant, on entre le chiffre zéro.</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran de l'ajout des groupes globaux aux groupes domaine local"></div>
+      <img src="assets/pictures/AP2/PWSpartage3.png" alt="Capture d'écran de l'ajout des groupes globaux aux groupes domaine local"/>
       <p class="fig-caption" data-i18n="p84">Ajout des groupes globaux aux groupes domaine local</p>
     </div>
 
     <p data-i18n="p85">Vérifions les accès. Par exemple, monsieur Lenoir est un commercial de ValorElec : il a droit de modification sur les fichiers qui appartiennent à son service. Le test est concluant.</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran de la création de fichier dans un dossier des commerciaux par un employé du service"></div>
+      <img src="assets/pictures/AP2/lenoirLM.png" alt="Capture d'écran de la création de fichier dans un dossier des commerciaux par un employé du service"/>
       <p class="fig-caption" data-i18n="p86">Création de fichiers dans un dossier des commerciaux par un employé du service</p>
     </div>
 
     <p data-i18n="p87">Par contre, monsieur Lenoir n'a pas accès aux dossiers qui concernent le département de recherche et développement.</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran du refus d'accès au dossier des chercheurs pour un employé commercial"></div>
+      <img src="assets/pictures/AP2/lenoirDissolvant.png" alt="Capture d'écran du refus d'accès au dossier des chercheurs pour un employé commercial"/>
       <p class="fig-caption" data-i18n="p88">Accès refusé au dossier destiné aux chercheurs</p>
     </div>
 
@@ -336,49 +285,49 @@
     <p data-i18n="p96">Trois GPO sont appliquées : la Default Domain Policy pour la stratégie de mots de passe utilisateurs, VALORELEC-deploiement-AdobeAcrobatMSI pour le déploiement d'Adobe Acrobat, VALORELEC-restriction-panneau_de_configuration pour bloquer le panneau de configuration.</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran des localisations des GPO"></div>
+      <img src="assets/pictures/AP2/GPO.png" alt="Capture d'écran des localisations des GPO"/>
       <p class="fig-caption" data-i18n="p97">Les GPO sont appliquées au niveau des utilisateurs de ValorElec, sauf pour le mot de passe, qui est modifié sur la racine</p>
     </div>
 
     <p data-i18n="p98">En ce qui concerne la stratégie des mots de passe et de verrouillage des comptes des utilisateurs ne faisant pas partie du service de la direction, voici les paramètres entrés dans la GPO.</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran du résumé des paramètres que modifie la GPO pour la stratégie de mot de passe et de verrouillage de comptes"></div>
+      <img src="assets/pictures/AP2/stratMDP.png" alt="Capture d'écran du résumé des paramètres que modifie la GPO pour la stratégie de mot de passe et de verrouillage de comptes"/>
       <p class="fig-caption" data-i18n="p99">Paramètres appliqués sur l'ensemble des utilisateurs du domaine tierslieux86.fr</p>
     </div>
 
     <p data-i18n="p100">Pour la GPO d'Adobe Acrobat, nous remarquons qu'elle est effective.</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran prouvant la réussite de la GPO Adobe Acrobat sur un poste utilisateur"></div>
+      <img src="assets/pictures/AP2/adobe.png" alt="Capture d'écran prouvant la réussite de la GPO Adobe Acrobat sur un poste utilisateur"/>
       <p class="fig-caption" data-i18n="p101">Dans le panneau de configuration, Adobe Acrobat figure dans les programmes installés</p>
     </div>
 
     <p data-i18n="p102">Voici la Password Settings Object (PSO), qui permet d'appliquer sur le service de la direction de ValorElec une stratégie de mot de passe spécifique.</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran de la PSO du service de direction de ValorElec"></div>
+      <img src="assets/pictures/AP2/PSO.png" alt="Capture d'écran de la PSO du service de direction de ValorElec">
       <p class="fig-caption" data-i18n="p103">Création d'une PSO pour GG-VALORELEC-Direction</p>
     </div>
 
     <p data-i18n="p104">Ici, nous avons testé l'accès au panneau de configuration depuis un compte utilisateur appartenant à un employé de ValorElec.</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran de la tentative d'accès au panneau de configuration depuis un poste utilisateur ValorElec"></div>
+      <img src="assets/pictures/AP2/panneauConfig.png" alt="Capture d'écran de la tentative d'accès au panneau de configuration depuis un poste utilisateur ValorElec">
       <p class="fig-caption" data-i18n="p105">L'accès au panneau de configuration est refusé</p>
     </div>
 
     <p data-i18n="p106">Si on essaie de changer le mot de passe pour une valeur plus faible (longueur trop petite, pas assez complexe), on tombe sur ce message :</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran de tentative de changement de mot de passe pour une valeur invalide"></div>
+      <img src="assets/pictures/AP2/stratVerr1.png" alt="Capture d'écran de tentative de changement de mot de passe pour une valeur invalide">
       <p class="fig-caption" data-i18n="p107">Il est demandé un meilleur mot de passe</p>
     </div>
 
     <p data-i18n="p108">Enfin, pour le test de verrouillage, nous sommes aussi freinés par la GPO.</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran du verrouillage du compte"></div>
+      <img src="assets/pictures/AP2/stratVerr2.png" alt="Capture d'écran du verrouillage du compte">
       <p class="fig-caption" data-i18n="p109">Le compte est verrouillé après deux tentatives ratées</p>
     </div>
   </section>
