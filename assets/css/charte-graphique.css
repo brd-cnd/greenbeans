@@ -1,0 +1,430 @@
+/* =============================================================================
+   CHARTE-GRAPHIQUE.CSS — Typographie & mise en page génériques de Greenbeans
+   =============================================================================
+   Ce fichier est la version "utilisable" de la charte graphique présentée
+   dans charte-graphique.html (qui l'importe désormais lui-même, pour servir
+   de démonstration vivante plutôt que de copie séparée).
+
+   Pour appliquer ces styles à n'importe quelle page HTML du site, il suffit
+   d'ajouter, après common.css :
+
+     <link rel="stylesheet" href="assets/css/common.css" />
+     <link rel="stylesheet" href="assets/css/charte-graphique.css" />
+
+   puis d'utiliser normalement les balises <h1>, <h2>, <h3>, <h4>, <p>,
+   <blockquote>, <a>, <ul>/<ol>, ainsi que les classes .lead, .small,
+   .highlight, .accent-text et .tag.
+
+   common.css définit déjà --col-black/--col-white/--col-dim/--col-rule/
+   --font-display/--font-body (light + dark mode + police dyslexie) : ce
+   fichier les RÉUTILISE et complète seulement ce qu'il manque (échelle de
+   tailles fluides, interlignes, dégradé d'accentuation). Si ce fichier est
+   importé seul, sans common.css (par exemple sur un projet extérieur), les
+   valeurs par défaut ci-dessous prennent le relais grâce à :root.
+
+   Sections 1 à 7 : typographie pure (titres, paragraphes, citations, mise
+   en valeur, liens, listes, responsive).
+   Section 8 : mise en page générique réutilisable (colonne centrée, lien
+   de retour, en-tête de page, bloc image+texte...) — par opposition aux
+   feuilles de style propres à UNE page ou à UN type de page (ex.
+   mentions-legales.css, qui ne garde que ce qui lui est spécifique).
+============================================================================= */
+
+:root {
+  /* ── Palette (reprise de common.css ; valeurs par défaut si absent) ───── */
+  --col-white: #ffffff;
+  --col-black: #111111;
+  --col-dim:   #707070;
+  --col-rule:  #cccccc;
+
+  /* ── Accent : dégradé "esprit header" ──────────────────────────────────
+     Le dégradé du hero (.media-layer::after) va du noir à transparent.
+     Ici, on en fait un dégradé de gris exploitable en aplat (filets,
+     fonds de citation, soulignements) — toujours en noir & blanc. */
+  --grad-accent: linear-gradient(135deg, #111111 0%, #6e6e6e 100%);
+  --grad-accent-soft: linear-gradient(135deg, rgba(17,17,17,0.08) 0%, rgba(17,17,17,0) 100%);
+
+  /* ── Polices (reprises de common.css ; valeurs par défaut si absent) ──── */
+  --font-display: 'MaPoliceDisplay', Georgia, serif;
+  --font-body:    'MaPoliceBody',    Arial,   sans-serif;
+
+  /* ── Échelle typographique fluide (clamp = mobile → desktop) ─────────────
+     Syntaxe : clamp(min, valeur préférée liée au viewport, max) */
+  --fs-h1:      clamp(2.4rem,  1.6rem + 4vw,  5rem);
+  --fs-h2:      clamp(1.9rem,  1.4rem + 2.6vw, 3rem);
+  --fs-h3:      clamp(1.4rem,  1.15rem + 1.4vw, 2rem);
+  --fs-h4:      clamp(1.15rem, 1rem + 0.7vw, 1.4rem);
+  --fs-lead:    clamp(1.1rem,  1rem + 0.5vw, 1.35rem);
+  --fs-body:    clamp(1rem,    0.95rem + 0.25vw, 1.125rem);
+  --fs-quote:   clamp(1.3rem,  1.05rem + 1.2vw, 2rem);
+  --fs-small:   clamp(0.8rem,  0.78rem + 0.2vw, 0.95rem);
+  --fs-tag:     clamp(0.7rem,  0.68rem + 0.2vw, 0.85rem);
+
+  /* ── Interlignes ──────────────────────────────────────────────────────── */
+  --lh-tight: 1.1;    /* grands titres */
+  --lh-heading: 1.25; /* titres courants */
+  --lh-body: 1.7;     /* paragraphes */
+  --lh-quote: 1.5;    /* citations, taille plus grande → interligne légèrement réduit */
+  --lh-small: 1.6;    /* légendes, notes */
+}
+
+/* ── Reset minimal ───────────────────────────────────────────────────────
+   common.css applique déjà exactement ce reset à l'échelle du site : cette
+   règle ne fait alors que le répéter (aucun conflit, mêmes valeurs). Si ce
+   fichier est importé seul, sans common.css, c'est elle qui s'en charge. */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Base : police, couleur et fond de la page ─────────────────────────────
+   Si une autre feuille de style du site (interior.css, accueil.css...) a
+   déjà posé ces mêmes propriétés sur html/body, cette règle ne fait que les
+   répéter (aucun conflit) ; si ce fichier est importé seul, elle s'assure
+   que la page est correctement typée dès le départ. */
+html, body {
+  font-family: var(--font-body);
+  color: var(--col-black);
+  background: var(--col-white);
+}
+
+body {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* =============================================================================
+   1. TITRES
+   ────────────────────────────────────────────────────────────────────────────
+   Police  : --font-display (Georgia)
+   Usage   : h1 = titre de page / grand intitulé du hero
+             h2 = titre de section
+             h3 = sous-titre / titre de bloc (ex. carte projet)
+             h4 = intitulé mineur, label de bloc
+============================================================================= */
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: var(--fs-h1);
+  line-height: var(--lh-tight);
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: var(--fs-h2);
+  line-height: var(--lh-heading);
+}
+
+h3 {
+  font-size: var(--fs-h3);
+  line-height: var(--lh-heading);
+}
+
+h4 {
+  font-size: var(--fs-h4);
+  font-weight: 700;
+  line-height: var(--lh-heading);
+  font-family: var(--font-body); /* h4 reste sur la police de texte, plus discret */
+  letter-spacing: 0.01em;
+}
+
+/* =============================================================================
+   2. PARAGRAPHES & TEXTE COURANT
+   ────────────────────────────────────────────────────────────────────────────
+   Police  : --font-body (Arial)
+   .lead   : chapeau / paragraphe d'introduction, légèrement plus grand
+   .small  : légendes, notes de bas de page, mentions secondaires
+============================================================================= */
+
+p {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  max-width: 38em; /* ~70-75 caractères par ligne : confort de lecture */
+}
+
+p + p {
+  margin-top: 1.1em;
+}
+
+.lead {
+  font-size: var(--fs-lead);
+  line-height: 1.6;
+  font-weight: 400;
+  color: var(--col-black);
+}
+
+.small,
+small {
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  color: var(--col-dim);
+}
+
+/* =============================================================================
+   3. CITATIONS
+   ────────────────────────────────────────────────────────────────────────────
+   Police  : --font-display (Georgia), en italique
+   Le filet à gauche reprend le dégradé d'accentuation, en écho discret
+   au dégradé du header.
+============================================================================= */
+
+blockquote {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: var(--fs-quote);
+  line-height: var(--lh-quote);
+  font-weight: 400;
+  letter-spacing: 0.005em;
+  padding-left: clamp(1.25rem, 3vw, 2rem);
+  border-left: 3px solid transparent;
+  border-image: var(--grad-accent) 1; /* filet en dégradé */
+  margin: 1.5em 0;
+}
+
+blockquote cite {
+  display: block;
+  margin-top: 0.75em;
+  font-family: var(--font-body);
+  font-style: normal;
+  font-size: var(--fs-small);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--col-dim);
+}
+
+blockquote cite::before {
+  content: '— ';
+}
+
+/* =============================================================================
+   4. MISE EN VALEUR
+   ────────────────────────────────────────────────────────────────────────────
+   - strong / b      : emphase classique (gras)
+   - em / i          : emphase classique (italique)
+   - .highlight      : fond léger en dégradé, pour un mot-clé qu'on veut
+                        faire ressortir sans recourir au gras
+   - .accent-text    : texte en dégradé, dans l'esprit du dégradé du header
+                        (à utiliser avec parcimonie : 1 à 3 mots)
+   - .tag            : étiquette / mot-clé (catégorie, date, statut…)
+============================================================================= */
+
+strong, b {
+  font-weight: 700;
+}
+
+em, i {
+  font-style: italic;
+}
+
+.highlight {
+  font-weight: 700;
+  background: var(--grad-accent-soft);
+  padding: 0.05em 0.3em;
+  border-radius: 2px;
+}
+
+.accent-text {
+  font-family: var(--font-display);
+  font-weight: 700;
+  background: var(--grad-accent);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.tag {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: var(--fs-tag);
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--col-dim);
+  border: 1px solid var(--col-rule);
+  border-radius: 999px;
+  padding: 0.3em 0.9em;
+}
+
+/* .eyebrow : petite étiquette en capitales au-dessus d'un titre
+   (rubrique, catégorie...). Toujours posée juste avant un h1/h2. */
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--fs-tag);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--col-dim);
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+/* =============================================================================
+   5. LIENS
+============================================================================= */
+
+a {
+  color: var(--col-black);
+  text-decoration: underline;
+  text-decoration-color: var(--col-rule);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+  transition: text-decoration-color 0.3s ease, color 0.3s ease;
+}
+
+a:hover,
+a:focus-visible {
+  text-decoration-color: var(--col-black);
+}
+
+/* =============================================================================
+   6. LISTES
+============================================================================= */
+
+ul, ol {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  padding-left: 1.4em;
+}
+
+li + li {
+  margin-top: 0.4em;
+}
+
+/* =============================================================================
+   7. RESPONSIVE — exemple de media query en complément des clamp()
+   ────────────────────────────────────────────────────────────────────────────
+   Les clamp() ci-dessus couvrent déjà la majorité des besoins fluides.
+   Une media query reste utile pour ajuster des éléments qui ne sont pas
+   purement typographiques.
+============================================================================= */
+
+@media (max-width: 600px) {
+  blockquote {
+    margin: 1.25em 0;
+  }
+}
+
+/* =============================================================================
+   8. MISE EN PAGE GÉNÉRIQUE — pages de contenu simple
+   ────────────────────────────────────────────────────────────────────────────
+   Colonne centrée, lien de retour, en-tête de page, sections, bloc
+   image+texte : à utiliser sur n'importe quelle page de contenu simple qui
+   n'a pas besoin du "hero" ni du sous-menu des 4 pages intérieures
+   principales (projets/notions/histoire/à propos — cf. interior.css).
+
+   Voir page-template.html pour un exemple d'utilisation complet.
+============================================================================= */
+
+.page-frame {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 5rem) clamp(1.25rem, 4vw, 2rem) 6rem;
+}
+
+/* Espacement vertical entre les blocs de premier niveau (en-tête, sections,
+   bloc image+texte...), quel que soit leur type — évite de devoir lister
+   toutes les combinaisons possibles au cas par cas. */
+.page-frame > * + * {
+  margin-top: clamp(2.5rem, 5vw, 3rem);
+}
+
+/* ── Lien de retour ───────────────────────────────────────────────────────
+   La marge basse, un peu plus grande que l'espacement standard ci-dessus,
+   se combine avec lui par fusion de marges (la plus grande des deux
+   s'applique). */
+.page-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-size: var(--fs-small);
+  color: var(--col-dim);
+  text-decoration: none;
+  margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+}
+
+.page-back svg {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+}
+
+.page-back:hover,
+.page-back:focus-visible {
+  color: var(--col-black);
+}
+
+/* ── En-tête de page (titre + chapeau) ──────────────────────────────────── */
+.page-header .lead {
+  margin-top: 1rem;
+}
+
+/* ── Bloc image + texte ──────────────────────────────────────────────────
+   Deux colonnes : une image (ou son emplacement réservé) à gauche, du texte
+   à droite. Bascule sur une seule colonne, image au-dessus du texte, sous
+   700px de large. */
+.media-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: clamp(1.5rem, 4vw, 2.5rem);
+  align-items: start;
+}
+
+/* Effet stylistique : l'image (premier enfant — .placeholder-media, ou la
+   future balise <img>/<picture> qui le remplacera) mord sur la marge gauche
+   de la page. La marge négative reprend exactement, au signe près, le
+   padding gauche de .page-frame : l'image ne peut donc jamais déborder
+   au-delà du cadre de page lui-même (pas de scroll horizontal possible).
+   Le bord droit de l'image, lui, reste aligné sur la colonne (margin-right
+   à 0, valeur par défaut) — seul le bord gauche est concerné. */
+.media-row > :first-child {
+  margin-left: clamp(-2rem, -4vw, -1.25rem);
+}
+
+.media-row__text > * + * {
+  margin-top: 1.1em;
+}
+
+.media-row__text h2,
+.media-row__text h3 {
+  margin-top: 1.4em;
+}
+
+/* Emplacement réservé pour une future image : à remplacer par <img>/<picture>
+   le jour venu. --col-aside-bg reprend le même gris que les autres "toiles"
+   du site (cf. .project-canvas dans interior.css), pour rester cohérent
+   même à l'état d'ébauche. */
+.placeholder-media {
+  aspect-ratio: 4 / 5;
+  background: var(--col-aside-bg);
+  border-radius: 6px;
+}
+
+@media (max-width: 700px) {
+  .media-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Paragraphes dans les pages de contenu simple ───────────────────────────
+   Pleine largeur de la colonne (on lève le max-width: 38em de la règle p
+   globale, pensée pour les pages intérieures avec hero) et justification
+   du texte, adaptée à la lecture de documents techniques longs. */
+.page-frame p {
+  max-width: none;
+  text-align: justify;
+}
+
+/* ── H3 dans les pages de contenu simple ────────────────────────────────────
+   La règle h3 globale ne pose pas de marge haute car les h3 sont utilisés
+   dans des contextes très variés (cards, hero, sections). Dans .page-frame
+   (pages de contenu long type atelier), on leur donne de l'air pour que
+   chaque sous-titre respire clairement au-dessus de son bloc. */
+.page-frame h3 {
+  margin-top: clamp(1.75rem, 3vw, 2.5rem);
+}

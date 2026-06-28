@@ -1,0 +1,437 @@
+<!--
+=============================================================================
+  ABOUT.HTML — Page "à propos" de Greenbeans
+  (anciennement nommée apropos.html ; le fichier a été renommé en anglais
+  pour que l'URL soit compréhensible par tous les visiteurs.)
+  =============================================================================
+
+  Cette page a été réorganisée pour séparer le VISUEL (CSS, structure HTML,
+  comportements JavaScript) du CONTENU (textes, traductions).
+
+  Fichiers chargés :
+    - assets/css/common.css    → réinitialisation, variables, tiroir
+                                  hamburger, mode sombre, police dyslexie...
+                                  (partagé par TOUTES les pages du site)
+    - assets/css/interior.css  → mise en page du "hero" + panneaux de
+                                  contenu (partagé par les 4 pages
+                                  intérieures : projets/notions/histoire/apropos)
+    - assets/css/apropos.css   → couleurs des rectangles décoratifs propres
+                                  à cette page
+
+    - assets/js/i18n.js          → moteur de traduction FR/DE/EN
+    - assets/js/drawer.js        → tiroir de navigation + bouton hamburger
+                                    (injectés en JS, partagés par toutes les pages)
+    - assets/js/interior-nav.js  → sous-menu du "hero" + panneaux de contenu
+                                    (partagé par les 4 pages intérieures)
+    - assets/js/project-list-paging.js → pagination par groupes de 3 des
+                                    listes .project-list qui dépassent 3
+                                    éléments (défilement à la molette,
+                                    génériquement appliqué partout)
+
+  data-page="apropos" : indique à i18n.js quel fichier de traductions
+  charger (apropos_<lang>.json) en complément du fichier commun
+  (common_<lang>.json, utilisé par le tiroir de navigation).
+
+  NOTE — anciennement nommée "contact" :
+  Cette page, qui s'appelait autrefois "contact", a été renommée "à propos"
+  (fichier about.html). Tous les liens de navigation du site (tiroir
+  hamburger, page d'accueil, sous-menus) pointent désormais vers
+  about.html avec le libellé "à propos".
+=============================================================================
+-->
+
+<!DOCTYPE html>
+<!--
+  lang="fr" : indique la langue principale aux lecteurs d'écran et moteurs
+              de recherche. Mis à jour dynamiquement par i18n.js lors d'un
+              changement de langue.
+-->
+<html lang="fr">
+
+<head>
+  <!--
+    charset="UTF-8"  : encodage universel (accents, caractères spéciaux).
+    viewport         : adaptation mobile.
+                       width=device-width → largeur réelle de l'écran.
+                       initial-scale=1   → pas de zoom forcé.
+    description      : résumé affiché dans les résultats de recherche (SEO).
+    author           : auteur du document.
+    theme-color      : couleur de la barre de navigation sur Android/Chrome.
+    title            : texte affiché dans l'onglet du navigateur.
+  -->
+  <meta charset="UTF-8" />
+  <!--
+    ── Préférences d'accessibilité mémorisées (mode sombre / police dyslexie) ──
+    Applique immédiatement les classes "dark-mode" / "dyslexic-font" sur
+    <html>, AVANT le rendu de la page, à partir des préférences mémorisées
+    par assets/js/drawer.js (sessionStorage, puis localStorage, puis
+    cookie). Voir assets/css/common.css : les transitions de couleur sont
+    désactivées jusqu'à l'ajout de la classe "js-ready" (posée plus tard,
+    une fois la page chargée), donc ce premier rendu ne peut pas
+    "flasher" entre clair et sombre, quel que soit l'ordre de chargement
+    du CSS/JS.
+  -->
+  <script>
+  (function () {
+    function read(key) {
+      try {
+        var v = sessionStorage.getItem(key);
+        if (v !== null) return v;
+      } catch (e) {}
+      try {
+        var v2 = localStorage.getItem(key);
+        if (v2 !== null) return v2;
+      } catch (e) {}
+      var m = document.cookie.match(new RegExp('(?:^|; )' + key + '=([^;]*)'));
+      return m ? decodeURIComponent(m[1]) : null;
+    }
+    if (read('greenbeans-dark-mode') === '1') {
+      document.documentElement.classList.add('dark-mode');
+    }
+    if (read('greenbeans-dyslexic-font') === '1') {
+      document.documentElement.classList.add('dyslexic-font');
+    }
+  })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Greenbeans — informations du site et informations personnelles." />
+  <meta name="author" content="Greenbeans" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>À propos — Greenbeans</title>
+
+  <!-- ── CSS partagé (variables, tiroir, mode sombre, dyslexie...) ── -->
+  <link rel="stylesheet" href="assets/css/common.css" />
+  <!-- ── CSS partagé entre les 4 pages intérieures (hero + panneaux) ── -->
+  <link rel="stylesheet" href="assets/css/interior.css" />
+  <!-- ── CSS propre à cette page (couleurs des rectangles décoratifs) ── -->
+  <link rel="stylesheet" href="assets/css/apropos.css" />
+</head>
+
+<!--
+  data-page="apropos" : utilisé par i18n.js et drawer.js pour savoir sur
+  quelle page on se trouve (chargement des traductions, mise en évidence
+  du lien actif dans le tiroir de navigation).
+-->
+<body data-page="apropos">
+
+<!-- =============================================================================
+     HTML
+     Le tiroir de navigation (hamburger, accessibilité, langue) est injecté
+     par assets/js/drawer.js : il n'apparaît plus ici "en dur".
+============================================================================= -->
+<header class="hero" role="banner">
+
+  <!-- ── COLONNE GAUCHE (s'étend sur 2 lignes) ──────────────────────────── -->
+  <div class="hero-left">
+
+    <!-- Zone image -->
+    <div class="hero-image-wrap">
+      <!--
+        Pour remplacer l'image :
+        1. Modifiez src="…" avec le chemin de votre fichier.
+        2. Renseignez alt="…" si l'image a un sens descriptif.
+        3. La mise en page s'adapte automatiquement (object-fit: cover).
+        Si aucune image n'est fournie, la couleur de fond --col-aside-bg
+        appliquée sur .hero-image-wrap s'affiche.
+      -->
+      <img
+        class="hero-image"
+        src=""
+        alt=""
+        style="background: linear-gradient(135deg, #2b160d 0%, #6e3a1a 45%, #d9a13a 100%);"
+      />
+    </div>
+
+    <!-- Zone titre + description -->
+    <div class="hero-body">
+
+      <!--
+        Titre principal : "greenbeans · about"
+        Adaptez le texte selon votre charte.
+        .separator → le point médian "·" entre les deux mots.
+        Le second mot reste "about" dans les 3 langues (choix delibéré,
+        voir la clé "hero-title-word2" dans apropos_<lang>.json).
+      -->
+      <h1 class="hero-headline">
+        greenbeans<span class="separator">&middot;</span><span data-i18n="hero-title-word2">about</span>
+      </h1>
+
+      <!--
+        Description affichée en bas à droite du bloc texte.
+        Statique : ne change plus au survol des items du sous-menu.
+        Remplacez ce paragraphe par votre propre contenu.
+      -->
+      <div class="hero-description-wrap">
+
+        <p class="hero-description" data-i18n="desc-default">
+          Si vous avez des questions concernant ce site ou que vous avez besoin de me contacter, cette partie est faite pour ça.
+        </p>
+
+      </div>
+
+    </div><!-- /.hero-body -->
+
+  </div><!-- /.hero-left -->
+
+  <!-- ── COLONNE DROITE — ligne 1 : case décorative ─────────────────────── -->
+  <!--
+    Zone réservée en haut à droite.
+    Sa couleur est contrôlée par --col-aside-bg dans :root (CSS).
+    Ajoutez du contenu ici quand vous serez prêt.
+  -->
+  <div class="hero-aside" aria-hidden="true">
+    <div class="aside-rects">
+      <span class="aside-rect aside-rect-1"></span>
+      <span class="aside-rect aside-rect-2"></span>
+    </div>
+  </div>
+
+  <!-- ── COLONNE DROITE — ligne 2 : menu ───────────────────────────────── -->
+  <!--
+    role="navigation" + aria-label : indique aux lecteurs d'écran
+    que ce bloc est un menu de navigation secondaire.
+  -->
+  <nav class="hero-nav" role="navigation" aria-label="Sous-navigation à propos">
+
+    <a class="nav-item" href="about-site.html" data-target="site">
+      <span data-i18n="nav1">Informations du site</span>
+    </a>
+
+    <a class="nav-item" href="about-personnel.html" data-target="personnel">
+      <span data-i18n="nav2">Informations personnelles</span>
+    </a>
+
+  </nav>
+
+</header><!-- /.hero -->
+
+<section>
+
+  <!--
+    ── Panneaux de contenu ───────────────────────────────────────────────
+    Chaque .section-panel correspond à un nav-item du <header> via
+    data-panel="..." (même valeurs que data-target).
+    Seul le panneau portant la classe .active est visible (voir CSS).
+    Le premier panneau est actif par défaut.
+    Contenu fictif, à remplacer par votre propre contenu.
+  -->
+
+  <div class="section-panel active" data-panel="site">
+    <h2 data-i18n="panel-nav1-title">Informations du site</h2>
+
+    <p class="section-intro" data-i18n="panel-nav1-intro">
+      Retrouvez les informations du site : mentions légales, crédits et charte graphique
+    </p>
+
+    <div class="panel-body">
+
+    <div class="project-list">
+
+      <div class="item" data-canvas="site-1" data-href="about-legal-notice.html" tabindex="0" role="link" aria-label="Mentions légales — voir plus">
+        <h3 data-i18n="item1-1-title">Mentions légales</h3>
+        <p data-i18n="item1-1-desc">
+          Informations sur l'éditeur, l'hébergeur, les données collectées et vos droits
+        </p>
+        <span class="project-link-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 17 17 7"/>
+            <path d="M9 7h8v8"/>
+          </svg>
+        </span>
+      </div>
+
+      <div class="item" data-canvas="site-2" data-href="about1-2" tabindex="0" role="link" aria-label="Crédits photos — voir plus">
+        <h3 data-i18n="item1-2-title">Crédits photos</h3>
+        <p data-i18n="item1-2-desc">
+          Attribution aux auteurs de photos utilisées pour la création de ce site
+        </p>
+        <span class="project-link-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 17 17 7"/>
+            <path d="M9 7h8v8"/>
+          </svg>
+        </span>
+      </div>
+
+      <div class="item" data-canvas="site-3" data-href="about1-3" tabindex="0" role="link" aria-label="Charte graphique — voir plus">
+        <h3 data-i18n="item1-3-title">Charte graphique</h3>
+        <p data-i18n="item1-3-desc">
+          Variations de police utilisées pour la création du site
+        </p>
+        <span class="project-link-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 17 17 7"/>
+            <path d="M9 7h8v8"/>
+          </svg>
+        </span>
+      </div>
+
+    </div>
+
+    <div class="project-canvas-area">
+
+      <div class="project-canvas active" data-canvas="site-1">
+        <!-- Toile réservée pour « Mentions légales ».
+             Ajoutez ici votre propre contenu (texte, image, etc.). -->
+      </div>
+
+      <div class="project-canvas" data-canvas="site-2">
+        <!-- Toile réservée pour « Crédits photos ».
+             Ajoutez ici votre propre contenu (texte, image, etc.). -->
+      </div>
+
+      <div class="project-canvas" data-canvas="site-3">
+        <!-- Toile réservée pour « Charte graphique ».
+             Ajoutez ici votre propre contenu (texte, image, etc.). -->
+      </div>
+
+    </div>
+
+    </div>
+  </div>
+
+  <div class="section-panel" data-panel="personnel">
+    <h2 data-i18n="panel-nav2-title">Informations personnelles</h2>
+
+    <p class="section-intro" data-i18n="panel-nav2-intro">
+      Mon adresse de contact, mon CV et l'équivalence de mes formations suivies.
+    </p>
+
+    <div class="panel-body">
+
+    <div class="project-list">
+
+      <div class="item" data-canvas="personnel-1" data-href="about2-1" tabindex="0" role="link" aria-label="Me contacter — voir plus">
+        <h3 data-i18n="item2-1-title">Me contacter</h3>
+        <p data-i18n="item2-1-desc">
+          Lorem ipsum dolor sit amet
+        </p>
+        <span class="project-link-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 17 17 7"/>
+            <path d="M9 7h8v8"/>
+          </svg>
+        </span>
+      </div>
+
+      <div class="item" data-canvas="personnel-2" data-href="about-hiring.html" tabindex="0" role="link" aria-label="Page recrutement (temporaire) — voir plus">
+        <h3 data-i18n="item2-2-title">Page recrutement (temporaire)</h3>
+        <p data-i18n="item2-2-desc">
+          Téléchargez ci-contre un CV. Les coordonnées sont volontairement cachées, en raison du caractère public de ce site. Cliquez pour accéder aux documents adminsitratifs de l'école (calendrier, contrat).
+        </p>
+        <span class="project-link-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 17 17 7"/>
+            <path d="M9 7h8v8"/>
+          </svg>
+        </span>
+      </div>
+
+      <div class="item" data-canvas="personnel-3" data-href="about2-3" tabindex="0" role="link" aria-label="Équivalence des formations — voir plus">
+        <h3 data-i18n="item2-3-title">Équivalence des formations</h3>
+        <p data-i18n="item2-3-desc">
+          Présentation des formations suivies jusqu'ici. Parallèle avec des formations similaires de pays germanophones et anglophones
+        </p>
+        <span class="project-link-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 17 17 7"/>
+            <path d="M9 7h8v8"/>
+          </svg>
+        </span>
+      </div>
+
+    </div>
+
+    <div class="project-canvas-area">
+
+      <div class="project-canvas active" data-canvas="personnel-1">
+        Voici une adresse mail : <a href="mailto:sbrand.mailpro@gmail.com">sbrand.mailpro@gmail.com</a><span data-i18n="editeur-contact-p-b">.</span>. Si vous êtes intéressé par mon profil et avez en votre possession un CV que je vous ai communiqué, utilisez l'adresse qui figure dessus : c'est mon adresse professionnelle principale.
+      </div>
+
+      <div class="project-canvas cv-canvas" data-canvas="personnel-2">
+
+        <table class="cv-table" aria-label="Téléchargement du CV par langue et par version">
+          <thead>
+            <tr>
+              <th scope="col"><span class="visually-hidden">Langue</span></th>
+              <th scope="col" data-i18n="panel-nav2-cv-v1">1 page</th>
+              <th scope="col" data-i18n="panel-nav2-cv-v2">2 pages</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">FR</th>
+              <td><a href="assets/docs/CV-hidden-FR1.pdf" download>FR-1</a></td>
+              <td><a href="assets/docs/CV-hidden-FR2.pdf" download>FR-2</a></td>
+            </tr>
+            <tr>
+              <th scope="row">DE</th>
+              <td><a href="assets/docs/CV-hidden-DE1.pdf" download>DE-1</a></td>
+              <td><a href="assets/docs/CV-hidden-DE2.pdf" download>DE-2</a></td>
+            </tr>
+            <tr>
+              <th scope="row">EN</th>
+              <td><a href="assets/docs/CV-hidden-EN1.pdf" download>EN-1</a></td>
+              <td><a href="assets/docs/CV-hidden-EN2.pdf" download>EN-2</a></td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+
+      <div class="project-canvas" data-canvas="personnel-3">
+        <!-- Toile réservée pour « Équivalence des formations ».
+             Ajoutez ici votre propre contenu (texte, image, etc.). -->
+      </div>
+
+    </div>
+
+    </div>
+  </div>
+
+</section>
+
+<!-- =============================================================================
+     JAVASCRIPT
+============================================================================= -->
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/drawer.js"></script>
+<script src="assets/js/interior-nav.js"></script>
+<script src="assets/js/project-list-paging.js"></script>
+<script src="assets/js/intro-overlay.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    SiteApp.initDrawer();
+    SiteApp.initInteriorNav();
+    SiteApp.initProjectCanvases();
+    SiteApp.initProjectListPaging();
+    SiteApp.initIntroOverlay();
+
+    /*
+      ── Activation du panneau via le fragment d'URL (#site, etc.) ──────────
+      assets/js/interior-nav.js gère le clic sur les sous-menus, mais pas
+      l'arrivée directe sur une ancre (ex. un futur lien "Retour aux
+      mentions légales" qui pointerait vers "about.html#site"). Ce petit
+      script, propre à cette page, reproduit ici la même bascule de
+      panneau, sans toucher au fichier partagé interior-nav.js (utilisé
+      aussi par projets/notions/histoire).
+    */
+    const targetPanel = window.location.hash.slice(1);
+    if (targetPanel) {
+      const panel = document.querySelector(`.section-panel[data-panel="${targetPanel}"]`);
+      if (panel) {
+        document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+        panel.classList.add('active');
+      }
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,822 @@
+/* =============================================================================
+   INTERIOR.CSS — Styles partagés par les pages "intérieures"
+   (projects.html, concepts.html, history.html, about.html)
+   =============================================================================
+
+   Ce fichier contient toute la mise en page du grand bandeau "hero" en
+   2 colonnes (image + titre + description | case décorative + sous-menu),
+   ainsi que les panneaux de contenu (.section-panel) affichés en dessous.
+
+   Il est IDENTIQUE sur les 4 pages "intérieures". Seules les couleurs des
+   petits rectangles décoratifs (.aside-rect-1, -2, -3…) changent d'une
+   page à l'autre : elles sont définies dans un petit fichier séparé par
+   page (apropos.css, projets.css, notions.css, histoire.css).
+
+   Ce fichier est chargé APRÈS common.css (qui contient le bouton hamburger,
+   le tiroir de navigation, le mode sombre, etc.) et AVANT le petit fichier
+   de couleurs propre à chaque page.
+
+   La page d'accueil (home.html) NE charge PAS ce fichier : elle a sa
+   propre mise en page en grille 3 colonnes, définie dans accueil.css.
+============================================================================= */
+
+  html, body {
+    height: 100%;
+    background: var(--col-white);
+    font-family: var(--font-body);
+    color: var(--col-black);
+  }
+
+  /* ── GRILLE PRINCIPALE DU HERO ──────────────────────────────────────────── */
+  /*
+    Le hero est découpé en 2 colonnes de largeur égale (50 / 50).
+    La colonne de gauche contient elle-même une sous-grille (voir .hero-left).
+    La colonne de droite est partagée entre la case décorative (haut)
+    et le menu de navigation (bas).
+
+    grid-template-rows : 2 lignes
+      - ligne 1 : la moitié supérieure du hero (image + case déco)
+      - ligne 2 : la moitié inférieure (titre + texte | menu)
+
+    La hauteur totale du hero est définie par min-height: 100vh ;
+    vous pouvez la réduire à votre guise.
+  */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;    /* 50 % | 50 % */
+    grid-template-rows: auto auto;     /* ligne haute | ligne basse */
+    min-height: 100vh;
+    width: 100%;
+  }
+
+  /* ── COLONNE GAUCHE ─────────────────────────────────────────────────────── */
+  /*
+    .hero-left s'étend sur les 2 lignes de la colonne gauche.
+    Elle est elle-même une grille verticale :
+      - zone image (haute)
+      - zone titre + description (basse)
+    Cela permet d'aligner précisément le bas du bloc texte
+    avec le bas du dernier élément du menu à droite.
+  */
+  .hero-left {
+    grid-column: 1;
+    grid-row: 1 / 3;                   /* occupe les 2 lignes */
+    display: grid;
+    grid-template-rows: 1fr 1fr;       /* image 50 % | texte 50 % */
+  }
+
+  /* ── Zone image (en haut à gauche) ──────────────────────────────────────── */
+  .hero-image-wrap {
+    position: relative;
+    overflow: hidden;
+    /*
+      Couleur de repli si l'image est absente ou en cours de chargement.
+      Modifiez-la librement.
+    */
+    background: #1c3a4a;
+  }
+
+  /*
+    L'image de hero. Pour la remplacer :
+      1. Modifiez l'attribut src dans le HTML ci-dessous.
+      2. La mise en page est conservée automatiquement (object-fit: cover).
+    alt="" car l'image est décorative ; ajoutez une description si elle
+    porte un sens pour les lecteurs d'écran.
+  */
+  .hero-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  /* ── Zone titre + description (en bas à gauche) ─────────────────────────── */
+  /*
+    Cette zone est alignée verticalement en bas (align-content: end)
+    pour que le bas du texte coïncide avec le bas du menu à droite.
+    La grille CSS assure cette correspondance ligne à ligne.
+  */
+  .hero-body {
+    display: grid;
+    align-content: end;               /* pousse le contenu vers le bas */
+    padding: 2.5rem 3rem 2.5rem 2rem;
+    gap: 2rem;
+  }
+
+  /* ── Grand titre "greenbeans · about" ──────────────────────────────────── */
+  /*
+    font-size : clamp() permet au titre de s'adapter à la largeur disponible
+    sans déborder. Ajustez les bornes min/max si votre police est plus étroite
+    ou plus large que prévu.
+  */
+  .hero-headline {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 6vw, 7rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--col-black);
+  }
+
+  /* Le séparateur "·" entre les deux mots */
+  .hero-headline .separator {
+    display: inline-block;
+    margin: 0 0.15em;
+    font-weight: 300;                 /* plus léger pour contraster */
+  }
+
+  /* ── Description courte ─────────────────────────────────────────────────── */
+  /*
+    Positionnée en bas à droite du bloc texte, comme sur la maquette.
+    margin-left: auto la pousse vers la droite dans le flux.
+  */
+  .hero-description {
+    font-family: var(--font-body);
+    font-size: clamp(0.8rem, 1vw, 0.95rem);
+    font-weight: 400;
+    line-height: 1.65;
+    color: var(--col-black);
+    max-width: 42ch;
+    margin-left: auto;                /* aligne à droite dans la colonne */
+  }
+
+  /* ── COLONNE DROITE — ligne 1 : case décorative ─────────────────────────── */
+  /*
+    Case grisée en haut à droite.
+    Sa couleur de fond est pilotée par --col-aside-bg (variable en :root).
+    Pour la changer : modifiez --col-aside-bg dans :root.
+  */
+  .hero-aside {
+    grid-column: 2;
+    grid-row: 1;
+    background: var(--col-aside-bg);
+    /*
+      Si vous souhaitez placer du contenu dedans plus tard,
+      la flexbox est déjà prête.
+    */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ── Rectangles décoratifs dans la case du haut à droite ────────────────── */
+  .aside-rects {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 0.9rem;
+    flex-wrap: wrap;
+    padding: 1.5rem;
+  }
+
+  .aside-rect {
+    display: block;
+    border-radius: 2px;
+  }
+
+
+  /* ── COLONNE DROITE — ligne 2 : menu de navigation ──────────────────────── */
+  /*
+    Le menu occupe la même ligne que la zone texte à gauche.
+    display: flex + flex-direction: column + justify-content: space-between
+    répartit les items uniformément du haut en bas.
+    align-self: end aligne le bas du dernier item avec le bas de .hero-body.
+  */
+  .hero-nav {
+    grid-column: 2;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0 2.5rem 2.5rem 2.5rem;
+    align-self: end;                  /* aligne la base du menu avec la base du texte */
+  }
+
+  /* ── Chaque item du menu ─────────────────────────────────────────────────── */
+  .nav-item {
+    position: relative;
+    padding-top: 1rem;
+    text-decoration: none;
+    color: var(--col-black);
+    display: block;
+    transition: color var(--transition);
+  }
+
+  /* Séparateur horizontal au-dessus de chaque item */
+  .nav-item::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: var(--col-rule);
+    margin-bottom: 0.6rem;
+  }
+
+  /* Libellé de l'item */
+  .nav-item span {
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 1.4vw, 1.25rem);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    transition: color var(--transition), letter-spacing var(--transition);
+  }
+
+  /*
+    ── État "has-hover" sur le conteneur ────────────────────────────────────
+    Quand un item est survolé, la classe .has-hover est ajoutée sur .hero-nav
+    par JavaScript. Tous les items passent en grisé…
+  */
+  .hero-nav.has-hover .nav-item {
+    color: var(--col-dim);
+  }
+
+  /*
+    …sauf l'item portant la classe .hovered, qui reste en noir et ressort
+    grâce à un léger écartement des lettres.
+  */
+  .hero-nav.has-hover .nav-item.hovered {
+    color: var(--col-black);
+  }
+
+  .hero-nav.has-hover .nav-item.hovered span {
+    font-weight: 500;
+    letter-spacing: 0.03em;
+  }
+
+  section{
+    width:100vw;
+    min-height:75vh;
+  }
+
+  /* ── Accessibilité : focus clavier ──────────────────────────────────────── */
+  .nav-item:focus-visible {
+    outline: 2px solid var(--col-black);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
+/* ── Description statique ───────────────────────────────────────────────────
+     Un seul paragraphe descriptif (.hero-description), toujours affiché.
+     Il ne change plus au survol des items du sous-menu : ce comportement
+     dynamique (plusieurs <p>.desc-text superposés, bascule via JavaScript)
+     a été retiré.
+  ── */
+  .hero-description-wrap {
+    margin-left: clamp(0rem, 15vw, 16rem);   /* bloc plus large et légèrement décalé vers la gauche */
+    max-width: 45ch;
+  }
+
+  .hero-description {
+    font-family: var(--font-body);
+    font-size: clamp(0.8rem, 1vw, 0.95rem);
+    font-weight: 400;
+    line-height: 1.65;
+    color: var(--col-black);
+  }
+
+  /* ── Contenu de <section> ────────────────────────────────────────────────────
+     Chaque .section-panel est un bloc de contenu associé à un item du menu.
+     Tous sont cachés par défaut (display: none).
+     Le panneau actif (.active) est affiché (display: block).
+     data-panel="laboratoires|pro|perso" le relie à son item de menu.
+  ── */
+  .section-panel {
+    display: none;
+    padding: 3rem 4rem;
+    animation: fadeIn 0.35s ease;
+  }
+
+  .section-panel.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Titre du panneau de section */
+  .section-panel h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  /* Texte du panneau de section */
+  .section-panel p {
+    font-family: var(--font-body);
+    font-size: clamp(0.85rem, 1.1vw, 1rem);
+    line-height: 1.7;
+    max-width: 65ch;
+    color: var(--col-black);
+  }
+
+  /* Texte d'introduction, légèrement séparé de la liste de projets */
+  .section-intro {
+    margin-bottom: 2rem;
+  }
+
+  /* ── Corps du panneau : liste de projets (gauche) + toile (droite) ───────
+     Chaque .section-panel contient désormais un .panel-body qui répartit
+     la .project-list et la .project-canvas-area en deux colonnes égales.
+     align-items: start évite que la toile s'étire sur toute la hauteur de
+     la liste si celle-ci est plus longue.
+  ── */
+  .panel-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 2rem 3rem;
+    align-items: start;
+  }
+
+  /* ── Liste des projets (fictifs) d'un panneau ───────────────────────────── */
+  .project-list {
+    display: grid;
+    gap: 0;
+    max-width: 65ch;
+    /* compense la suppression du padding-top des cases (cf. .item) */
+    margin-top: 1.25rem;
+  }
+
+  /*
+    Chaque entrée de projet : séparateur identique au menu/tiroir.
+
+    ── Survolable / cliquable ────────────────────────────────────────────
+    La zone grisée (.item) doit occuper exactement l'espace entre
+    deux lignes séparatrices : pas de padding-top (la ligne ::before est
+    donc collée au bord supérieur de la case) et un padding-bottom qui
+    sert d'espacement avant la ligne suivante (gap: 0 sur .project-list).
+    margin: 0 -1rem + padding horizontal 1rem → la zone de survol grisée
+    dépasse légèrement le texte de part et d'autre, sans déplacer le texte
+    ni le séparateur (la marge négative compense exactement le padding).
+    cursor: pointer + tabindex/role (HTML) → indique que l'élément est
+    actionnable, y compris au clavier.
+  */
+  .item {
+    padding: 0 1rem 1.75rem 1rem;
+    margin: 0 -1rem;
+    position: relative;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color var(--transition), transform var(--transition);
+  }
+
+  .item::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: var(--col-rule);
+    margin-bottom: 1rem;
+  }
+
+  .item h3 {
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.005em;
+  }
+
+  .item p {
+    margin: 0;
+    /* laisse un peu de place pour l'icône de lien en haut à droite */
+    padding-right: 1.75rem;
+  }
+
+  /*
+    ── État survolé / focus ─────────────────────────────────────────────
+    Case un peu plus grisée (couleur déjà utilisée pour la case décorative
+    du hero, --col-aside-bg) + très léger zoom. Discret mais visible.
+    Comme les cases sont désormais jointives (gap: 0), le zoom reste très
+    modéré pour éviter tout chevauchement visuel avec la case voisine.
+  */
+  .item:hover,
+  .item:focus-visible {
+    background-color: var(--col-aside-bg);
+    transform: scale(1.01);
+  }
+
+  .item:focus-visible {
+    outline: 2px solid var(--col-black);
+    outline-offset: 2px;
+  }
+
+  /*
+    ── Icône "changement de page" ───────────────────────────────────────
+    Discrète flèche en haut à droite de la case, invisible au repos.
+    Au survol/focus, elle apparaît avec un léger délai (transition-delay
+    sur la règle :hover/:focus-visible) afin de ne pas surcharger l'effet
+    de survol immédiat tout en indiquant clairement, si la souris reste un
+    instant, qu'un clic mène vers une autre page.
+    Au départ de la souris, elle disparaît sans délai (règle de base).
+  */
+  .project-link-icon {
+    position: absolute;
+    top: 1.1rem;
+    right: 1rem;
+    width: 1.1rem;
+    height: 1.1rem;
+    color: var(--col-black);
+    opacity: 0;
+    transform: translate(-4px, 4px) scale(0.85);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    pointer-events: none;
+  }
+
+  .project-link-icon svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .item:hover .project-link-icon,
+  .item:focus-visible .project-link-icon {
+    opacity: 0.55;
+    transform: translate(0, 0) scale(1);
+    transition-delay: 0.6s;
+  }
+
+  /* ── Mobile / tactile : aperçu au 1er appui, navigation au 2e ─────────────
+     Sur les appareils sans survol réel (souris absente — voir la requête
+     "hover: none" dans assets/js/interior-nav.js), la classe .is-revealed
+     est posée par JavaScript sur la case qui vient d'être touchée une
+     première fois (sa toile est alors affichée à droite, comme un survol
+     simulé). On y rend visibles, SANS le délai habituel de 0.6s, l'icône
+     de lien et un petit indice textuel — pour signaler sans ambiguïté
+     qu'un second appui sur cette même case ouvrira la page.
+     Cette classe n'est jamais posée sur un appareil à survol réel : ces
+     règles restent donc invisibles sur ordinateur de bureau.
+  ── */
+  .item.is-revealed {
+    background-color: var(--col-aside-bg);
+  }
+
+  .item.is-revealed .project-link-icon {
+    opacity: 0.55;
+    transform: translate(0, 0) scale(1);
+    transition-delay: 0s;
+  }
+
+  /*
+    Indice textuel discret, ajouté automatiquement par JavaScript dans
+    chaque .item (voir initProjectCanvases). Invisible par défaut
+    (aussi bien sur ordinateur que sur mobile tant que la case n'a pas
+    été touchée) ; logé dans la marge basse de la case (padding-bottom
+    réservé par .item) pour ne jamais chevaucher le titre ou la
+    description, quelle que soit leur longueur.
+  */
+  .project-tap-hint {
+    position: absolute;
+    right: 1rem;
+    bottom: 0.4rem;
+    max-width: 70%;
+    font-family: var(--font-body);
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    color: var(--col-dim);
+    text-align: right;
+    opacity: 0;
+    transform: translateY(3px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    pointer-events: none;
+  }
+
+  .item.is-revealed .project-tap-hint {
+    opacity: 0.85;
+    transform: translateY(0);
+  }
+
+  /* ── Liste de projets paginée par groupes de 3 ────────────────────────────
+     ───────────────────────────────────────────────────────────────────────
+     Quand une .project-list contient PLUS de 3 .item (n'importe
+     quelle section, n'importe quelle page : Réseaux, Mathématiques,
+     Ressources, Portraits, Laboratoires, Crédits…), assets/js/
+     project-list-paging.js :
+       1. lui ajoute la classe .project-list--paged ci-dessous,
+       2. calcule la hauteur du groupe de 3 cases actuellement affiché et
+          la fixe comme hauteur de la liste (propriété "height" posée en
+          ligne, en JS, et réajustée à chaque arrêt de défilement — car
+          elle dépend du contenu réel : langue, police dyslexie, largeur
+          d'écran, et longueur de texte propre à chaque groupe),
+       3. pose la classe .item--snap-start sur la 1ère case de
+          chaque groupe de 3 (case n°1, 4, 7, 10…), pour que tout
+          défilement (molette de souris, trackpad, glissé tactile,
+          clavier) s'arrête TOUJOURS pile au début d'un groupe — jamais
+          au milieu.
+     S'il y a 3 .item ou moins (cas par défaut actuel), aucune de
+     ces classes n'est posée : la liste reste identique à avant, sans
+     aucun défilement — rien ne change tant que vous n'ajoutez pas une
+     4e case dans le HTML. Ce mécanisme est donc entièrement automatique
+     et ne nécessite AUCUNE modification de ce fichier CSS, quel que soit
+     le nombre de .item ajoutées par la suite.
+  ── */
+  /*
+    ── Réserve horizontale anti-rognage ───────────────────────────────────
+    .item "déborde" volontairement de 1rem de chaque côté (cf.
+    margin/padding négatifs plus haut) pour élargir sa zone de survol, et
+    grossit encore très légèrement au survol (transform: scale(1.01)).
+    Sans cette réserve, overflow-x: hidden ci-dessous (nécessaire pour
+    empêcher l'apparition d'une barre de défilement HORIZONTALE) rognerait
+    ce débordement — y compris, au survol, un tout petit bout du texte
+    lui-même sur les bords. padding élargit donc la zone non rognée de
+    1.5rem de chaque côté ; margin négatif + max-width agrandi d'autant
+    annulent exactement ce surplus, si bien que la liste garde sa largeur
+    et sa position d'origine au pixel près (le texte ne bouge pas).
+  ── */
+  .project-list--paged {
+    max-width: calc(65ch + 3rem);
+    margin: 0 -1.5rem;
+    padding: 0 1.5rem;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    /* Réserve toujours la place de la barre de défilement (même quand
+       elle n'est pas affichée) pour éviter un micro-réajustement de
+       largeur des cases au moment où le défilement s'active. */
+    scrollbar-gutter: stable;
+    /*
+      ── Barre de défilement bien visible ─────────────────────────────
+      Volontairement plus marquée qu'une barre "discrète" classique,
+      pour bien signaler que la liste se parcourt à la molette — tout en
+      restant sobre : uniquement des couleurs déjà utilisées ailleurs
+      sur le site (case grisée au survol + couleur du texte), aucune
+      couleur d'accent ajoutée, aucun dégradé.
+    */
+    scrollbar-width: auto;
+    scrollbar-color: var(--col-black) var(--col-aside-bg);
+  }
+
+  /* Barre de défilement bien visible (navigateurs à moteur WebKit/Blink). */
+  .project-list--paged::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  .project-list--paged::-webkit-scrollbar-track {
+    background: var(--col-aside-bg);
+    border-radius: 5px;
+  }
+
+  .project-list--paged::-webkit-scrollbar-thumb {
+    background: var(--col-black);
+    border-radius: 5px;
+    border: 2px solid var(--col-aside-bg);
+  }
+
+  /* Au survol du pouce : très légèrement plus épais (bordure réduite),
+     sans changer de couleur — discret mais perceptible. */
+  .project-list--paged::-webkit-scrollbar-thumb:hover {
+    border-width: 1px;
+  }
+
+  /*
+    ── [COMMENTÉ] Variante : défilement HORIZONTAL plutôt que vertical ───
+    ───────────────────────────────────────────────────────────────────
+    Pour faire défiler les groupes de 3 cases de gauche à droite plutôt
+    que de haut en bas, voici les déclarations CSS à substituer à celles
+    ci-dessus (remplacer .project-list--paged par ce bloc, et passer
+    .panel-body en une seule colonne le temps du test si vous voulez
+    comparer visuellement). ATTENTION : ne pas coller ce qui suit tel
+    quel dans ce fichier sans retirer les commentaires CSS qu'il
+    contiendrait, les commentaires CSS ne s'imbriquant pas entre eux.
+
+      .project-list--paged {
+        display: flex;        (au lieu de "display: grid" plus haut)
+        flex-direction: row;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        scrollbar-gutter: stable;
+      }
+      .project-list--paged::-webkit-scrollbar { height: 10px; width: auto; }
+
+    IMPORTANT — ce bloc CSS seul ne suffit pas : assets/js/
+    project-list-paging.js calcule actuellement tout en fonction de la
+    hauteur (item.getBoundingClientRect().top/bottom, list.scrollTop,
+    deltaY de la molette). Pour un vrai défilement horizontal, il faudrait
+    aussi y remplacer ces repères verticaux par leurs équivalents
+    horizontaux (left/right, scrollLeft, deltaX). Vu l'ampleur du
+    changement, ce bloc est laissé en commentaire à titre de point de
+    départ plutôt que d'être activé par défaut.
+  ── */
+
+  /*
+    scroll-snap-align: start  → ce point d'ancrage s'aligne sur le haut
+                                 de la liste lors d'un arrêt de défilement.
+    scroll-snap-stop: always  → empêche un défilement rapide (glissé
+                                 tactile rapide, par exemple) de "sauter"
+                                 par-dessus un groupe entier : chaque
+                                 groupe de 3 est obligatoirement marqué
+                                 un par un, jamais deux à la fois.
+  */
+  .item--snap-start {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  /* ── Toile de contenu (à droite) ──────────────────────────────────────────
+     Réserve un espace de taille cohérente où afficher, au survol d'un
+     .item, du contenu libre (texte, image, etc.).
+     Une seule .project-canvas est visible à la fois (.active),
+     les autres restent en display: none.
+     Si la souris quitte .section-panel, plus aucune toile n'est active
+     (cf. interior-nav.js) : la toile disparaît.
+     position: sticky → la toile reste visible pendant le défilement de
+     la liste de projets, si celle-ci est plus longue qu'elle.
+  ── */
+  .project-canvas-area {
+    position: sticky;
+    top: 2rem;
+    align-self: start;
+    /* min-width: 0 → autorise cette zone à rétrécir sous la largeur de
+       son contenu si besoin (par défaut, une grille ne le permet pas
+       automatiquement : voir la correction de .panel-body ci-dessous,
+       responsable du débordement horizontal corrigé sur mobile). */
+    min-width: 0;
+  }
+
+  .project-canvas {
+    display: none;
+    min-height: 28rem;
+    border-radius: 6px;
+    background: var(--col-aside-bg);
+    padding: 2rem;
+    /*
+      Filet de sécurité : cette "toile" est volontairement prévue pour
+      accueillir un contenu libre, ajouté au cas par cas (texte, image,
+      tableau...). Si ce contenu s'avère malgré tout plus large que la
+      toile (ex. un futur tableau, un bloc de code, une image non
+      redimensionnée), il défile horizontalement DANS la toile plutôt que
+      de faire déborder toute la page — invisible tant que rien ne
+      déborde réellement.
+    */
+    overflow-x: auto;
+  }
+
+  .project-canvas.active {
+    display: grid;
+    align-content: start;
+    gap: 1rem;
+    animation: fadeIn 0.35s ease;
+  }
+
+  /* ── Tableau de téléchargement du CV (langues × versions) ────────────────
+     Tableau à double entrée : une ligne par langue (FR / DE / EN, comme
+     dans le sélecteur du tiroir), une colonne par version (1 page / 2 pages).
+     Pas de fond gris pour cette toile (.cv-canvas), table centrée et aérée,
+     uniquement des séparateurs horizontaux fins (--col-rule), pas de
+     lignes verticales, taille de police proche du corps de texte.
+  ── */
+  .project-canvas.cv-canvas {
+    background: none;
+  }
+
+  .cv-table {
+    margin: auto;
+    border-collapse: collapse;
+    font-family: var(--font-body);
+    font-size: clamp(0.85rem, 1.1vw, 1rem);
+    color: var(--col-black);
+  }
+
+  .cv-table th,
+  .cv-table td {
+    padding: 0.85rem 1.75rem;
+    border-bottom: 1px solid var(--col-rule);
+    text-align: center;
+    font-weight: 400;
+  }
+
+  /* En-têtes de colonnes ("1 page" / "2 pages") */
+  .cv-table thead th {
+    font-weight: 700;
+    padding-top: 0;
+  }
+
+  /* En-têtes de lignes (FR / DE / EN), même esprit que .lang-item */
+  .cv-table tbody th {
+    text-align: left;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  /* Dernière ligne sans séparateur du bas, pour une table "aérée" */
+  .cv-table tbody tr:last-child th,
+  .cv-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .cv-table a {
+    color: var(--col-black);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--transition);
+  }
+
+  .cv-table a:hover,
+  .cv-table a:focus-visible {
+    border-color: currentColor;
+  }
+
+  .cv-table a:focus-visible {
+    outline: 2px solid var(--col-black);
+    outline-offset: 2px;
+  }
+
+
+
+
+
+  @media (max-width: 1000px) {
+
+  .hero {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    min-height: auto;
+  }
+
+  .hero-left {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .hero-aside {
+    display: none;
+  }
+
+  .hero-nav {
+    grid-column: 1;
+    grid-row: auto;
+    padding: 2rem;
+    gap: 2rem;
+  }
+
+  .hero-body {
+    padding: 2rem;
+  }
+
+  .hero-description-wrap {
+    margin-left: 0;
+    max-width: 100%;
+  }
+
+  /* La toile passe sous la liste de projets et n'est plus "collée" */
+  .panel-body {
+    /*
+      ── Correction du débordement horizontal sur mobile ──────────────
+      "1fr" seul a une largeur MINIMALE automatique égale à celle de son
+      contenu le plus large (ici, la toile active : ex. le tableau de
+      téléchargement du CV ci-dessous). Si ce contenu est plus large que
+      l'espace réellement disponible, la grille s'agrandit quand même
+      pour l'accueillir — et fait déborder toute la page horizontalement.
+      "minmax(0, 1fr)" fixe explicitement cette largeur minimale à 0 :
+      la colonne se limite enfin à l'espace réellement disponible, et
+      c'est le contenu lui-même (voir .project-canvas plus haut, déjà
+      doté d'un défilement horizontal de secours) qui s'adapte ou défile
+      à l'intérieur de sa toile si besoin — jamais toute la page.
+    */
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.5rem;
+  }
+
+  .project-canvas-area {
+    position: static;
+  }
+
+  .project-canvas {
+    min-height: 18rem;
+  }
+
+  /*
+    Padding latéral réduit : 4rem de chaque côté (valeur confortable sur
+    grand écran) ne laissait plus assez de place au contenu sur un
+    téléphone étroit — c'est ce qui, combiné au point ci-dessus,
+    provoquait le débordement horizontal.
+  */
+  .section-panel {
+    padding: 2.5rem 1.5rem;
+  }
+
+  /*
+    La toile du CV n'a pas de fond (cv-canvas, voir plus haut) : son
+    padding généreux de 2rem ne sert qu'à l'aérer visuellement, pas à
+    la distinguer d'un arrière-plan. On le réduit ici pour laisser le
+    tableau respirer sans risquer de déborder sur les téléphones les
+    plus étroits.
+  */
+  .project-canvas.cv-canvas {
+    padding: 1rem 0.25rem;
+  }
+
+  .cv-table th,
+  .cv-table td {
+    padding: 0.7rem 1rem;
+  }
+}

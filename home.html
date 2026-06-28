@@ -1,0 +1,277 @@
+<!--
+=============================================================================
+  HOME.HTML — Page d'accueil de Greenbeans
+  (anciennement nommée accueil.html ; le fichier a été renommé en anglais
+  pour que l'URL soit compréhensible par tous les visiteurs.)
+  =============================================================================
+
+  Cette page a été réorganisée pour séparer le VISUEL (CSS, structure HTML,
+  comportements JavaScript) du CONTENU (textes, traductions).
+
+  Fichiers chargés :
+    - assets/css/common.css   → réinitialisation, variables, tiroir
+                                 hamburger, mode sombre, police dyslexie...
+                                 (partagé par TOUTES les pages du site)
+    - assets/css/accueil.css   → mise en page propre à cette page
+                                 (grille 3 colonnes : média | menu | titre)
+
+    - assets/js/i18n.js        → moteur de traduction FR/DE/EN
+    - assets/js/drawer.js      → tiroir de navigation + bouton hamburger
+                                 (injectés en JS, partagés par toutes les pages)
+    - assets/js/accueil.js     → effet de survol du menu / panneau média
+
+  data-page="accueil" : indique à i18n.js quel fichier de traductions charger
+  (accueil_<lang>.json) en complément du fichier commun
+  (common_<lang>.json, utilisé par le tiroir de navigation).
+=============================================================================
+-->
+
+<!DOCTYPE html>
+<!--
+  DOCTYPE html : déclare que ce document suit la norme HTML5.
+  lang="fr"    : indique la langue principale du document (français).
+                 Utile pour les lecteurs d'écran et les moteurs de recherche.
+                 Mis à jour dynamiquement par i18n.js lors d'un changement
+                 de langue.
+-->
+<html lang="fr">
+
+<head>
+  <!--
+    charset="UTF-8" : encodage universel gérant accents, caractères spéciaux, etc.
+    viewport        : essentiel pour que la page s'adapte aux mobiles.
+                      width=device-width → largeur réelle de l'écran.
+                      initial-scale=1   → pas de zoom forcé au chargement.
+    description     : résumé affiché par les moteurs de recherche (SEO).
+    author          : auteur du document, visible dans le code source.
+    theme-color     : couleur de la barre de navigation sur mobile (Chrome Android).
+    title           : texte affiché dans l'onglet du navigateur.
+  -->
+  <meta charset="UTF-8" />
+  <!--
+    ── Préférences d'accessibilité mémorisées (mode sombre / police dyslexie) ──
+    Applique immédiatement les classes "dark-mode" / "dyslexic-font" sur
+    <html>, AVANT le rendu de la page, à partir des préférences mémorisées
+    par assets/js/drawer.js (sessionStorage, puis localStorage, puis
+    cookie). Voir assets/css/common.css : les transitions de couleur sont
+    désactivées jusqu'à l'ajout de la classe "js-ready" (posée plus tard,
+    une fois la page chargée), donc ce premier rendu ne peut pas
+    "flasher" entre clair et sombre, quel que soit l'ordre de chargement
+    du CSS/JS.
+  -->
+  <script>
+  (function () {
+    function read(key) {
+      try {
+        var v = sessionStorage.getItem(key);
+        if (v !== null) return v;
+      } catch (e) {}
+      try {
+        var v2 = localStorage.getItem(key);
+        if (v2 !== null) return v2;
+      } catch (e) {}
+      var m = document.cookie.match(new RegExp('(?:^|; )' + key + '=([^;]*)'));
+      return m ? decodeURIComponent(m[1]) : null;
+    }
+    if (read('greenbeans-dark-mode') === '1') {
+      document.documentElement.classList.add('dark-mode');
+    }
+    if (read('greenbeans-dyslexic-font') === '1') {
+      document.documentElement.classList.add('dyslexic-font');
+    }
+  })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Greenbeans — portolio" />
+  <meta name="author" content="Greenbeans" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>Greenbeans</title>
+
+  <!-- ── CSS partagé (variables, tiroir, mode sombre, dyslexie...) ── -->
+  <link rel="stylesheet" href="assets/css/common.css" />
+  <!-- ── CSS propre à la page d'accueil (grille 3 colonnes) ── -->
+  <link rel="stylesheet" href="assets/css/accueil.css" />
+</head>
+
+<!--
+  data-page="accueil" : utilisé par i18n.js et drawer.js pour savoir sur
+  quelle page on se trouve (chargement des traductions, mise en évidence
+  du lien actif dans le tiroir de navigation).
+-->
+<body data-page="accueil">
+
+<!-- =============================================================================
+     HTML
+============================================================================= -->
+
+<!--
+  .grid : conteneur principal à 3 colonnes défini en CSS.
+  Les 3 enfants directs correspondent aux 3 colonnes.
+-->
+<div class="grid">
+
+  <!-- ── COLONNE 1 : panneau visuel gauche ─────────────────────────────── -->
+  <!--
+    Chaque .media-layer correspond à l'état visuel d'un item de menu.
+    data-section="…"  : attribut personnalisé reliant la couche à son item.
+    La couche "default" est visible au chargement (classe .active).
+    Pour remplacer une image : modifiez l'attribut src du <img> correspondant.
+    Si vous n'avez pas d'image, supprimez le <img> et la couche garde
+    la couleur de fond définie en CSS sur .panel-media.
+  -->
+  <section class="panel-media" aria-label="Contenu visuel">
+
+    <!-- Couche par défaut (aucun item survolé) -->
+    <div class="media-layer active" data-section="default">
+      <!--
+        Remplacez src par le chemin de votre image principale.
+        alt="" car c'est une image décorative ; si elle porte un sens,
+        rédigez une description dans alt="…".
+      -->
+      <img
+        class="media-bg"
+        src=""
+        alt=""
+        style="background: linear-gradient(135deg, #c0392b 0%, #e67e22 40%, #8e44ad 100%);"
+      />
+    </div>
+
+    <!-- Couche : Projets -->
+    <div class="media-layer" data-section="projets">
+      <img
+        class="media-bg"
+        src=""
+        alt=""
+        style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);"
+      />
+      <div class="media-text">
+        <h2 data-i18n="accueil-projets-title">projets</h2>
+        <p data-i18n="accueil-projets-desc">
+          Une sélection de travaux récents, réalisés dans différents contextes.
+        </p>
+      </div>
+    </div>
+
+    <!-- Couche : Notions -->
+    <div class="media-layer" data-section="notions">
+      <img
+        class="media-bg"
+        src=""
+        alt=""
+        style="background: linear-gradient(135deg, #134e5e 0%, #71b280 100%);"
+      />
+      <div class="media-text">
+        <h2 data-i18n="accueil-notions-title">notions</h2>
+        <p data-i18n="accueil-notions-desc">
+          Des mémos de cours de réseau, d'informatique,... et autres.
+        </p>
+      </div>
+    </div>
+
+    <!-- Couche : Histoire -->
+    <div class="media-layer" data-section="histoire">
+      <img
+        class="media-bg"
+        src=""
+        alt=""
+        style="background: linear-gradient(135deg, #373b44 0%, #4286f4 100%);"
+      />
+      <div class="media-text">
+        <h2 data-i18n="accueil-histoire-title">histoire</h2>
+        <p data-i18n="accueil-histoire-desc">
+          Regard sur l'évolution de certains pans de l'informatique, 
+          portraits de personnalités.
+        </p>
+      </div>
+    </div>
+
+    <!-- Couche : à propos -->
+    <div class="media-layer" data-section="apropos">
+      <img
+        class="media-bg"
+        src=""
+        alt=""
+        style="background: linear-gradient(135deg, #2c2c2c 0%, #4a4a4a 100%);"
+      />
+      <div class="media-text">
+        <h2 data-i18n="accueil-apropos-title">à propos</h2>
+        <p data-i18n="accueil-apropos-desc">
+          Retrouvez les informations techniques et légales du site,
+          des moyens de contact, etc.
+        </p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ── COLONNE 2 : navigation ─────────────────────────────────────────── -->
+  <!--
+    role="navigation" + aria-label : signale aux lecteurs d'écran
+    que ce bloc est le menu principal du site.
+    Les <a> sont de vrais liens ; adaptez href à votre arborescence.
+
+    Les libellés portent des attributs data-i18n="drawer-..." : ce sont les
+    MÊMES clés de traduction que celles utilisées par le tiroir de
+    navigation (common_<lang>.json), pour garder des libellés
+    cohérents entre ce menu et le tiroir hamburger.
+  -->
+  <nav class="panel-nav" role="navigation" aria-label="Menu principal">
+
+    <a class="nav-item" href="projects.html" data-target="projets" target="_blank" rel="noopener noreferrer">
+      <span data-i18n="drawer-projets">projets</span>
+    </a>
+
+    <a class="nav-item" href="concepts.html" data-target="notions" target="_blank" rel="noopener noreferrer">
+      <span data-i18n="drawer-notions">notions</span>
+    </a>
+
+    <a class="nav-item" href="history.html" data-target="histoire" target="_blank" rel="noopener noreferrer">
+      <span data-i18n="drawer-histoire">histoire</span>
+    </a>
+
+    <a class="nav-item" href="about.html" data-target="apropos" target="_blank" rel="noopener noreferrer">
+      <span data-i18n="drawer-apropos">à propos</span>
+    </a>
+
+  </nav>
+
+  <!-- ── COLONNE 3 : titre vertical ────────────────────────────────────── -->
+  <!--
+    aria-hidden="true" : le titre est décoratif ici (tronqué, illisible
+    sans voir l'écran) ; les lecteurs d'écran l'ignorent.
+    Le vrai nom du site est dans <title> et éventuellement dans un <h1>
+    que vous pouvez ajouter dans une des couches média.
+
+    .site-subtitle : petite légende discrète qui "justifie" le nom du
+    site, elle aussi écrite en vertical (même sens de lecture que le
+    titre, juste plus petite et plus pâle). Volontairement dépourvue de
+    tout attribut data-i18n et marquée lang="en" : ce texte reste TOUJOURS
+    en anglais, quelle que soit la langue choisie par le visiteur — comme
+    le nom du site lui-même, qui n'est jamais traduit.
+  -->
+  <aside class="panel-title" aria-hidden="true">
+    <span class="site-title">greenbeans</span>
+    <span class="site-subtitle" lang="en">&hellip;because I like them.</span>
+  </aside>
+
+</div><!-- /.grid -->
+
+<!-- =============================================================================
+     JAVASCRIPT
+     Le tiroir de navigation (hamburger) est injecté par drawer.js : il
+     n'y a donc rien d'autre à écrire ici que l'initialisation.
+============================================================================= -->
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/drawer.js"></script>
+<script src="assets/js/accueil.js"></script>
+<script src="assets/js/intro-overlay.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    SiteApp.initDrawer();
+    SiteApp.initAccueilMedia();
+    SiteApp.initIntroOverlay();
+  });
+</script>
+
+</body>
+</html>
