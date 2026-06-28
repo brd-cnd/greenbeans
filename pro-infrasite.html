@@ -94,48 +94,6 @@
     </p>
   </header>
 
-  <!-- Compétences couvertes -->
-  <section class="page-section">
-    <h2 data-i18n="p4">Compétences couvertes</h2>
-    <ul>
-      <li data-i18n="p5">Bloc 1 : Support et mise à disposition de services informatiques
-        <ul>
-          <li data-i18n="p6">Gérer le patrimoine informatique
-            <ul>
-              <li data-i18n="p7">Assurer la continuité des services : mise en place d'un relais DHCP sur le routeur VyOS</li>
-            </ul>
-          </li>
-          <li data-i18n="p8">Travailler en mode projet
-            <ul>
-              <li data-i18n="p9">Analyser les objectifs et les modalités d'organisation d'un projet</li>
-              <li data-i18n="p10">Mettre en place un suivi du projet</li>
-            </ul>
-          </li>
-          <li data-i18n="p11">Mettre à disposition des utilisateurs un service informatique
-            <ul>
-              <li data-i18n="p12">Déployer un service : Active Directory, serveur de fichier iSCSI</li>
-              <li data-i18n="p13">Accompagner les utilisateurs : fourniture des données de connexion avec indication de stratégie de mot de passe</li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-      <li data-i18n="p14">Bloc 2 : Solutions d'Infrastructures, Réseaux et Systèmes
-        <ul>
-          <li data-i18n="p15">Concevoir une solution d'infrastructure réseau
-            <ul>
-              <li data-i18n="p16">Étude et prototypage de l'infrastructure système Windows Active Directory de l'ETP : création des unités d'organisation</li>
-            </ul>
-          </li>
-          <li data-i18n="p17">Exploiter, dépanner et superviser une solution d'infrastructure réseau
-            <ul>
-              <li data-i18n="p18">Étude de l'automatisation des tâches d'administration système sous Windows : écriture de scripts PowerShell</li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </section>
-
   <!-- Mission 1 -->
   <section class="page-section">
     <h2 data-i18n="p19">Mission 1 — Mettre en place le projet et réaliser la maquette de l'infrastructure réseau du site de Chasseneuil</h2>
@@ -166,14 +124,14 @@
     <p data-i18n="p35">Les contextes présentant Tierslieux86 ont été récupérés et sont téléchargeables en haut de cette page. S'en est suivi une création de compte Trello, puis une création de projet dans cette application.</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran de Trello"></div>
+      <img src="assets/pictures/AP1/trelloAP1.png" alt="Capture d'écran de Trello">
       <p class="fig-caption" data-i18n="p36">L'application Trello donne un visuel du projet</p>
     </div>
 
     <p data-i18n="p37">En ce qui concerne la tâche 2, l'ensemble de la documentation technique est retrouvable dans le PDF téléchargeable. Elle contient l'analyse des besoins, leur traduction technique, les justifications des choix et les manières de procéder. Il en est ressorti un besoin d'intégrer un switch L3 au réseau pour qu'il en soit le cœur, mais aussi, au vu des nombreux clients et de l'accès Wi-Fi sécurisé, une segmentation du réseau en VLAN. Il nous est demandé un début de maquette, donc l'ajout d'équipement réseau et de câblage pour les connexions a été réalisé.</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran de la maquette réseau sous Packet Tracer"></div>
+      <img src="assets/pictures/AP1/reseau1.png" alt="Capture d'écran de la maquette réseau sous Packet Tracer">
       <p class="fig-caption" data-i18n="p38">Une représentation du réseau de l'ETP de Chasseneuil sous Packet Tracer</p>
     </div>
 
@@ -234,21 +192,21 @@
     <p data-i18n="p55">C'est au cours de la tâche 3 que nous avons configuré les switchs et routeurs. D'abord, cela a consisté à sécuriser les équipements réseau. Puis, après s'être mis d'accord sur un nommage des VLAN, ces derniers ont été implantés sur les switchs. Les postes ont ensuite été affectés à ces VLAN en fonction du port sur lequel ils étaient branchés. Après cela, on se rend sur le switch de niveau 3 et on configure les SVI, qui ont pour adresse les passerelles par défaut du réseau auquel ils appartiennent. Bien sûr, il ne faudrait pas oublier d'indiquer IP routing pour que le routage inter-VLAN soit effectif. Ce n'est pas fini sur le switch L3 : il faut aussi déclarer le relais DHCP qui permet l'attribution des adresses IP des postes des bureaux par SRVINTRA, le contrôleur de domaine situé dans le réseau des serveurs. Enfin, on indique, toujours sur le switch L3, la route par défaut à prendre pour les paquets. Il s'agit de la liaison point à point avec le routeur. À cette étape, c'est désormais à son tour : on déclare ici des routes statiques.</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran des routes détectées par le routeur"></div>
+      <img src="assets/pictures/AP1/configRouteur.png" alt="Capture d'écran des routes détectées par le routeur">
       <p class="fig-caption" data-i18n="p56">Routes détectées par le routeur</p>
     </div>
 
     <p data-i18n="p57">La simulation d'Internet n'est pas très élaborée, elle est détaillée dans la documentation technique. Des tests ping sont lancés pour connaître la connectique :</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran d'un ping 8.8.8.8"></div>
+      <img src="assets/pictures/AP1/pingInternet.png" alt="Capture d'écran d'un ping 8.8.8.8">
       <p class="fig-caption" data-i18n="p58">Un ping 8.8.8.8 depuis un poste des bureaux qui fonctionne</p>
     </div>
 
     <p data-i18n="p59">En restant sur l'invite de commande, on vérifie rapidement qu'on a une adresse IP dans la bonne plage, avec un serveur DHCP et une passerelle bien configurés.</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran de la configuration IP d'un poste des bureaux"></div>
+      <img src="assets/pictures/AP1/ipconfigAll.png" alt="Capture d'écran de la configuration IP d'un poste des bureaux">
       <p class="fig-caption" data-i18n="p60">Configuration IP d'un poste des bureaux</p>
     </div>
   </section>
@@ -278,17 +236,17 @@
     <p data-i18n="p74">Sur Azure, on récupère les VM Windows : Windows 11 Education N et Windows Server 2022. Pour VyOS, il faut aller sur le site de VyOS (https://vyos.net/get/stream/).</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran de la machine virtuelle Windows 11 Education N"></div>
+      <img src="assets/pictures/AP1/win11.png" alt="Capture d'écran de la machine virtuelle Windows 11 Education N">
       <p class="fig-caption" data-i18n="p75">Machine virtuelle Windows 11 Education N</p>
     </div>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran de la machine virtuelle Windows Server 2022"></div>
+      <img src="assets/pictures/AP1/win22.png" alt="Capture d'écran de la machine virtuelle Windows Server 2022">
       <p class="fig-caption" data-i18n="p76">Machine Windows Server 2022</p>
     </div>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran du site de VyOS"></div>
+      <img src="assets/pictures/AP1/vyos.png" alt="Capture d'écran du site de VyOS">
       <p class="fig-caption" data-i18n="p77">Site de téléchargement de VyOS</p>
     </div>
 
@@ -308,40 +266,40 @@
     <p data-i18n="p87">Voici l'état des interfaces du routeur :</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran du paramétrage des interfaces du routeur"></div>
+      <img src="assets/pictures/AP1/interfacesRouteur.jpg" alt="Capture d'écran du paramétrage des interfaces du routeur">
       <p class="fig-caption" data-i18n="p88">Aperçu des interfaces du routeur</p>
     </div>
 
     <p data-i18n="p89">Le serveur est bien contrôleur de domaine...</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran du paramétrage des réglages du contrôleur de domaine"></div>
+      <img src="assets/pictures/AP1/dc.png" alt="Capture d'écran du paramétrage des réglages du contrôleur de domaine">
       <p class="fig-caption" data-i18n="p90">Options du contrôleur de domaine</p>
     </div>
 
     <p data-i18n="p91">...avec le DHCP réglé. Preuve à l'appui : le poste a reçu une adresse IP dans la plage spécifiée.</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran de la configuration IP du poste"></div>
+      <img src="assets/pictures/AP1/posteDHCP.png" alt="Capture d'écran de la configuration IP du poste">
       <p class="fig-caption" data-i18n="p92">Configuration IP du poste</p>
     </div>
 
     <p data-i18n="p93">Par ailleurs, l'arborescence est faite, grâce au script ArborescencePrimaire.ps1.</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran de l'exécution du script Powershell"></div>
+      <img src="assets/pictures/AP1/powershell.png" alt="Capture d'écran de l'exécution du script Powershell">
       <p class="fig-caption" data-i18n="p94">Exécution du script Powershell</p>
     </div>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran des unités d'organisation de l'AD"></div>
+      <img src="assets/pictures/AP1/arbreAD.png" alt="Capture d'écran des unités d'organisation de l'AD">
       <p class="fig-caption" data-i18n="p95">Unités d'organisation nouvellement créées grâce au script</p>
     </div>
 
     <p data-i18n="p96">Enfin, les accès aux droits ont été correctement configurés (voir documentation technique pour plus de détails). Effectivement, madame Pervenche est une employée et n'a pas de droits de modification, contrairement aux responsables.</p>
 
     <div class="fig">
-      <div class="placeholder-media" role="img" aria-label="Capture d'écran d'un refus de droits"></div>
+      <img src="assets/pictures/AP1/droits.png" alt="Capture d'écran d'un refus de droits">
       <p class="fig-caption" data-i18n="p97">Refus de modification du dossier partagé pour madame Pervenche</p>
     </div>
   </section>
