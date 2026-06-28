@@ -440,6 +440,68 @@
     transition-delay: 0.6s;
   }
 
+  /* ── Item indisponible / en cours ───────────────────────────────────────
+     Ajoutez la classe "unavailable" sur un .item dont la page de destination
+     n'est pas encore construite. Un seul ajout de classe suffit :
+     - l'item est grisé et le curseur passe en "not-allowed"
+     - tout clic et tout survol actif sont neutralisés
+     - l'icône de lien en haut à droite est masquée
+     - la toile correspondante affiche un sablier centré (SVG inline dans
+       le CSS, dessiné à la main — aucune dépendance externe, aucun droit
+       tiers à gérer)
+
+     Usage HTML : <div class="item unavailable" …>…</div>
+                  <div class="project-canvas unavailable" …>…</div>
+  ── */
+  .item.unavailable {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* On réactive pointer-events pour que le curseur not-allowed
+     reste visible au survol (pointer-events: none l'empêcherait). */
+  .item.unavailable {
+    pointer-events: auto;
+  }
+
+  /* Neutralise le zoom et le changement de fond au survol */
+  .item.unavailable:hover,
+  .item.unavailable:focus-visible {
+    background-color: transparent;
+    transform: none;
+  }
+
+  /* Masque l'icône de lien flèche */
+  .item.unavailable:hover .project-link-icon,
+  .item.unavailable:focus-visible .project-link-icon {
+    opacity: 0;
+    transform: translate(-4px, 4px) scale(0.85);
+    transition-delay: 0s;
+  }
+
+  /* Toile indisponible : sablier centré en SVG (dessiné à la main,
+     aucun droit tiers). Le SVG est encodé en data URI directement
+     dans le CSS pour rester autonome et ne dépendre d'aucun fichier
+     image externe. La couleur du trait reprend --col-dim (#707070). */
+  .project-canvas.unavailable {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .project-canvas.unavailable::after {
+    content: '';
+    display: block;
+    width: 3rem;
+    height: 3rem;
+    opacity: 0.35;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23707070' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 3h14M5 21h14M7 3v4a5 5 0 0 0 5 5 5 5 0 0 0 5-5V3M7 21v-4a5 5 0 0 1 5-5 5 5 0 0 1 5 5v4'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
   /* ── Mobile / tactile : aperçu au 1er appui, navigation au 2e ─────────────
      Sur les appareils sans survol réel (souris absente — voir la requête
      "hover: none" dans assets/js/interior-nav.js), la classe .is-revealed
@@ -643,22 +705,30 @@
   }
 
   .project-canvas {
-    display: none;
-    min-height: 28rem;
-    border-radius: 6px;
-    background: var(--col-aside-bg);
-    padding: 2rem;
-    /*
-      Filet de sécurité : cette "toile" est volontairement prévue pour
-      accueillir un contenu libre, ajouté au cas par cas (texte, image,
-      tableau...). Si ce contenu s'avère malgré tout plus large que la
-      toile (ex. un futur tableau, un bloc de code, une image non
-      redimensionnée), il défile horizontalement DANS la toile plutôt que
-      de faire déborder toute la page — invisible tant que rien ne
-      déborde réellement.
-    */
-    overflow-x: auto;
-  }
+  display: none;
+  width: 100%;
+  height: 28rem;          /* taille fixe, remplace min-height */
+  border-radius: 6px;
+  background: var(--col-aside-bg);
+  padding: 2rem;
+  overflow-x: auto;
+  box-sizing: border-box;
+}
+
+/* Si la toile contient une image, on retire le fond gris et le padding */
+.project-canvas:has(img) {
+  background: none;
+  padding: 0;
+}
+
+/* L'image remplit toute la toile, recadrée proprement */
+.project-canvas img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+}
 
   .project-canvas.active {
     display: grid;
