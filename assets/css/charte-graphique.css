@@ -410,3 +410,21 @@ li + li {
     grid-template-columns: 1fr;
   }
 }
+
+/* ── Paragraphes dans les pages de contenu simple ───────────────────────────
+   Pleine largeur de la colonne (on lève le max-width: 38em de la règle p
+   globale, pensée pour les pages intérieures avec hero) et justification
+   du texte, adaptée à la lecture de documents techniques longs. */
+.page-frame p {
+  max-width: none;
+  text-align: justify;
+}
+
+/* ── H3 dans les pages de contenu simple ────────────────────────────────────
+   La règle h3 globale ne pose pas de marge haute car les h3 sont utilisés
+   dans des contextes très variés (cards, hero, sections). Dans .page-frame
+   (pages de contenu long type atelier), on leur donne de l'air pour que
+   chaque sous-titre respire clairement au-dessus de son bloc. */
+.page-frame h3 {
+  margin-top: clamp(1.75rem, 3vw, 2.5rem);
+}
