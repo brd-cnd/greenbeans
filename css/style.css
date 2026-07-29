@@ -751,3 +751,80 @@ main p {
     -webkit-overflow-scrolling: touch;
   }
 }
+
+/* -------------------------------------------------------------------------
+   Disclaimer d'arrivée sur le site (une seule fois, cf. js/site-disclaimer.js)
+   ------------------------------------------------------------------------- */
+
+#disclaimerOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+#disclaimerPanel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 301;
+  width: 90%;
+  max-width: 480px;
+  max-height: 85vh;
+  overflow-y: auto;
+  background: var(--col-white);
+  border-radius: 6px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  padding: var(--space-4);
+}
+
+.disclaimerBody p {
+  margin: 0 0 var(--space-2) 0;
+}
+
+.disclaimerBody p:last-child {
+  margin-bottom: 0;
+}
+
+.disclaimerBody .eyebrow {
+  margin-bottom: var(--space-1);
+}
+
+.disclaimerBody h3 {
+  margin: 0 0 var(--space-3) 0;
+}
+
+#disclaimerClose {
+  display: block;
+  margin: var(--space-4) 0 0 auto;
+  padding: 0.6em 1.4em;
+  border: 1px solid var(--col-black);
+  background: var(--col-white);
+  color: var(--col-black);
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+#disclaimerClose:hover:not(:disabled),
+#disclaimerClose:focus-visible:not(:disabled) {
+  background: var(--col-black);
+  color: var(--col-white);
+}
+
+#disclaimerClose:disabled {
+  cursor: not-allowed;
+  border-color: var(--col-rule);
+  color: var(--col-dim);
+}
+
+@media (max-width: 600px) {
+  #disclaimerPanel {
+    width: 92%;
+    padding: var(--space-3);
+  }
+}
