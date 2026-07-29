@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <script>
+    (function () {
+      try {
+        var theme = localStorage.getItem('greenbeans-theme');
+        if (theme === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {}
+      try {
+        var font = localStorage.getItem('greenbeans-font');
+        if (font === 'dyslexic') {
+          document.documentElement.setAttribute('data-font', 'dyslexic');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <title>greenbeans • about</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/charte-graphique.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/site-header.js" defer></script>
+  <script src="js/site-settings.js" defer></script>
+</head>
+<body>
+
+  <site-header section="about"></site-header>
+
+  <main>
+    <h1>À propos</h1>
+    <p>Vous souhaitez en savoir plus sur le site ? Mon parcours ? 
+      Vous êtes au bon endroit.
+    </p>
+
+    <h2>Informations du site</h2>
+    <p>
+      Les mentions légales sont accessibles depuis le sous-menu (À propos > Informations du site > Mentions légales), 
+      de la même manière que la charte graphique ou les crédits pour les médias utilisés durant la création du site.
+    </p>
+
+    <h2>Informations personnelles</h2>
+    <p>
+      Pour en savoir plus sur ma formation ou mon expérience, téléchargez mon CV. Plusieurs langues sont disponibles, 
+      et vous avez également une page qui fait le parallèle entre les différents systèmes de formations selon certains 
+      pays.
+    </p>
+  </main>
+
+  <site-settings></site-settings>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <script>
+    (function () {
+      try {
+        var theme = localStorage.getItem('greenbeans-theme');
+        if (theme === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {}
+      try {
+        var font = localStorage.getItem('greenbeans-font');
+        if (font === 'dyslexic') {
+          document.documentElement.setAttribute('data-font', 'dyslexic');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <title>greenbeans • notions</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/charte-graphique.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/site-header.js" defer></script>
+  <script src="js/site-settings.js" defer></script>
+  <script src="js/site-articles.js" defer></script>
+  <script src="js/site-search.js" defer></script>
+</head>
+<body>
+
+  <!-- Page collectionArticles : Notions > Mathématiques. -->
+  <site-header section="notions" submenu="mathematics"></site-header>
+
+  <main>
+    <h1>Mathématiques</h1>
+
+    <div class="searchBarWrapper">
+      <input
+        type="search"
+        id="searchBar"
+        placeholder="Rechercher..."
+        aria-label="Rechercher un article"
+      >
+      <ul id="searchResults" class="searchResults" hidden></ul>
+    </div>
+
+    <h2 id="articlesTitle">Articles</h2>
+
+    <ul class="articlesList"></ul>
+  </main>
+
+  <site-settings></site-settings>
+</body>
+</html>

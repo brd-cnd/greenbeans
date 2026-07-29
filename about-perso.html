@@ -1,0 +1,161 @@
+<!--
+=============================================================================
+  ABOUT-PERSO.HTML — « Informations personnelles »
+  (À propos > Informations personnelles)
+  =============================================================================
+  Page "article individuel" : présentation personnelle façon CV
+  (expériences, compétences, formation, contact).
+=============================================================================
+-->
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <script>
+    (function () {
+      try {
+        var theme = localStorage.getItem('greenbeans-theme');
+        if (theme === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {}
+      try {
+        var font = localStorage.getItem('greenbeans-font');
+        if (font === 'dyslexic') {
+          document.documentElement.setAttribute('data-font', 'dyslexic');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <title>greenbeans • about</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Greenbeans — Informations personnelles : parcours, compétences et contact.">
+  <meta name="author" content="Greenbeans">
+  <link rel="stylesheet" href="css/charte-graphique.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/site-header.js" defer></script>
+  <script src="js/site-settings.js" defer></script>
+</head>
+<body>
+
+  <site-header section="about" submenu="personalInformation"></site-header>
+
+  <main>
+
+    <p class="eyebrow"><a href="about.html">&lt; À propos</a></p>
+
+    <h1>Bonjour,</h1>
+    <p class="lead">
+      Étudiante en informatique, j'ai validé un BTS SIO SISR en juillet 2026 et suis 
+      admissible au CNAM pour préparer un diplôme d'ingénieur. J'ai effectué dix semaines 
+      de stage en milieu professionnel chez Euro P3C. Aujourd'hui, je suis à la recherche d'une 
+      alternance. 
+    </p>
+
+    <!-- Expériences -->
+    <section class="page-section">
+      <h2>Expériences</h2>
+
+      <h3>Euro P3C</h3>
+      <p>
+        2025. Stage de 10 semaines au total (7 semaines puis 3 semaines). 
+        Participation aux missions de migration du parc vers Windows 11 : 
+        modification du script d'intégration, tests unitaires et d'intégration. 
+        Mise à jour des inventaires, suppression de comptes de l'Active Directory, 
+        vérifications réseau, modification des schémas réseau, brassage de câbles.
+      </p>
+
+      <h3>Starbucks - EuroAirport</h3>
+      <p>
+        2024. Emploi saisonnier chez Starbucks. Préparation de commandes, boissons 
+        chaudes, gestion de la caisse, gestion des stocks, service à la clientèle en 
+        allemand et anglais, respect des normes de sécurité.
+      </p>
+
+      <h3>Buchhandlung Ganzoni - Bâle (Suisse)</h3>
+      <p>
+        2021. Emploi saisonnier. Réception des commmandes, ouverture et fermeture du magasin, 
+        fixation des prix, entretien des locaux, réalisation des vitrines, emballage cadeaux.
+      </p>
+    </section>
+
+    <!-- Compétences -->
+    <section class="page-section">
+      <h2>Compétences</h2>
+      <p>
+        Je me suis spécialisée en réseaux et systèmes au cours de mon BTS (BTS SIO SISR : Services 
+        Informatiques aux Organisations, option Solutions d'Infrastructures, Systèmes et Réseaux).
+      </p>
+      <p>
+        <span class="tag">Windows Server</span>
+        <span class="tag">Active Directory</span>
+        <span class="tag">GPO &amp; PSO</span>
+        <span class="tag">PowerShell</span>
+        <span class="tag">Linux</span>
+        <span class="tag">Réseaux &amp; VLAN</span>
+        <span class="tag">Packet Tracer</span>
+        <span class="tag">Virtualisation (VirtualBox, Proxmox)</span>
+        <span class="tag">Cybersécurité (RGPD, EBIOS RM)</span>
+        <span class="tag">Gestion de projet</span>
+      </p>
+    </section>
+
+    <!-- Formation -->
+    <section class="page-section">
+      <h2>Formation</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Diplôme</th>
+            <th>Établissement</th>
+            <th>Période</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Diplôme d'ingénieur en informatique, spécialisé en cybersécurité</th>
+            <th>CNAM</th>
+            <th>Sept. 2026 - Juil. 2029</th>
+          </tr>
+          <tr>
+            <td>BTS Services Informatiques aux Organisations, option Solutions d'Infrastructures, Systèmes et Réseaux</td>
+            <td>CNED</td>
+            <td>Oct. 2024 - Juil.2026</td>
+          </tr>
+          <tr>
+            <td>Baccalauréat général</td>
+            <td>Mathématiques, SVT, physique-chimie - maths expertes</td>
+            <td>2023</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Contact -->
+    <section class="page-section">
+      <h2>Contact</h2>
+      <p>
+        Voici une adresse seconddaire avec laquelle vous pouvez m'écrire.
+        Je ne suis pas très active dessus. Si vous avez mon adresse professionnelle, 
+        notamment via un CV ou une lettre, utilisez de préférence cette dernière, je m'y 
+        connecte davantage.
+      </p>
+      <a class="dl-link" href="mailto:sbrand.pro@gmail.com" aria-label="Envoyer un email à sbrand.pro@gmail.com">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="1.5"
+            stroke-linecap="round" stroke-linejoin="round"
+            width="1.1em" height="1.1em" aria-hidden="true">
+          <path d="M3.75 5.25h16.5A1.5 1.5 0 0121.75 6.75v10.5a1.5 1.5 0 01-1.5 1.5H3.75a1.5 1.5 0 01-1.5-1.5V6.75a1.5 1.5 0 011.5-1.5z" />
+          <path d="M3 6.5l9 6.5 9-6.5" />
+        </svg>
+        <span>sbrand.pro@gmail.com</span>
+      </a>
+    </section>
+
+  </main>
+
+  <site-settings></site-settings>
+</body>
+</html>

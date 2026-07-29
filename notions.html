@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <script>
+    (function () {
+      try {
+        var theme = localStorage.getItem('greenbeans-theme');
+        if (theme === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {}
+      try {
+        var font = localStorage.getItem('greenbeans-font');
+        if (font === 'dyslexic') {
+          document.documentElement.setAttribute('data-font', 'dyslexic');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <title>greenbeans • notions</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/charte-graphique.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/site-header.js" defer></script>
+  <script src="js/site-settings.js" defer></script>
+</head>
+<body>
+
+  <site-header section="notions"></site-header>
+
+  <main>
+    <h1>Notions</h1>
+    <p>
+      Des apports généraux et théoriques en informatique, mais aussi un peu en mathématiques. 
+      À votre disposition, divers médias (articles, sites Web, livres, chaînes YouTube,...) 
+      souvent utilisés pour rédiger le contenu de ce site, ou bien dans le cadre du travail 
+      ou de l'apprentissage. Parfois, une légère veille informatique reprenant des sujets 
+      d'actualité.
+    </p>
+
+    <h2>Informatique</h2>
+    <p>
+      Une rubrique est dédiée aux réseaux, l'autre, au fonctionnement d'un ordinateur, et enfin, 
+      une dernière est consacrée aux concepts généraux de cybersécurité, tels que le RGPD, les 
+      bonnes pratiques de sauvegarde, EBIOS RM, et d'autres. Vous ne trouverez pas de contenu 
+      consacré au développement informatique, ce dernier n'étant pas mon domaine de prédilection.
+    </p>
+
+    <h2>Mathématiques</h2>
+    <p>
+      Peut-être qu'on ne sera pas amené à dériver des fonctions au bureau, mais cette matière 
+      permet de structurer sa pensée. Elle permet d'appréhender plus en profondeur le 
+      fonctionnement d'un ordinateur. De manière générale, cela permet aussi de faire des 
+      estimations, de manipuler des formules pour produire des statistiques pertinentes, ce qui 
+      est utile dans le cas de la rédaction de rapports.
+    </p>
+
+    <h2>Ressources</h2>
+    <p>
+      Internet est très vaste : rassembler des éléments pour les visiteurs permettrait de partager 
+      des ressources intéressantes, éventuellement des analyses de faits récents, en plus de citer 
+      les sources sur lesquelles certains des articles de Greenbeans se basent.
+    </p>
+  </main>
+
+  <site-settings></site-settings>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <script>
+    (function () {
+      try {
+        var theme = localStorage.getItem('greenbeans-theme');
+        if (theme === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {}
+      try {
+        var font = localStorage.getItem('greenbeans-font');
+        if (font === 'dyslexic') {
+          document.documentElement.setAttribute('data-font', 'dyslexic');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <title>greenbeans • notions</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/charte-graphique.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/site-header.js" defer></script>
+  <script src="js/site-settings.js" defer></script>
+</head>
+<body>
+
+  <!-- Page : Notions > Ressources > Ressources numériques. -->
+  <site-header section="notions" submenu="resources"></site-header>
+
+  <main>
+
+    <p class="eyebrow"><a href="notions.html">&lt; Notions</a></p>
+
+    <h1>Ressources numériques</h1>
+
+    <h2>Sites</h2>
+    <p>—</p>
+    <p>—</p>
+    <p>—</p>
+
+    <h2>YouTube</h2>
+    <p>—</p>
+    <p>—</p>
+    <p>—</p>
+
+    <h2>Liens</h2>
+    <p>—</p>
+    <p>—</p>
+    <p>—</p>
+
+  </main>
+
+  <site-settings></site-settings>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!--
+=============================================================================
+  PRO-PARCINFO.HTML — « ParcInfo »
+  (Projets > Projets professionnels > ParcInfo)
+  =============================================================================
+  data-page="pro-parcinfo" : fichiers de traduction
+  (fichiers de traduction i18n : pro-parcinfo_fr.json / _en.json / _de.json)
+  Clés numérotées séquentiellement (p1, p2…).
+  ⚠️ Article non terminé : contenu à compléter (cf. lead "À transférer").
+=============================================================================
+-->
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <script>
+    (function () {
+      try {
+        var theme = localStorage.getItem('greenbeans-theme');
+        if (theme === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {}
+      try {
+        var font = localStorage.getItem('greenbeans-font');
+        if (font === 'dyslexic') {
+          document.documentElement.setAttribute('data-font', 'dyslexic');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <title>ParcInfo — Greenbeans</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Greenbeans — ParcInfo : atelier professionnel d'hébergement GLPI sur serveurs LAMP.">
+  <meta name="author" content="Greenbeans">
+  <link rel="stylesheet" href="css/charte-graphique.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/site-header.js" defer></script>
+  <script src="js/site-settings.js" defer></script>
+</head>
+
+<body>
+
+<site-header section="projects" submenu="professional"></site-header>
+
+<main>
+
+  <p class="eyebrow"><a href="pro-ateliers-cned.html">&lt; Ateliers du CNED</a></p>
+
+  <h1>ParcInfo</h1>
+  <p class="lead">
+    À transférer
+  </p>
+
+  <!-- Téléchargements -->
+  <section>
+    <a class="dl-link" href="docs/ParcInfo-DT.pdf" download aria-label="Télécharger la documentation technique de ParcInfo">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="1.5"
+          stroke-linecap="round" stroke-linejoin="round"
+          width="1.1em" height="1.1em" aria-hidden="true">
+        <path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+      </svg>
+      <span>Télécharger la documentation technique de ParcInfo</span>
+    </a>
+  </section>
+</main>
+
+<site-settings></site-settings>
+</body>
+</html>

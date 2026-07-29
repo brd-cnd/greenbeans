@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <script>
+    (function () {
+      try {
+        var theme = localStorage.getItem('greenbeans-theme');
+        if (theme === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {}
+      try {
+        var font = localStorage.getItem('greenbeans-font');
+        if (font === 'dyslexic') {
+          document.documentElement.setAttribute('data-font', 'dyslexic');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <title>greenbeans • charte graphique</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/charte-graphique.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/site-header.js" defer></script>
+  <script src="js/site-settings.js" defer></script>
+  <style>
+    /* Habillage minimal propre à cette page de démonstration uniquement. */
+    .demoFrame {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 64px 24px 96px;
+    }
+    .demoFrame > * + * {
+      margin-top: 1.4em;
+    }
+    .demoFrame h1,
+    .demoFrame h2,
+    .demoFrame h3 {
+      margin-top: 1.6em;
+    }
+    .demoFrame h4,
+    .demoFrame h5,
+    .demoFrame h6 {
+      margin-top: 1.2em;
+      margin-bottom: 0.4em;
+    }
+    .demoSection + .demoSection {
+      margin-top: 2.5em;
+      padding-top: 2.5em;
+      border-top: 1px solid var(--col-rule);
+    }
+    .demoLabel {
+      font-family: var(--font-body);
+      font-size: var(--fs-tag);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--col-dim);
+      margin-bottom: 0.5em;
+    }
+    /* Représente une image sans en charger une réelle : sert uniquement à
+       montrer la mise en forme de .fig / .fig-caption ci-dessous. */
+    .demoImgPlaceholder {
+      aspect-ratio: 16 / 9;
+      background: var(--color-menu-bg);
+      border: 1px solid var(--col-rule);
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <site-header section="about" submenu="siteInformation"></site-header>
+
+  <main>
+
+    <div class="demoFrame">
+
+      <p class="eyebrow"><a href="about.html">&lt; À propos</a></p>
+      <h1>Charte graphique</h1>
+      <p class="lead">
+        Cette page rassemble tous les éléments typographiques définis dans
+        charte-graphique.css : titres, texte courant, citations, listes,
+        liens et tableaux.
+      </p>
+
+      <div class="demoSection">
+        <p class="demoLabel">Titres — h1 à h6</p>
+        <h1>Titre de niveau 1</h1>
+        <h2>Titre de niveau 2</h2>
+        <h3>Titre de niveau 3</h3>
+        <h4>Titre de niveau 4</h4>
+        <h5>Titre de niveau 5</h5>
+        <h6>Titre de niveau 6</h6>
+      </div>
+
+      <div class="demoSection">
+        <p class="demoLabel">Paragraphes &amp; texte courant</p>
+        <p class="lead">
+          Ceci est un chapeau : un paragraphe d'introduction légèrement plus
+          grand que le texte courant, pour annoncer une section.
+        </p>
+        <p>
+          Ceci est un paragraphe courant. Il peut contenir du texte en
+          <strong>gras</strong>, en <em>italique</em>, un mot-clé
+          <span class="highlight">mis en valeur</span>, ou même un peu de
+          <span class="accent-text">texte en dégradé</span> à utiliser avec
+          parcimonie. Voici également un <a href="#">lien</a> vers autre chose.
+        </p>
+        <p class="small">
+          Ceci est une petite mention : légende, note de bas de page, ou
+          précision secondaire.
+        </p>
+        <p>
+          <span class="tag">Étiquette</span>
+        </p>
+        <p class="eyebrow">Eyebrow — kicker au-dessus d'un titre</p>
+      </div>
+
+      <div class="demoSection">
+        <p class="demoLabel">Citation</p>
+        <blockquote>
+          La simplicité est la sophistication suprême.
+          <cite>Léonard de Vinci</cite>
+        </blockquote>
+      </div>
+
+      <div class="demoSection">
+        <p class="demoLabel">Liste à puces (avec sous-niveaux)</p>
+        <ul>
+          <li>Notions
+            <ul>
+              <li>Informatique
+                <ul>
+                  <li>Réseaux</li>
+                  <li>Architecture de l'ordinateur</li>
+                  <li>Cybersécurité</li>
+                </ul>
+              </li>
+              <li>Mathématiques</li>
+            </ul>
+          </li>
+          <li>Histoire</li>
+          <li>Projets</li>
+        </ul>
+      </div>
+
+      <div class="demoSection">
+        <p class="demoLabel">Liste numérotée (avec sous-niveaux)</p>
+        <ol>
+          <li>Choisir une partie du site
+            <ol>
+              <li>Ouvrir le submenu</li>
+              <li>Ouvrir le subsubmenu</li>
+            </ol>
+          </li>
+          <li>Lire l'article</li>
+          <li>Revenir à l'accueil</li>
+        </ol>
+      </div>
+
+      <div class="demoSection">
+        <p class="demoLabel">Tableau simple</p>
+        <table>
+          <caption>Sections du site</caption>
+          <thead>
+            <tr>
+              <th scope="col">Partie</th>
+              <th scope="col">Sous-menus</th>
+              <th scope="col">Type de contenu</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Notions</td>
+              <td>Informatique, Mathématiques</td>
+              <td>Articles</td>
+            </tr>
+            <tr>
+              <td>Histoire</td>
+              <td>Portraits, Histoire de l'informatique</td>
+              <td>Articles &amp; pages simples</td>
+            </tr>
+            <tr>
+              <td>Projets</td>
+              <td>Professionnels, Personnels</td>
+              <td>Articles</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="demoSection">
+        <p class="demoLabel">Tableau à double entrée</p>
+        <table class="table-double-entry">
+          <caption>Disponibilité du subsubmenu par partie</caption>
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">Portraits</th>
+              <th scope="col">Histoire de l'informatique</th>
+              <th scope="col">Cyberattaques</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Subsubmenu</th>
+              <td>—</td>
+              <td>✓</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <th scope="row">Page simple</th>
+              <td>✓</td>
+              <td>—</td>
+              <td>✓</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="demoSection">
+        <p class="demoLabel">Cartes ateliers (card-as-link)</p>
+        <div class="ateliers-grid">
+          <a class="atelier-card" href="#">
+            <h2 class="atelier-card__title">Titre de la carte</h2>
+            <p class="atelier-card__description">
+              Courte description de ce vers quoi mène la carte, sur une ou
+              deux lignes.
+            </p>
+            <span class="atelier-card__link-text">Consulter &rarr;</span>
+          </a>
+          <a class="atelier-card" href="#">
+            <h2 class="atelier-card__title">Deuxième carte</h2>
+            <p class="atelier-card__description">
+              La grille passe automatiquement à une carte par ligne sur
+              mobile, deux (ou plus) au-delà.
+            </p>
+            <span class="atelier-card__link-text">Consulter &rarr;</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="demoSection">
+        <p class="demoLabel">Figure — image + légende</p>
+        <figure class="fig">
+          <div class="demoImgPlaceholder" aria-hidden="true"></div>
+          <figcaption class="fig-caption">Légende d'illustration, sous l'image</figcaption>
+        </figure>
+      </div>
+
+      <div class="demoSection">
+        <p class="demoLabel">Lien de téléchargement</p>
+        <a class="dl-link" href="#" aria-label="Exemple de lien de téléchargement">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="1.5"
+              stroke-linecap="round" stroke-linejoin="round"
+              width="1.1em" height="1.1em" aria-hidden="true">
+            <path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+          </svg>
+          <span>Télécharger un exemple de document</span>
+        </a>
+      </div>
+
+    </div>
+  </main>
+  <site-settings></site-settings>
+</body>
+</html>

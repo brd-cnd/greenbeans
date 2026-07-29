@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <script>
+    (function () {
+      try {
+        var theme = localStorage.getItem('greenbeans-theme');
+        if (theme === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {}
+      try {
+        var font = localStorage.getItem('greenbeans-font');
+        if (font === 'dyslexic') {
+          document.documentElement.setAttribute('data-font', 'dyslexic');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <title>greenbeans • history</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/charte-graphique.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/site-header.js" defer></script>
+  <script src="js/site-settings.js" defer></script>
+</head>
+<body>
+
+  <site-header section="history"></site-header>
+
+  <main>
+    <h1>Histoire</h1>
+    <p>
+      Pas de rois de France ici, mais un panorama des personnes qui ont impacté le domaine de 
+      l'informatique, une rétrospective de l'évolution des ordinateurs, ou encore du déroulement 
+      de certaines cyberattaques notoires.
+    </p>
+
+    <h2>Portraits</h2>
+    <p>
+      Le véritable essor de l'informatique s'inscrivant dans le XXe siècle, il est vrai que les guerres 
+      et les mœurs de l'époque ont réduit au silence certains savants, comme Alan Turing. Génie de son temps, 
+      il n'a pas été reconnu à la hauteur de ses contributions, à l'instar de Claude Shannon et de bien d'autres. 
+      Restaurer la mémoire de l'un, c'est également entretenir celle de l'autre, car bon nombre ont collaboré ensemble ou 
+      au moins, se sont rencontrés. Une manière de rappeler que l'innovation et la recherche est un travail 
+      collectif.
+    </p>
+
+    <h2>Histoire de l'informatique</h2>
+    <p>
+      Comment est-on passé de la calculatrice à l'ordinateur ? Pourquoi les ordinateurs ont évolué de cette 
+      manière ? Des facteurs extérieurs (économiques, politiques,...) ont beaucoup influencé la direction qu'ont 
+      pris les fabricants. Les connaître permet également de comprendre que l'informatique ne se cantonne pas à 
+      des machines, des zéros et des uns : des enjeux géopolitiques pèsent et reposent de plus en plus dessus. 
+      Ceci est d'autant plus vrai avec l'avènement de l'intelligence artificielle.
+    </p>
+
+    <h2>Cyberattaques</h2>
+    <p>
+      Souvent perçue comme très technique, le social engineering a pourtant sa place dans l'exécution 
+      d'une cyberattaque. Revenir sur de tels évènements est un apport de culture générale. Il s'agit d'étoffer 
+      son répertoire de failles ou techniques utilisées pour s'interroger sur leurs prérequis pour fonctionner 
+      et les moyens de s'en prémunir. L'ampleur d'une cyberattaque permet également de mesurer les conséquences 
+      réelles de cette dernière sur la vie réelle.
+    </p>
+  </main>
+
+  <site-settings></site-settings>
+</body>
+</html>

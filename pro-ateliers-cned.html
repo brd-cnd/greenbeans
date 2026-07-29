@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Ateliers du CNED — Greenbeans</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/charte-graphique.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/site-header.js" defer></script>
+  <script src="js/site-settings.js" defer></script>
+</head>
+
+<body>
+
+  <site-header section="projects" submenu="professional"></site-header>
+
+  <main>
+    <h1>Ateliers du CNED</h1>
+    <p class="lead">
+      Les ateliers professionnels (AP) sont de gros travaux pratiques qui condensent plusieurs notions.
+      Ils partent d'un énoncé général (contexte de Poitou) et d'un énoncé spécifique (contexte de Chasseneuil)
+      tous deux téléchargeables ci-dessous. Ne perdez pas trop de temps sur la compréhension de ces deux
+      documents, il y a beaucoup de contradictions. Ils ne font que planter le décor et ne sont pas essentiels 
+      à la compréhension des ateliers car sur les pages de ces derniers, les consignes des missions à réaliser 
+      sont indiquées.
+    </p>
+
+    <p>
+      <span class="dl-link">
+        <a href="docs/ETP-Poitiers.pdf" download aria-label="Télécharger le contexte général du devoir (Poitiers)">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="1.1em" height="1.1em"
+            aria-hidden="true">
+            <path
+              d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+          </svg>
+        </a>
+        Télécharger le contexte général du devoir (Poitiers)
+      </span>
+      <br>
+      <span class="dl-link">
+        <a href="docs/ETP-Poitiers.pdf" download
+          aria-label="Télécharger le contexte spécifique du devoir (Chasseneuil)">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="1.1em" height="1.1em"
+            aria-hidden="true">
+            <path
+              d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+          </svg>
+        </a>
+        Télécharger le contexte spécifique du devoir (Chasseneuil)
+      </span>
+    </p>
+
+    <div class="ateliers-grid">
+      <a class="atelier-card" href="pro-infrasite.html">
+        <h2 class="atelier-card__title">InfraSite</h2>
+        <p class="atelier-card__description">
+          Maquettage réseau. Mise en place d'un protoype virtuel : VyOS, Windows Server 2022 et Windows 11
+          sous VirtualBox. Réflexion sur l'adressage IP. Mise en place du NAT et du relais DHCP sur le routeur.
+        </p>
+        <span class="atelier-card__link-text">Consulter InfraSite &rarr;</span>
+      </a>
+
+      <a class="atelier-card" href="pro-evolsyswin.html">
+        <h2 class="atelier-card__title">EvolSysWin</h2>
+        <p class="atelier-card__description">
+          Automatisation PowerShell de tâches : création de comptes, imbrication AGDLP, génération de .docx pour
+          la première connexion. Serveur de fichiers iSCSI. Déploiement de GPO et de PSO.
+        </p>
+        <span class="atelier-card__link-text">Consulter EvolSysWin &rarr;</span>
+      </a>
+
+      <a class="atelier-card" href="pro-parcinfo.html">
+        <h2 class="atelier-card__title">ParcInfo</h2>
+        <p class="atelier-card__description">
+          Montage de deux serveurs LAMP hébergeant GLPI : Debian 13 (CLI), base de données MariaDB commune et 
+          externalisée, répartition de charge via HAProxy. Certificats SSL auto-générés. Création d'entités et 
+          groupes GLPI avec liaison AD : rôles attribués en fonction de ce dernier.
+        </p>
+        <span class="atelier-card__link-text">Consulter ParcInfo &rarr;</span>
+      </a>
+    </div>
+  </main>
+
+  <site-settings></site-settings>
+
+</body>
+
+</html>

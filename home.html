@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <script>
+    (function () {
+      try {
+        var theme = localStorage.getItem('greenbeans-theme');
+        if (theme === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {}
+      try {
+        var font = localStorage.getItem('greenbeans-font');
+        if (font === 'dyslexic') {
+          document.documentElement.setAttribute('data-font', 'dyslexic');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <title>greenbeans • home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/charte-graphique.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/site-header.js" defer></script>
+  <script src="js/site-settings.js" defer></script>
+</head>
+<body>
+
+  <site-header section="home"></site-header>
+
+  <main>
+    <h1>Bienvenue sur Greenbeans</h1>
+    <p>Chef de projet : procrastination</p>
+    <h2>Parties du site</h2>
+    <h3>Notions</h3>
+    <p>
+      Retrouvez dans cette partie des savoirs théoriques rattachés au domaine de l'informatique ou des mathématiques. 
+      Il y a également une partie sur la cybersécurité, qui se concentre sur la culture cyber, les bonnes pratiques, etc.
+    </p>
+    <h3>Histoire</h3>
+    <p>
+      On retrace ici le parcours de personnalités ou de l'informatique elle-même, ainsi que du déroulé de cyberattaques notoires.
+    </p>
+    <h3>Projets</h3>
+    <p>
+      Les projets professionnels sont des travaux réalisés suite à la demande d'un maître d'ouvrage, c'est-à-dire une entreprise 
+      réelle (dans le cadre de stages, par exemple, ou de l'apprentissage) ou fictive (dans le cadre de devoirs, où on simule un 
+      projet/grand TP : par exemple, les ateliers professionnels du CNED)
+    </p>
+    <p>
+      Les projets personnels se différencient par le fait que leur lancement n'est dû qu'à mon initiative, dans un cadre 
+      expérimental (labs). Éventuellement, j'y mettrai aussi des modèles de diagramme de Gantt ou de tableau de bord ; 
+      tout ce qui a un rapport à la gestion de projet.
+    </p>
+    <h3>À propos</h3>
+    <p>
+      Apprenez en plus sur le site. Vous y retrouverez les mentions légales du site, les crédits, la charte 
+      graphique, mon contact, des CV et une équivalence des diplômes entre les pays.
+    </p>
+  </main>
+
+  <site-settings></site-settings>
+
+</body>
+</html>
