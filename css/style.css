@@ -1,0 +1,753 @@
+/* ==========================================================================
+   greenbeans — style.css
+   Étape 1 : mise en page (formes, emplacement, alignement, espacement).
+   Étape 3 : couleurs — dégradés du hero enchaînés de gauche à droite sur le
+   menu (Accueil → Notions → Histoire → Projets → À propos : la couleur de
+   droite d'une partie est la couleur de gauche de la suivante), et couleurs
+   de menu/submenu/subsubmenu dérivées de ce dégradé pour chaque page.
+   ========================================================================== */
+
+:root {
+  /* Dégradé du hero : valeurs par défaut (écrasées par page, voir plus bas) */
+  --hero-gradient-start: #b8c4ce;
+  --hero-gradient-end: #2ecc71;
+  --hero-gradient-angle: 120deg;
+
+  --color-menu-bg: #dfe7e2;
+  --color-menu-item-active-bg: var(--col-white);
+  --color-submenu-bg: #cfd9d3;
+  --color-submenu-item-active-bg: var(--col-white);
+  --color-subsubmenu-bg: #e6e6e6;
+  --color-subsubmenu-row-bg: #f7f6fa;
+  --color-subsubmenu-row-hover-bg: #ececec;
+  --color-searchbar-bg: #dbe5dd;
+  --color-article-title-hover: #2e7d46;
+
+  /* Rythme d'espacement (échelle régulière) */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 40px;
+  --space-5: 64px;
+  --space-6: 96px;
+
+  --content-max-width: 900px;
+}
+
+/* ── Mode sombre : surfaces neutres (subsubmenu, barre de recherche) ──────
+   Les teintes par page (menu/submenu/survol) ont leur propre variante
+   sombre juste après leur bloc clair, ci-dessous. ────────────────────── */
+html[data-theme="dark"] {
+  --color-subsubmenu-bg: #2a2a2a;
+  --color-subsubmenu-row-bg: #1e1e1e;
+  --color-searchbar-bg: #1c2620;
+}
+
+/* -------------------------------------------------------------------------
+   Palette par page — chaque dégradé démarre là où le précédent se termine,
+   dans l'ordre du menu : Accueil → Notions → Histoire → Projets → À propos.
+   ------------------------------------------------------------------------- */
+
+body.page-home {
+  --hero-gradient-start: #3498db; /* bleu, libre */
+  --hero-gradient-end: #2ecc71;   /* = début de Notions */
+  --color-menu-bg: #dcf0ec;
+}
+
+html[data-theme="dark"] body.page-home {
+  --color-menu-bg: #15302b;
+}
+
+body.page-notions {
+  --hero-gradient-start: #2ecc71; /* = fin d'Accueil */
+  --hero-gradient-end: #34495e;   /* = début d'Histoire */
+  --color-menu-bg: #d7e4dc;
+  --color-submenu-bg: #c9dbd0;
+  --color-subsubmenu-row-hover-bg: #e3f3e8;
+}
+
+html[data-theme="dark"] body.page-notions {
+  --color-menu-bg: #1b2b21;
+  --color-submenu-bg: #16241c;
+  --color-subsubmenu-row-hover-bg: #1f3a2c;
+}
+
+body.page-histoire {
+  --hero-gradient-start: #34495e; /* = fin de Notions */
+  --hero-gradient-end: #c9a227;   /* = début de Projets */
+  --color-menu-bg: #d7dde3;
+  --color-submenu-bg: #c7ced6;
+  --color-subsubmenu-row-hover-bg: #f5ecd2;
+}
+
+html[data-theme="dark"] body.page-histoire {
+  --color-menu-bg: #1c232b;
+  --color-submenu-bg: #151b21;
+  --color-subsubmenu-row-hover-bg: #3a331f;
+}
+
+body.page-projets {
+  --hero-gradient-start: #c9a227; /* = fin d'Histoire */
+  --hero-gradient-end: #16a085;   /* turquoise, = début d'À propos */
+  --color-menu-bg: #eae3c4;
+  --color-submenu-bg: #d9d2a6;
+  --color-subsubmenu-row-hover-bg: #d9f2ec;
+}
+
+html[data-theme="dark"] body.page-projets {
+  --color-menu-bg: #2e2a1a;
+  --color-submenu-bg: #26220f;
+  --color-subsubmenu-row-hover-bg: #15302b;
+}
+
+body.page-about {
+  --hero-gradient-start: #16a085; /* = fin de Projets */
+  --hero-gradient-end: #2980b9;   /* bleu profond, libre (fin de chaîne) */
+  --color-menu-bg: #d7e6ee;
+  --color-submenu-bg: #c5d9e3;
+  --color-subsubmenu-row-hover-bg: #dbe9f2;
+}
+
+html[data-theme="dark"] body.page-about {
+  --color-menu-bg: #16232b;
+  --color-submenu-bg: #101c24;
+  --color-subsubmenu-row-hover-bg: #16232b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+/* -------------------------------------------------------------------------
+   Hero
+   ------------------------------------------------------------------------- */
+
+#hero {
+  background: linear-gradient(
+    var(--hero-gradient-angle),
+    var(--hero-gradient-start),
+    var(--hero-gradient-end)
+  );
+  padding: var(--space-6) var(--space-5);
+}
+
+#hero .heroTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1.1;
+  /* Couleur fixe, volontairement indépendante du mode sombre : le hero garde
+     ses dégradés vifs (non assombris) dans les deux modes, et un texte
+     sombre y reste plus lisible qu'un texte clair (vérifié : contraste
+     WCAG plus favorable sur l'ensemble des dégradés du site). */
+  color: #1a1a1a;
+}
+
+#hero .heroTitle #title1 {
+  font-style: normal;
+}
+
+#hero .heroTitle .heroSeparator {
+  display: inline-block;
+  margin: 0 0.25em;
+  font-size: 0.5em;
+  vertical-align: 0.55em;
+}
+
+#hero .heroTitle #title2 {
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* -------------------------------------------------------------------------
+   Menu (bandeau principal)
+   ------------------------------------------------------------------------- */
+
+#menu {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: var(--color-menu-bg);
+}
+
+#menu li {
+  flex: 1;
+  text-align: center;
+  margin: 0;
+}
+
+#menu a {
+  display: block;
+  padding: var(--space-3) var(--space-2);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  text-decoration: none;
+  color: var(--col-black);
+}
+
+#menu li.isActive a {
+  background: var(--color-menu-item-active-bg);
+}
+
+/* -------------------------------------------------------------------------
+   Submenu
+   ------------------------------------------------------------------------- */
+
+#submenu {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: var(--color-submenu-bg);
+}
+
+#submenu li {
+  flex: 1;
+  text-align: center;
+  margin: 0;
+}
+
+#submenu a {
+  display: block;
+  padding: var(--space-2) var(--space-2);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 20px;
+  text-decoration: none;
+  color: var(--col-black);
+}
+
+#submenu li.isActive a {
+  background: var(--color-submenu-item-active-bg);
+  font-style: normal;
+}
+
+/* Item "en cours de rédaction" : non cliquable, curseur et couleur qui le
+   signalent, aucune mise en surbrillance au survol/focus. L'infobulle
+   elle-même ("En cours de rédaction") vient de l'attribut title posé par
+   js/site-header.js — géré nativement par le navigateur, pas de CSS ici. */
+#submenu li.isDisabled a {
+  cursor: not-allowed;
+  color: var(--col-dim);
+}
+
+#submenu li.isDisabled a:hover,
+#submenu li.isDisabled a:focus-visible {
+  background: none;
+}
+
+/* -------------------------------------------------------------------------
+   Subsubmenu
+   ------------------------------------------------------------------------- */
+
+/* Conteneur de positionnement : le subsubmenu se positionne par rapport à
+   ce bloc (juste sous le submenu), sans faire partie du flux normal de la
+   page — donc sans pousser le contenu qui suit vers le bas. */
+.submenuStack {
+  position: relative;
+}
+
+#subsubmenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 20;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: var(--color-subsubmenu-bg);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#subsubmenu.isOpen {
+  display: block;
+}
+
+#subsubmenu li {
+  margin: 0;
+}
+
+#subsubmenu li a {
+  display: block;
+  padding: var(--space-3) var(--space-3);
+  font-family: var(--font-display);
+  font-size: 20px;
+  text-decoration: none;
+  color: var(--col-black);
+  background: var(--color-subsubmenu-row-bg);
+  border-bottom: 1px solid var(--color-subsubmenu-bg);
+}
+
+#subsubmenu li:last-child a {
+  border-bottom: none;
+}
+
+/* Couleur de survol choisie ici (étape 3) ; l'effet/la transition animée
+   sera affinée à l'étape 4. */
+#subsubmenu li a:hover {
+  background: var(--color-subsubmenu-row-hover-bg);
+}
+
+/* -------------------------------------------------------------------------
+   Contenu de page (titres + paragraphes hiérarchiques)
+   ------------------------------------------------------------------------- */
+
+main {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: var(--space-5) var(--space-4);
+}
+
+main h1 {
+  margin: 0 0 var(--space-4) 0;
+}
+
+main h2 {
+  margin: var(--space-5) 0 var(--space-3) 0;
+}
+
+main h3 {
+  margin: var(--space-4) 0 var(--space-2) 0;
+}
+
+main p {
+  margin: 0 0 var(--space-3) 0;
+  text-align: justify;
+}
+
+/* -------------------------------------------------------------------------
+   Barre de recherche + liste d'articles (pages collectionArticles)
+   ------------------------------------------------------------------------- */
+
+/* Conteneur de positionnement : le panneau de résultats (#searchResults)
+   se positionne par rapport à ce bloc, exactement comme .submenuStack le
+   fait pour le subsubmenu — même logique, un nouveau composant.
+   La largeur et la marge basse (l'espace avant "Articles") sont portées
+   ici plutôt que par #searchBar : cela évite tout risque de collapse de
+   marge entre l'input et son conteneur, ce qui aurait faussé le calcul
+   de position de .searchResults juste en dessous. */
+.searchBarWrapper {
+  position: relative;
+  width: 97%;
+  margin: 0 auto var(--space-5);
+}
+
+#searchBar {
+  display: block;
+  width: 100%;
+  border: none;
+  border-radius: 999px;
+  padding: 18px var(--space-4);
+  margin: 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 20px;
+  color: var(--col-dim);
+  background: var(--color-searchbar-bg);
+}
+
+#searchBar::placeholder {
+  color: var(--col-dim);
+}
+
+/* ── Panneau de résultats live ──────────────────────────────────────────
+   Masqué par défaut (attribut [hidden]), affiché par js/site-search.js dès
+   qu'une saisie non vide produit au moins un résultat. Les articles de la
+   page courante arrivent en premier (cf. site-search.js), les articles
+   d'ailleurs ensuite, avec leur chemin d'accès affiché en plus. */
+.searchResults {
+  position: absolute;
+  top: 100%;
+  margin-top: 8px;
+  left: 0;
+  right: 0;
+  z-index: 30;
+  list-style: none;
+  padding: 0;
+  background: var(--col-white);
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+  overflow: hidden;
+}
+
+.searchResults[hidden] {
+  display: none;
+}
+
+.searchResults li {
+  margin: 0;
+  opacity: 0;
+  transform: translateY(-4px);
+  animation: searchResultIn 0.2s ease forwards;
+}
+
+.searchResults li + li {
+  border-top: 1px solid var(--col-rule);
+}
+
+.searchResults a {
+  display: block;
+  padding: var(--space-2) var(--space-3);
+  text-decoration: none;
+  color: var(--col-black);
+}
+
+.searchResults a:hover,
+.searchResults a:focus-visible {
+  background: var(--color-searchbar-bg);
+}
+
+.searchResultTitle {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.searchResultDescr {
+  display: block;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--col-dim);
+  margin-top: 2px;
+}
+
+/* N'apparaît que pour les résultats situés sur une AUTRE page que la page
+   courante (cf. site-search.js) : indique le chemin de menu à suivre. */
+.searchResultPath {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--col-dim);
+  margin-top: 4px;
+}
+
+@keyframes searchResultIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#articlesTitle {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 700;
+  margin: 0 0 var(--space-4) 0;
+}
+
+.articlesList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.article {
+  margin-bottom: var(--space-3);
+}
+
+.article .titleArticle {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  text-decoration: none;
+  color: var(--col-black);
+  margin-bottom: 4px;
+}
+
+.article:hover .titleArticle {
+  color: var(--color-article-title-hover);
+}
+
+.article .descrArticle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 16px;
+  color: var(--col-dim);
+  text-align: left;
+}
+
+/* -------------------------------------------------------------------------
+   Réglages du site (icône curseurs + volet) — préparation uniquement, voir
+   js/site-settings.js. Composant identique sur toutes les pages.
+   ------------------------------------------------------------------------- */
+
+#settingsToggle {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 200;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: none;
+  color: var(--col-black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+#settingsOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 190;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+#settingsPanel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 199;
+  width: 320px;
+  max-width: 85vw;
+  background: var(--col-white);
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.12);
+  padding: var(--space-4) var(--space-3);
+  transform: translateX(100%);
+  transition: transform 0.25s ease;
+  overflow-y: auto;
+}
+
+#settingsPanel.isOpen {
+  transform: translateX(0);
+}
+
+.settingsPanelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--col-rule);
+}
+
+.settingsPanelTitle {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--col-black);
+  margin: 0;
+}
+
+#settingsClose {
+  border: none;
+  background: none;
+  font-size: 26px;
+  line-height: 1;
+  color: var(--col-dim);
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+#settingsClose:hover {
+  color: var(--col-black);
+}
+
+.settingsGroup {
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--col-rule);
+}
+
+.settingsGroup:last-child {
+  border-bottom: none;
+}
+
+.settingsLabel {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--col-black);
+}
+
+.settingsLangGroup {
+  display: flex;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+}
+
+.settingsLangBtn {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid var(--col-rule);
+  background: var(--col-white);
+  color: var(--col-dim);
+  font-family: var(--font-body);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.settingsLangBtn.isActive {
+  background: var(--col-black);
+  border-color: var(--col-black);
+  color: var(--col-white);
+}
+
+.settingsSwitchRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.settingsSwitch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.settingsSwitch input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+}
+
+.settingsSwitchTrack {
+  position: absolute;
+  inset: 0;
+  background: var(--col-rule);
+  border-radius: 999px;
+  transition: background 0.2s ease;
+}
+
+.settingsSwitchTrack::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--col-white);
+  transition: transform 0.2s ease;
+}
+
+.settingsSwitch input:checked + .settingsSwitchTrack {
+  background: var(--col-black);
+}
+
+.settingsSwitch input:checked + .settingsSwitchTrack::before {
+  transform: translateX(18px);
+}
+
+/* =========================================================================
+   RESPONSIVE
+   ─────────────────────────────────────────────────────────────────────────
+   Deux paliers :
+   - ≤900px (tablette / petit écran) : on resserre les tailles et l'espace,
+     sans changer la structure (le menu reste une rangée).
+   - ≤600px (mobile) : le menu et le submenu passent en colonne (un onglet
+     par ligne, pleine largeur) plutôt que de tasser 5 mots sur une seule
+     rangée trop étroite. Le subsubmenu n'a besoin d'aucun ajustement : sa
+     largeur/position sont déjà calculées en JS à partir de l'onglet qui
+     l'ouvre (voir site-header.js), donc il s'adapte automatiquement à la
+     nouvelle disposition en colonne.
+   ========================================================================= */
+
+@media (max-width: 900px) {
+  #hero {
+    padding: var(--space-4) var(--space-3);
+  }
+
+  #hero .heroTitle {
+    font-size: 44px;
+  }
+
+  #menu a {
+    font-size: 18px;
+    padding: var(--space-2) var(--space-1);
+  }
+
+  #submenu a {
+    font-size: 16px;
+  }
+
+  main {
+    padding: var(--space-4) var(--space-3);
+  }
+}
+
+@media (max-width: 600px) {
+  #hero {
+    padding: var(--space-3) var(--space-2);
+  }
+
+  #hero .heroTitle {
+    font-size: 28px;
+  }
+
+  #menu,
+  #submenu {
+    flex-direction: column;
+  }
+
+  #menu li,
+  #submenu li {
+    flex: none;
+  }
+
+  #menu a,
+  #submenu a {
+    padding: var(--space-2);
+    font-size: 16px;
+  }
+
+  #subsubmenu li a {
+    padding: var(--space-2);
+    font-size: 16px;
+  }
+
+  main {
+    padding: var(--space-3) var(--space-2);
+  }
+
+  main h1 {
+    margin-bottom: var(--space-3);
+  }
+
+  main h2 {
+    margin-top: var(--space-4);
+  }
+
+  #settingsToggle {
+    right: 16px;
+    bottom: 16px;
+  }
+
+  #settingsPanel {
+    width: 100%;
+    max-width: 100vw;
+  }
+
+  /* Un tableau plus large que l'écran défile horizontalement plutôt que de
+     casser la mise en page ou de forcer un texte illisible. */
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
