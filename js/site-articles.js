@@ -19,11 +19,14 @@
 //      (site-search.js dépend de window.GreenbeansArticles).
 //
 // FORMAT DU CSV : première ligne = en-têtes ("titre,description,lien"),
-// une ligne par article ensuite. Si un champ contient une virgule, un
-// guillemet ou un retour à la ligne, encadrez-le de guillemets doubles
-// (comportement CSV standard, celui qu'Excel/LibreOffice/Google Sheets
-// produisent automatiquement à l'enregistrement — aucune manipulation
-// particulière requise de votre côté).
+// une ligne par article ensuite. Deux colonnes optionnelles peuvent suivre :
+// "source" et "date" (ex. "Forbes", "18 mai 2026") — si elles sont présentes
+// et non vides, elles s'affichent en petit entre le titre et la description.
+// Absentes ou vides, rien ne s'affiche (comportement des pages existantes,
+// inchangé). Si un champ contient une virgule, un guillemet ou un retour à
+// la ligne, encadrez-le de guillemets doubles (comportement CSV standard,
+// celui qu'Excel/LibreOffice/Google Sheets produisent automatiquement à
+// l'enregistrement — aucune manipulation particulière requise de votre côté).
 // -----------------------------------------------------------------------
 
 (function () {
@@ -47,6 +50,11 @@
       page: 'notions-mathematiques.html',
       csv: 'data/notions-mathematiques.csv',
       path: 'Notions > Mathématiques',
+    },
+    {
+      page: 'notions-ressources-veille-technologique.html',
+      csv: 'data/notions-ressources-veille-technologique.csv',
+      path: 'Notions > Ressources > Veille technologique',
     },
     {
       page: 'histoire-portraits.html',
@@ -129,6 +137,8 @@
         title: (r[0] || '').trim(),
         description: (r[1] || '').trim(),
         href: (r[2] || '').trim() || '#',
+        source: (r[3] || '').trim(),
+        date: (r[4] || '').trim(),
       }));
   }
 
@@ -183,13 +193,27 @@
     a.className = 'titleArticle';
     a.href = article.href;
     a.textContent = article.title;
+    // Lien externe (source de veille, article de presse, etc.) : s'ouvre
+    // dans un nouvel onglet, sans donner accès à `window.opener`. Les liens
+    // internes au site (autre page de greenbeans) restent inchangés.
+    if (/^https?:\/\//i.test(article.href)) {
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+    }
+    li.appendChild(a);
+
+    if (article.source || article.date) {
+      const meta = document.createElement('p');
+      meta.className = 'small';
+      meta.textContent = [article.source, article.date].filter(Boolean).join(' — ');
+      li.appendChild(meta);
+    }
 
     const descr = document.createElement('p');
     descr.className = 'descrArticle';
     descr.textContent = article.description;
-
-    li.appendChild(a);
     li.appendChild(descr);
+
     return li;
   }
 
@@ -210,7 +234,10 @@
 
   // Exposé pour que js/site-search.js (chargé après ce script) puisse
   // réutiliser la même source de données pour la recherche inter-pages.
-  window.GreenbeansArticles = { getAllArticles, ARTICLES_PAGES };
+  // Exposé aussi pour d'autres scripts qui ont besoin de lire un .csv sur
+  // le même modèle mais avec des colonnes différentes (ex. site-youtube.js
+  // pour les chaînes YouTube : nom, utilisateur, photo).
+  window.GreenbeansArticles = { getAllArticles, ARTICLES_PAGES, parseCSV };
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', renderCurrentPageList);

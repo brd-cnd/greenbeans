@@ -76,6 +76,7 @@
           subsubmenu: [
             { key: 'physicalResources', label: 'Ressources physiques', href: 'notions-ressources-physiques.html' },
             { key: 'digitalResources', label: 'Ressources numériques', href: 'notions-ressources-numeriques.html' },
+            { key: 'techWatch', label: 'Veille technologique', href: 'notions-ressources-veille-technologique.html' },
           ],
         },
       ],
