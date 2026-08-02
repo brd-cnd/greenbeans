@@ -324,6 +324,18 @@ main p {
 }
 
 /* -------------------------------------------------------------------------
+   Sections de page (pages "article individuel" à plusieurs sections, ex.
+   pro-infrasite, pro-evolsyswin, pro-parcinfo, mentions-legales) : chaque
+   section suivante est séparée par un filet fin, avec un espace généreux
+   au-dessus.
+   ------------------------------------------------------------------------- */
+
+.page-section + .page-section {
+  border-top: 1px solid var(--col-rule);
+  padding-top: clamp(2rem, 4vw, 3rem);
+}
+
+/* -------------------------------------------------------------------------
    Barre de recherche + liste d'articles (pages collectionArticles)
    ------------------------------------------------------------------------- */
 
@@ -421,6 +433,17 @@ main p {
   margin-top: 2px;
 }
 
+/* N'apparaît que si l'article a une source et/ou une date renseignées
+   (cf. site-search.js) : permet de comprendre pourquoi un résultat est
+   remonté quand la requête correspond à ces champs plutôt qu'au titre. */
+.searchResultMeta {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--col-dim);
+  margin-top: 2px;
+}
+
 /* N'apparaît que pour les résultats situés sur une AUTRE page que la page
    courante (cf. site-search.js) : indique le chemin de menu à suivre. */
 .searchResultPath {
@@ -482,6 +505,39 @@ main p {
   font-size: 16px;
   color: var(--col-dim);
   text-align: left;
+}
+
+/* -------------------------------------------------------------------------
+   Variante "cartes" de .articlesList : à poser en plus (pas à la place) de
+   .articlesList sur les pages qui le souhaitent, ex. :
+   <ul class="articlesList cardsList">
+   N'affecte QUE les pages qui ajoutent explicitement cette classe — les
+   autres pages collectionArticle gardent la liste verticale simple.
+   ------------------------------------------------------------------------- */
+
+.articlesList.cardsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-3);
+  align-items: stretch;
+}
+
+.cardsList .article {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0;
+  padding: var(--space-3);
+  border: 1px solid var(--col-rule);
+  border-radius: 4px;
+  transition: border-color 0.2s ease;
+}
+
+.cardsList .article:hover {
+  border-color: var(--col-black);
+}
+
+.cardsList .article .small {
+  margin: 0 0 var(--space-2) 0;
 }
 
 /* -------------------------------------------------------------------------
