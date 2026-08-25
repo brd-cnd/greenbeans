@@ -501,20 +501,19 @@ table tbody tr:last-child td {
   font-weight: 700;
   font-size: 16px;
   color: var(--col-black);
+  text-decoration: none;
+}
+
+a.youtubeChannel__name:hover,
+a.youtubeChannel__name:focus-visible {
+  color: var(--color-article-title-hover);
 }
 
 .youtubeChannel__handle {
   font-family: var(--font-body);
   font-size: 13px;
   color: var(--col-dim);
-  text-decoration: none;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.youtubeChannel__handle:hover,
-.youtubeChannel__handle:focus-visible {
-  color: var(--col-black);
-  text-decoration: underline;
 }

@@ -456,6 +456,22 @@ main p {
   margin: 0 0 var(--space-2) 0;
 }
 
+/* -------------------------------------------------------------------------
+   Variante "scrollable" de .articlesList : à poser en plus (pas à la place)
+   de .articlesList, ex. :
+   <ul class="articlesList scrollList">
+   La liste garde sa hauteur naturelle tant qu'elle tient dans 2x la hauteur
+   de l'écran ; au-delà, elle devient scrollable en interne plutôt que de
+   pousser indéfiniment le reste de la page. Utile pour plusieurs listes
+   côte à côte sur une même page (ex. notions-computerscience.html).
+   ------------------------------------------------------------------------- */
+
+.articlesList.scrollList {
+  max-height: 200vh;
+  overflow-y: auto;
+  padding-right: var(--space-2);
+}
+
 #settingsToggle {
   position: fixed;
   right: 24px;
