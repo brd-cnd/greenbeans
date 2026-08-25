@@ -24,30 +24,21 @@
   <link rel="stylesheet" href="css/style.css">
   <script src="js/site-header.js" defer></script>
   <script src="js/site-settings.js" defer></script>
+  <script src="js/site-disclaimer.js" defer></script>
   <script src="js/site-articles.js" defer></script>
-  <script src="js/site-search.js" defer></script>
 </head>
 <body>
 
-  <!-- Page collectionArticles : À propos > Informations personnelles. -->
-  <site-header section="about" submenu="personalInformation"></site-header>
+  <site-header section="projects" submenu="personal"></site-header>
 
   <main>
-    <h1>Divers</h1>
+    <h1>Personnels</h1>
 
-    <div class="searchBarWrapper">
-      <input
-        type="search"
-        id="searchBar"
-        placeholder="Rechercher..."
-        aria-label="Rechercher un projet"
-      >
-      <ul id="searchResults" class="searchResults" hidden></ul>
-    </div>
+    <h2>Laboratoire</h2>
+    <ul class="articlesList" data-list="laboratory"></ul>
 
-    <h2 id="articlesTitle">Articles</h2>
-
-    <ul class="articlesList"></ul>
+    <h2>Divers</h2>
+    <ul class="articlesList" data-list="misc"></ul>
   </main>
 
   <site-settings></site-settings>

@@ -56,7 +56,6 @@
         {
           key: 'computerScience',
           label: 'Informatique',
-          disabled: true,
           subsubmenu: [
             { key: 'networks', label: 'Réseaux', href: 'notions-informatique-reseaux.html' },
             { key: 'computerArchitecture', label: "Architecture de l'ordinateur", href: 'notions-informatique-architecture_ordinateur.html' },
@@ -66,7 +65,6 @@
         {
           key: 'mathematics',
           label: 'Mathématiques',
-          disabled: true,
           subsubmenu: [],
           href: 'notions-mathematiques.html',
         },
@@ -76,6 +74,7 @@
           subsubmenu: [
             { key: 'physicalResources', label: 'Ressources physiques', href: 'notions-ressources-physiques.html' },
             { key: 'digitalResources', label: 'Ressources numériques', href: 'notions-ressources-numeriques.html' },
+            { key: 'techWatch', label: 'Veille technologique', href: 'notions-ressources-veille-technologique.html' },
           ],
         },
       ],
@@ -86,18 +85,17 @@
       heroTitle: 'history',
       bodyClass: 'page-histoire',
       submenu: [
-        { key: 'portraits', label: 'Portraits', disabled: true, subsubmenu: [], href: 'histoire-portraits.html' },
+        { key: 'portraits', label: 'Portraits', subsubmenu: [], href: 'histoire-portraits.html' },
         {
           key: 'computingHistory',
           label: "Histoire de l'informatique",
-          disabled: true,
           subsubmenu: [
             { key: 'fromCalculatingMachinesToComputers', label: 'Des machines à calculer aux ordinateurs' },
             { key: 'riseOfNetworksAndInternet', label: "L'essor des réseaux et d'Internet" },
             { key: 'riseOfOpenSourceSoftware', label: "L'émergence du logiciel libre" },
           ],
         },
-        { key: 'cyberattacks', label: 'Cyberattaques', disabled: true, subsubmenu: [], href: 'histoire-cyberattaques.html' },
+        { key: 'cyberattacks', label: 'Cyberattaques', subsubmenu: [], href: 'histoire-cyberattaques.html' },
       ],
     },
     projects: {
@@ -109,18 +107,14 @@
         {
           key: 'professional',
           label: 'Professionnels',
-          subsubmenu: [
-            { key: 'cnedWorkshops', label: 'Ateliers du CNED', href: 'pro-ateliers-cned.html' },
-          ],
+          subsubmenu: [],
+          href: 'projects-professional.html',
         },
         {
           key: 'personal',
           label: 'Personnels',
-          disabled: true,
-          subsubmenu: [
-            { key: 'laboratories', label: 'Laboratoires' },
-            { key: 'miscellaneous', label: 'Divers', href: 'projets-personnels.html' },
-          ],
+          subsubmenu: [],
+          href: 'projects-personal.html',
         },
       ],
     },
@@ -157,57 +151,99 @@
 
       document.body.classList.add(section.bodyClass);
 
-      const menuHtml = Object.entries(SITE_STRUCTURE)
-        .map(([key, s]) => {
-          const active = key === sectionKey ? ' class="isActive"' : '';
-          return `<li${active}><a href="${s.href}">${s.label}</a></li>`;
-        })
-        .join('');
+      // Rendu construit élément par élément (createElement + textContent),
+      // jamais par concaténation de chaînes HTML : même si un libellé de
+      // SITE_STRUCTURE contenait un jour un caractère spécial (", <...),
+      // il serait toujours traité comme du texte brut, jamais interprété
+      // comme du HTML. Défense en profondeur : SITE_STRUCTURE n'est
+      // aujourd'hui modifiable que par vous, mais ce n'est jamais plus
+      // coûteux de s'en prémunir.
+      this.innerHTML = '';
 
-      let submenuBlock = '';
+      const hero = document.createElement('header');
+      hero.id = 'hero';
+      const heroTitle = document.createElement('p');
+      heroTitle.className = 'heroTitle';
+      const title1 = document.createElement('span');
+      title1.id = 'title1';
+      title1.textContent = 'greenbeans';
+      const separator = document.createElement('span');
+      separator.className = 'heroSeparator';
+      separator.textContent = '\u2022';
+      const title2 = document.createElement('span');
+      title2.id = 'title2';
+      title2.textContent = section.heroTitle;
+      heroTitle.append(title1, separator, title2);
+      hero.appendChild(heroTitle);
+      this.appendChild(hero);
+
+      const menuNav = document.createElement('nav');
+      const menuList = document.createElement('ul');
+      menuList.id = 'menu';
+      Object.entries(SITE_STRUCTURE).forEach(([key, s]) => {
+        const li = document.createElement('li');
+        if (key === sectionKey) li.className = 'isActive';
+        const a = document.createElement('a');
+        a.href = s.href;
+        a.textContent = s.label;
+        li.appendChild(a);
+        menuList.appendChild(li);
+      });
+      menuNav.appendChild(menuList);
+      this.appendChild(menuNav);
+
       if (section.submenu.length > 0) {
-        const submenuHtml = section.submenu
-          .map((item) => {
-            const classes = [];
-            if (item.key === activeSubmenuKey) classes.push('isActive');
-            if (item.disabled) classes.push('isDisabled');
-            const classAttr = classes.length ? ` class="${classes.join(' ')}"` : '';
+        const stack = document.createElement('div');
+        stack.className = 'submenuStack';
 
-            const hasSubsubmenu = item.subsubmenu.length > 0;
-            // Un item désactivé n'est jamais un lien réel, qu'il ait ou non
-            // un subsubmenu : href neutralisé, subsubmenu vidé (ceinture et
-            // bretelles avec l'interception au clic ci-dessous).
-            const href = item.disabled ? '#' : (hasSubsubmenu ? '#' : (item.href || '#'));
-            const subsubmenuAttr = item.disabled
-              ? '[]'
-              : JSON.stringify(item.subsubmenu).replace(/"/g, '&quot;');
-            // Un item désactivé porte une infobulle native ("title") posée
-            // par le navigateur au survol, et est retiré de la navigation
-            // clavier (tabindex="-1") en plus d'être marqué non-actionnable
-            // pour les technologies d'assistance (aria-disabled).
-            const disabledAttrs = item.disabled
-              ? ' aria-disabled="true" tabindex="-1" title="En cours de rédaction"'
-              : '';
+        const submenuNav = document.createElement('nav');
+        const submenuList = document.createElement('ul');
+        submenuList.id = 'submenu';
 
-            return `<li${classAttr}><a href="${href}" data-subsubmenu="${subsubmenuAttr}"${disabledAttrs}>${item.label}</a></li>`;
-          })
-          .join('');
+        section.submenu.forEach((item) => {
+          const li = document.createElement('li');
+          const classes = [];
+          if (item.key === activeSubmenuKey) classes.push('isActive');
+          if (item.disabled) classes.push('isDisabled');
+          if (classes.length) li.className = classes.join(' ');
 
-        submenuBlock = `
-          <div class="submenuStack">
-            <nav><ul id="submenu">${submenuHtml}</ul></nav>
-            <nav><ul id="subsubmenu"></ul></nav>
-          </div>`;
+          const a = document.createElement('a');
+          const hasSubsubmenu = item.subsubmenu.length > 0;
+          // Un item désactivé n'est jamais un lien réel, qu'il ait ou non
+          // un subsubmenu : href neutralisé, subsubmenu vidé (ceinture et
+          // bretelles avec l'interception au clic ci-dessous).
+          a.href = item.disabled ? '#' : hasSubsubmenu ? '#' : item.href || '#';
+          a.textContent = item.label;
+
+          // Les items du subsubmenu sont gardés comme propriété JS sur le
+          // lien lui-même, pas sérialisés dans un attribut HTML : plus
+          // simple, et ça évite tout aller-retour JSON <-> HTML.
+          a._subsubmenuItems = item.disabled ? [] : item.subsubmenu;
+
+          // Un item désactivé porte une infobulle native ("title") posée
+          // par le navigateur au survol, et est retiré de la navigation
+          // clavier (tabindex="-1") en plus d'être marqué non-actionnable
+          // pour les technologies d'assistance (aria-disabled).
+          if (item.disabled) {
+            a.setAttribute('aria-disabled', 'true');
+            a.setAttribute('tabindex', '-1');
+            a.setAttribute('title', 'En cours de rédaction');
+          }
+
+          li.appendChild(a);
+          submenuList.appendChild(li);
+        });
+
+        submenuNav.appendChild(submenuList);
+
+        const subsubmenuNav = document.createElement('nav');
+        const subsubmenuList = document.createElement('ul');
+        subsubmenuList.id = 'subsubmenu';
+        subsubmenuNav.appendChild(subsubmenuList);
+
+        stack.append(submenuNav, subsubmenuNav);
+        this.appendChild(stack);
       }
-
-      this.innerHTML = `
-        <header id="hero">
-          <p class="heroTitle">
-            <span id="title1">greenbeans</span><span class="heroSeparator">&bull;</span><span id="title2">${section.heroTitle}</span>
-          </p>
-        </header>
-        <nav><ul id="menu">${menuHtml}</ul></nav>
-        ${submenuBlock}`;
 
       this._wireSubmenuBehavior();
     }
@@ -237,16 +273,7 @@
           }
 
           const parentLi = link.closest('li');
-
-          let items = [];
-          try {
-            items = JSON.parse(link.dataset.subsubmenu || '[]');
-          } catch {
-            // Attribut absent ou mal formé (ne devrait pas arriver, la
-            // valeur étant générée par connectedCallback ci-dessus) :
-            // on retombe simplement sur "pas de subsubmenu".
-            items = [];
-          }
+          const items = link._subsubmenuItems || [];
 
           if (items.length === 0) {
             // Pas de subsubmenu : lien direct vers une page (ou "#" si
@@ -268,9 +295,15 @@
             return;
           }
 
-          subsubmenu.innerHTML = items
-            .map((item) => `<li><a href="${item.href || '#'}">${item.label}</a></li>`)
-            .join('');
+          subsubmenu.innerHTML = '';
+          items.forEach((item) => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = item.href || '#';
+            a.textContent = item.label;
+            li.appendChild(a);
+            subsubmenu.appendChild(li);
+          });
 
           subsubmenu.classList.add('isOpen');
           this._positionSubsubmenu(parentLi);

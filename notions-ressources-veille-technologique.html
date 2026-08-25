@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <script>
+    (function () {
+      try {
+        var theme = localStorage.getItem('greenbeans-theme');
+        if (theme === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {}
+      try {
+        var font = localStorage.getItem('greenbeans-font');
+        if (font === 'dyslexic') {
+          document.documentElement.setAttribute('data-font', 'dyslexic');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <title>greenbeans • notions</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Greenbeans — Veille technologique : l'impact de l'intelligence artificielle sur les techniques d'ingénierie sociale.">
+  <link rel="stylesheet" href="css/charte-graphique.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/site-header.js" defer></script>
+  <script src="js/site-settings.js" defer></script>
+  <script src="js/site-disclaimer.js" defer></script>
+  <script src="js/site-articles.js" defer></script>
+  <script src="js/site-search.js" defer></script>
+</head>
+<body>
+
+  <site-header section="notions" submenu="resources"></site-header>
+
+  <main>
+
+    <p class="eyebrow"><a href="notions.html">&lt; Notions</a></p>
+
+    <h1>Veille technologique</h1>
+    <p class="lead">
+      L'impact de l'intelligence artificielle sur les techniques d'ingénierie sociale et les moyens de s'en prémunir.
+    </p>
+
+    <section class="page-section">
+      <h2>Mise en place</h2>
+      <p>
+        On nous dit souvent que la plus grande faille reste l'humain. Ayant à cœur de sensibiliser plus tard les
+        personnes aux risques de sécurité informatique, le sujet ci-dessus fait donc sens pour moi, et par ailleurs,
+        l'intelligence artificielle amène son lot d'enjeux dans cette question.
+      </p>
+      <p>
+        Je souhaitais d'une part recueillir des articles sérieux pour comprendre les notions du sujet. Je me suis
+        donc emparée de publications de recherches sur diverses bibliothèques (Google Scholar, CiteSeer^x, ArXiv,
+        HAL, Cairn.info...). Puis, partie de ces publications, j'ai ensuite cherché dans les médias mainstream
+        (forum, médias...) afin de connaître l'opinion publique. Il s'agit donc d'une méthode pull, et j'ai utilisé
+        l'intelligence artificielle pour m'aider à trouver des papiers de recherche. Le prompt en question
+        ressemblait à quelque chose comme ceci : « Faites-moi une liste de cinq articles portant sur l'évolution du
+        social engineering liée à l'intelligence artificielle, s'il vous plaît. Les ressources en question peuvent
+        être en français ou en anglais, et doivent provenir de sources fiables telles que des publications de
+        recherche. »
+      </p>
+      <p>
+        Au départ, je souhaitais automatiser ma veille au maximum, en déployant un agent IA local via n8n, Ollama et
+        Docker, mais mon ordinateur commençait à manquer de place et je ne voulais pas risquer de déplacer les
+        machines virtuelles de mes ateliers professionnels.
+      </p>
+      <p>
+        J'ai aussi laissé l'information venir à moi (méthode push) en m'abonnant pour l'année 2024-2025 à la revue
+        MISC, ainsi qu'à des flux RSS. Sur LinkedIn, je me suis abonnée au Clusif, qui publie des lettres de veille.
+      </p>
+      <p>
+        Le point de départ de cette veille technologique a été un article publié dans HAL (Florence Sèdes. Sécurité
+        dans les SI &amp; social engineering - un état des lieux. INFORSID 2024, May 2024, Nancy, France.
+        ⟨hal-04613192⟩). Dans ce papier, l'auteure fait un tour d'horizon de ce qui se fait actuellement le plus en
+        termes d'attaques. Elle dresse aussi les étapes d'une attaque (formulation de l'attaque, récolte des
+        informations...). Il y a aussi des sources parlant de moyens offensifs, tels que la notion de cybersécurité
+        cognitive développée dans une autre publication (Lumbamba, C. (2026). Vers une Cybersécurité Cognitive :
+        Intégration de l'Intelligence Artificielle dans la Protection des Systèmes d'Information. Revue-IRS, 4(2).
+        <a href="https://doi.org/10.5281/zenodo.19150955" target="_blank" rel="noopener noreferrer">https://doi.org/10.5281/zenodo.19150955</a>).
+      </p>
+    </section>
+
+    <section class="page-section">
+      <h2>Articles enregistrés</h2>
+
+      <div class="searchBarWrapper">
+        <input
+          type="search"
+          id="searchBar"
+          placeholder="Rechercher..."
+          aria-label="Rechercher un article"
+        >
+        <ul id="searchResults" class="searchResults" hidden></ul>
+      </div>
+
+      <ul class="articlesList cardsList"></ul>
+    </section>
+
+  </main>
+
+  <site-settings></site-settings>
+</body>
+</html>

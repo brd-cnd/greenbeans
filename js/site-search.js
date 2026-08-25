@@ -44,7 +44,12 @@
 
   function matchesQuery(entry, query) {
     const q = normalize(query);
-    return normalize(entry.title).includes(q) || normalize(entry.description).includes(q);
+    return (
+      normalize(entry.title).includes(q) ||
+      normalize(entry.description).includes(q) ||
+      (!!entry.source && normalize(entry.source).includes(q)) ||
+      (!!entry.date && normalize(entry.date).includes(q))
+    );
   }
 
   function buildResultItem(entry, isCurrentPage, index) {
@@ -63,6 +68,13 @@
     descr.className = 'searchResultDescr';
     descr.textContent = entry.description;
     a.appendChild(descr);
+
+    if (entry.source || entry.date) {
+      const meta = document.createElement('span');
+      meta.className = 'searchResultMeta';
+      meta.textContent = [entry.source, entry.date].filter(Boolean).join(' — ');
+      a.appendChild(meta);
+    }
 
     // Le chemin d'accès ne s'affiche que pour un résultat qui n'est PAS
     // sur la page courante : sur la page courante, il est déjà évident où

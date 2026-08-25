@@ -14,16 +14,24 @@
 // pour afficher où se trouve un résultat trouvé sur une autre page).
 // Quand vous créez une nouvelle page collectionArticles :
 //   1. Ajoutez un fichier .csv dans /data (mêmes 3 colonnes).
-//   2. Ajoutez une entrée ici.
-//   3. Chargez ce script AVANT js/site-search.js dans le <head> de la page
-//      (site-search.js dépend de window.GreenbeansArticles).
+//   2. Ajoutez une entrée ici. Si la page a PLUSIEURS listes (ex. deux
+//      sections distinctes), ajoutez une entrée par liste avec la même
+//      `page` mais un `csv`/`path` propres, plus une clé `list` qui doit
+//      correspondre à l'attribut `data-list` du <ul class="articlesList">
+//      visé dans le HTML.
+//   3. Si la page a une barre de recherche, chargez ce script AVANT
+//      js/site-search.js dans le <head> (site-search.js dépend de
+//      window.GreenbeansArticles). Sinon, ce script suffit seul.
 //
 // FORMAT DU CSV : première ligne = en-têtes ("titre,description,lien"),
-// une ligne par article ensuite. Si un champ contient une virgule, un
-// guillemet ou un retour à la ligne, encadrez-le de guillemets doubles
-// (comportement CSV standard, celui qu'Excel/LibreOffice/Google Sheets
-// produisent automatiquement à l'enregistrement — aucune manipulation
-// particulière requise de votre côté).
+// une ligne par article ensuite. Deux colonnes optionnelles peuvent suivre :
+// "source" et "date" (ex. "Forbes", "18 mai 2026") — si elles sont présentes
+// et non vides, elles s'affichent en petit entre le titre et la description.
+// Absentes ou vides, rien ne s'affiche (comportement des pages existantes,
+// inchangé). Si un champ contient une virgule, un guillemet ou un retour à
+// la ligne, encadrez-le de guillemets doubles (comportement CSV standard,
+// celui qu'Excel/LibreOffice/Google Sheets produisent automatiquement à
+// l'enregistrement — aucune manipulation particulière requise de votre côté).
 // -----------------------------------------------------------------------
 
 (function () {
@@ -49,6 +57,11 @@
       path: 'Notions > Mathématiques',
     },
     {
+      page: 'notions-ressources-veille-technologique.html',
+      csv: 'data/notions-ressources-veille-technologique.csv',
+      path: 'Notions > Ressources > Veille technologique',
+    },
+    {
       page: 'histoire-portraits.html',
       csv: 'data/histoire-portraits.csv',
       path: 'Histoire > Portraits',
@@ -59,9 +72,21 @@
       path: 'Histoire > Cyberattaques',
     },
     {
-      page: 'projets-personnels.html',
-      csv: 'data/projets-personnels.csv',
+      page: 'projects-professional.html',
+      csv: 'data/projects-professional.csv',
+      path: 'Projets > Professionnels',
+    },
+    {
+      page: 'projects-personal.html',
+      csv: 'data/projects-personal-laboratory.csv',
+      path: 'Projets > Personnels > Laboratoire',
+      list: 'laboratory',
+    },
+    {
+      page: 'projects-personal.html',
+      csv: 'data/projects-personal-misc.csv',
       path: 'Projets > Personnels > Divers',
+      list: 'misc',
     },
   ];
 
@@ -129,6 +154,8 @@
         title: (r[0] || '').trim(),
         description: (r[1] || '').trim(),
         href: (r[2] || '').trim() || '#',
+        source: (r[3] || '').trim(),
+        date: (r[4] || '').trim(),
       }));
   }
 
@@ -183,34 +210,62 @@
     a.className = 'titleArticle';
     a.href = article.href;
     a.textContent = article.title;
+    // Lien externe (source de veille, article de presse, etc.) : s'ouvre
+    // dans un nouvel onglet, sans donner accès à `window.opener`. Les liens
+    // internes au site (autre page de greenbeans) restent inchangés.
+    if (/^https?:\/\//i.test(article.href)) {
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+    }
+    li.appendChild(a);
+
+    if (article.source || article.date) {
+      const meta = document.createElement('p');
+      meta.className = 'small';
+      meta.textContent = [article.source, article.date].filter(Boolean).join(' — ');
+      li.appendChild(meta);
+    }
 
     const descr = document.createElement('p');
     descr.className = 'descrArticle';
     descr.textContent = article.description;
-
-    li.appendChild(a);
     li.appendChild(descr);
+
     return li;
   }
 
-  // Remplit le <ul class="articlesList"> de la page courante à partir de
-  // son propre .csv (identifié via ARTICLES_PAGES). Ne fait rien si la
-  // page n'a pas de liste d'articles, ou n'est pas dans le registre.
+  // Remplit le(s) <ul class="articlesList"> de la page courante à partir de
+  // son (ou ses) propre(s) .csv (identifié(s) via ARTICLES_PAGES). Ne fait
+  // rien si la page n'a pas de liste d'articles, ou n'est pas dans le
+  // registre.
+  //
+  // Une page peut avoir PLUSIEURS listes distinctes (ex. "Laboratoire" et
+  // "Divers" sur projects-personal.html) : dans ce cas, chaque entrée du
+  // registre porte une clé `list`, qui doit correspondre à l'attribut
+  // `data-list` du <ul> ciblé. Une page à liste unique (cas le plus
+  // fréquent) n'a besoin ni de `list` ni de `data-list`.
   async function renderCurrentPageList() {
-    const list = document.querySelector('.articlesList');
-    if (!list) return;
+    const entries = ARTICLES_PAGES.filter((e) => e.page === currentPageFile());
+    if (!entries.length) return;
 
-    const entry = ARTICLES_PAGES.find((e) => e.page === currentPageFile());
-    if (!entry) return;
+    for (const entry of entries) {
+      const list = entry.list
+        ? document.querySelector(`.articlesList[data-list="${entry.list}"]`)
+        : document.querySelector('.articlesList');
+      if (!list) continue;
 
-    const articles = await fetchPageArticles(entry);
-    list.innerHTML = '';
-    articles.forEach((article) => list.appendChild(buildArticleLi(article)));
+      const articles = await fetchPageArticles(entry);
+      list.innerHTML = '';
+      articles.forEach((article) => list.appendChild(buildArticleLi(article)));
+    }
   }
 
   // Exposé pour que js/site-search.js (chargé après ce script) puisse
   // réutiliser la même source de données pour la recherche inter-pages.
-  window.GreenbeansArticles = { getAllArticles, ARTICLES_PAGES };
+  // Exposé aussi pour d'autres scripts qui ont besoin de lire un .csv sur
+  // le même modèle mais avec des colonnes différentes (ex. site-youtube.js
+  // pour les chaînes YouTube : nom, utilisateur, photo).
+  window.GreenbeansArticles = { getAllArticles, ARTICLES_PAGES, parseCSV };
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', renderCurrentPageList);

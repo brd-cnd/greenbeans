@@ -1,14 +1,7 @@
-/* ==========================================================================
-   greenbeans — style.css
-   Étape 1 : mise en page (formes, emplacement, alignement, espacement).
-   Étape 3 : couleurs — dégradés du hero enchaînés de gauche à droite sur le
-   menu (Accueil → Notions → Histoire → Projets → À propos : la couleur de
-   droite d'une partie est la couleur de gauche de la suivante), et couleurs
-   de menu/submenu/subsubmenu dérivées de ce dégradé pour chaque page.
-   ========================================================================== */
+
 
 :root {
-  /* Dégradé du hero : valeurs par défaut (écrasées par page, voir plus bas) */
+  
   --hero-gradient-start: #b8c4ce;
   --hero-gradient-end: #2ecc71;
   --hero-gradient-angle: 120deg;
@@ -23,7 +16,6 @@
   --color-searchbar-bg: #dbe5dd;
   --color-article-title-hover: #2e7d46;
 
-  /* Rythme d'espacement (échelle régulière) */
   --space-1: 8px;
   --space-2: 16px;
   --space-3: 24px;
@@ -34,23 +26,15 @@
   --content-max-width: 900px;
 }
 
-/* ── Mode sombre : surfaces neutres (subsubmenu, barre de recherche) ──────
-   Les teintes par page (menu/submenu/survol) ont leur propre variante
-   sombre juste après leur bloc clair, ci-dessous. ────────────────────── */
 html[data-theme="dark"] {
   --color-subsubmenu-bg: #2a2a2a;
   --color-subsubmenu-row-bg: #1e1e1e;
   --color-searchbar-bg: #1c2620;
 }
 
-/* -------------------------------------------------------------------------
-   Palette par page — chaque dégradé démarre là où le précédent se termine,
-   dans l'ordre du menu : Accueil → Notions → Histoire → Projets → À propos.
-   ------------------------------------------------------------------------- */
-
 body.page-home {
-  --hero-gradient-start: #3498db; /* bleu, libre */
-  --hero-gradient-end: #2ecc71;   /* = début de Notions */
+  --hero-gradient-start: #3498db; 
+  --hero-gradient-end: #2ecc71;   
   --color-menu-bg: #dcf0ec;
 }
 
@@ -59,8 +43,8 @@ html[data-theme="dark"] body.page-home {
 }
 
 body.page-notions {
-  --hero-gradient-start: #2ecc71; /* = fin d'Accueil */
-  --hero-gradient-end: #34495e;   /* = début d'Histoire */
+  --hero-gradient-start: #2ecc71; 
+  --hero-gradient-end: #34495e;   
   --color-menu-bg: #d7e4dc;
   --color-submenu-bg: #c9dbd0;
   --color-subsubmenu-row-hover-bg: #e3f3e8;
@@ -73,8 +57,8 @@ html[data-theme="dark"] body.page-notions {
 }
 
 body.page-histoire {
-  --hero-gradient-start: #34495e; /* = fin de Notions */
-  --hero-gradient-end: #c9a227;   /* = début de Projets */
+  --hero-gradient-start: #34495e; 
+  --hero-gradient-end: #c9a227;   
   --color-menu-bg: #d7dde3;
   --color-submenu-bg: #c7ced6;
   --color-subsubmenu-row-hover-bg: #f5ecd2;
@@ -87,8 +71,8 @@ html[data-theme="dark"] body.page-histoire {
 }
 
 body.page-projets {
-  --hero-gradient-start: #c9a227; /* = fin d'Histoire */
-  --hero-gradient-end: #16a085;   /* turquoise, = début d'À propos */
+  --hero-gradient-start: #c9a227; 
+  --hero-gradient-end: #16a085;   
   --color-menu-bg: #eae3c4;
   --color-submenu-bg: #d9d2a6;
   --color-subsubmenu-row-hover-bg: #d9f2ec;
@@ -101,8 +85,8 @@ html[data-theme="dark"] body.page-projets {
 }
 
 body.page-about {
-  --hero-gradient-start: #16a085; /* = fin de Projets */
-  --hero-gradient-end: #2980b9;   /* bleu profond, libre (fin de chaîne) */
+  --hero-gradient-start: #16a085; 
+  --hero-gradient-end: #2980b9;   
   --color-menu-bg: #d7e6ee;
   --color-submenu-bg: #c5d9e3;
   --color-subsubmenu-row-hover-bg: #dbe9f2;
@@ -122,10 +106,6 @@ body {
   margin: 0;
 }
 
-/* -------------------------------------------------------------------------
-   Hero
-   ------------------------------------------------------------------------- */
-
 #hero {
   background: linear-gradient(
     var(--hero-gradient-angle),
@@ -141,10 +121,7 @@ body {
   font-size: 64px;
   font-weight: 700;
   line-height: 1.1;
-  /* Couleur fixe, volontairement indépendante du mode sombre : le hero garde
-     ses dégradés vifs (non assombris) dans les deux modes, et un texte
-     sombre y reste plus lisible qu'un texte clair (vérifié : contraste
-     WCAG plus favorable sur l'ensemble des dégradés du site). */
+  
   color: #1a1a1a;
 }
 
@@ -163,10 +140,6 @@ body {
   font-weight: 400;
   font-style: italic;
 }
-
-/* -------------------------------------------------------------------------
-   Menu (bandeau principal)
-   ------------------------------------------------------------------------- */
 
 #menu {
   display: flex;
@@ -195,10 +168,6 @@ body {
 #menu li.isActive a {
   background: var(--color-menu-item-active-bg);
 }
-
-/* -------------------------------------------------------------------------
-   Submenu
-   ------------------------------------------------------------------------- */
 
 #submenu {
   display: flex;
@@ -229,10 +198,6 @@ body {
   font-style: normal;
 }
 
-/* Item "en cours de rédaction" : non cliquable, curseur et couleur qui le
-   signalent, aucune mise en surbrillance au survol/focus. L'infobulle
-   elle-même ("En cours de rédaction") vient de l'attribut title posé par
-   js/site-header.js — géré nativement par le navigateur, pas de CSS ici. */
 #submenu li.isDisabled a {
   cursor: not-allowed;
   color: var(--col-dim);
@@ -243,13 +208,6 @@ body {
   background: none;
 }
 
-/* -------------------------------------------------------------------------
-   Subsubmenu
-   ------------------------------------------------------------------------- */
-
-/* Conteneur de positionnement : le subsubmenu se positionne par rapport à
-   ce bloc (juste sous le submenu), sans faire partie du flux normal de la
-   page — donc sans pousser le contenu qui suit vers le bas. */
 .submenuStack {
   position: relative;
 }
@@ -290,15 +248,9 @@ body {
   border-bottom: none;
 }
 
-/* Couleur de survol choisie ici (étape 3) ; l'effet/la transition animée
-   sera affinée à l'étape 4. */
 #subsubmenu li a:hover {
   background: var(--color-subsubmenu-row-hover-bg);
 }
-
-/* -------------------------------------------------------------------------
-   Contenu de page (titres + paragraphes hiérarchiques)
-   ------------------------------------------------------------------------- */
 
 main {
   max-width: var(--content-max-width);
@@ -323,17 +275,11 @@ main p {
   text-align: justify;
 }
 
-/* -------------------------------------------------------------------------
-   Barre de recherche + liste d'articles (pages collectionArticles)
-   ------------------------------------------------------------------------- */
+.page-section + .page-section {
+  border-top: 1px solid var(--col-rule);
+  padding-top: clamp(2rem, 4vw, 3rem);
+}
 
-/* Conteneur de positionnement : le panneau de résultats (#searchResults)
-   se positionne par rapport à ce bloc, exactement comme .submenuStack le
-   fait pour le subsubmenu — même logique, un nouveau composant.
-   La largeur et la marge basse (l'espace avant "Articles") sont portées
-   ici plutôt que par #searchBar : cela évite tout risque de collapse de
-   marge entre l'input et son conteneur, ce qui aurait faussé le calcul
-   de position de .searchResults juste en dessous. */
 .searchBarWrapper {
   position: relative;
   width: 97%;
@@ -358,11 +304,6 @@ main p {
   color: var(--col-dim);
 }
 
-/* ── Panneau de résultats live ──────────────────────────────────────────
-   Masqué par défaut (attribut [hidden]), affiché par js/site-search.js dès
-   qu'une saisie non vide produit au moins un résultat. Les articles de la
-   page courante arrivent en premier (cf. site-search.js), les articles
-   d'ailleurs ensuite, avec leur chemin d'accès affiché en plus. */
 .searchResults {
   position: absolute;
   top: 100%;
@@ -421,8 +362,14 @@ main p {
   margin-top: 2px;
 }
 
-/* N'apparaît que pour les résultats situés sur une AUTRE page que la page
-   courante (cf. site-search.js) : indique le chemin de menu à suivre. */
+.searchResultMeta {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--col-dim);
+  margin-top: 2px;
+}
+
 .searchResultPath {
   display: block;
   font-family: var(--font-body);
@@ -484,10 +431,30 @@ main p {
   text-align: left;
 }
 
-/* -------------------------------------------------------------------------
-   Réglages du site (icône curseurs + volet) — préparation uniquement, voir
-   js/site-settings.js. Composant identique sur toutes les pages.
-   ------------------------------------------------------------------------- */
+.articlesList.cardsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-3);
+  align-items: stretch;
+}
+
+.cardsList .article {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0;
+  padding: var(--space-3);
+  border: 1px solid var(--col-rule);
+  border-radius: 4px;
+  transition: border-color 0.2s ease;
+}
+
+.cardsList .article:hover {
+  border-color: var(--col-black);
+}
+
+.cardsList .article .small {
+  margin: 0 0 var(--space-2) 0;
+}
 
 #settingsToggle {
   position: fixed;
@@ -654,20 +621,6 @@ main p {
   transform: translateX(18px);
 }
 
-/* =========================================================================
-   RESPONSIVE
-   ─────────────────────────────────────────────────────────────────────────
-   Deux paliers :
-   - ≤900px (tablette / petit écran) : on resserre les tailles et l'espace,
-     sans changer la structure (le menu reste une rangée).
-   - ≤600px (mobile) : le menu et le submenu passent en colonne (un onglet
-     par ligne, pleine largeur) plutôt que de tasser 5 mots sur une seule
-     rangée trop étroite. Le subsubmenu n'a besoin d'aucun ajustement : sa
-     largeur/position sont déjà calculées en JS à partir de l'onglet qui
-     l'ouvre (voir site-header.js), donc il s'adapte automatiquement à la
-     nouvelle disposition en colonne.
-   ========================================================================= */
-
 @media (max-width: 900px) {
   #hero {
     padding: var(--space-4) var(--space-3);
@@ -743,11 +696,82 @@ main p {
     max-width: 100vw;
   }
 
-  /* Un tableau plus large que l'écran défile horizontalement plutôt que de
-     casser la mise en page ou de forcer un texte illisible. */
   table {
     display: block;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+  }
+}
+
+#disclaimerOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+#disclaimerPanel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 301;
+  width: 90%;
+  max-width: 480px;
+  max-height: 85vh;
+  overflow-y: auto;
+  background: var(--col-white);
+  border-radius: 6px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  padding: var(--space-4);
+}
+
+.disclaimerBody p {
+  margin: 0 0 var(--space-2) 0;
+}
+
+.disclaimerBody p:last-child {
+  margin-bottom: 0;
+}
+
+.disclaimerBody .eyebrow {
+  margin-bottom: var(--space-1);
+}
+
+.disclaimerBody h3 {
+  margin: 0 0 var(--space-3) 0;
+}
+
+#disclaimerClose {
+  display: block;
+  margin: var(--space-4) 0 0 auto;
+  padding: 0.6em 1.4em;
+  border: 1px solid var(--col-black);
+  background: var(--col-white);
+  color: var(--col-black);
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+#disclaimerClose:hover:not(:disabled),
+#disclaimerClose:focus-visible:not(:disabled) {
+  background: var(--col-black);
+  color: var(--col-white);
+}
+
+#disclaimerClose:disabled {
+  cursor: not-allowed;
+  border-color: var(--col-rule);
+  color: var(--col-dim);
+}
+
+@media (max-width: 600px) {
+  #disclaimerPanel {
+    width: 92%;
+    padding: var(--space-3);
   }
 }

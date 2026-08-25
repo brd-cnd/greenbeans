@@ -1,13 +1,4 @@
-<!--
-=============================================================================
-  PRO-EVOLSYSWIN.HTML — « EvolSysWin »
-  (Projets > Projets professionnels > EvolSysWin)
-  =============================================================================
-  data-page="pro-evolsyswin" : fichiers de traduction
-  (fichiers de traduction i18n : pro-evolsyswin_fr.json / _en.json / _de.json)
-  Clés numérotées séquentiellement (p1, p2…).
-=============================================================================
--->
+
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -16,274 +7,194 @@
   <meta charset="UTF-8" />
   <script>
     (function () {
-      function read(key) {
-        try {var v = sessionStorage.getItem(key); if (v !== null) return v;} catch (e) { }
-        try {var v2 = localStorage.getItem(key); if (v2 !== null) return v2;} catch (e) { }
-        var m = document.cookie.match(new RegExp('(?:^|; )' + key + '=([^;]*)'));
-        return m ? decodeURIComponent(m[1]) : null;
-      }
-      if (read('greenbeans-dark-mode') === '1') document.documentElement.classList.add('dark-mode');
-      if (read('greenbeans-dyslexic-font') === '1') document.documentElement.classList.add('dyslexic-font');
+      try {
+        var theme = localStorage.getItem('greenbeans-theme');
+        if (theme === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {}
+      try {
+        var font = localStorage.getItem('greenbeans-font');
+        if (font === 'dyslexic') {
+          document.documentElement.setAttribute('data-font', 'dyslexic');
+        }
+      } catch (e) {}
     })();
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description"
-    content="Greenbeans — EvolSysWin : atelier professionnel d'intégration Windows et Active Directory." />
+    content="Greenbeans — Mentions légales du site." />
   <meta name="author" content="Greenbeans" />
   <meta name="theme-color" content="#ffffff" />
 
-  <title>EvolSysWin — Greenbeans</title>
+  <title>Mentions légales — Greenbeans</title>
 
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/charte-graphique.css" />
 
   <script src="js/site-header.js" defer></script>
   <script src="js/site-settings.js" defer></script>
-
-  <style>
-    .fig {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .fig-caption {
-      font-family: var(--font-body);
-      font-size: var(--fs-small);
-      color: var(--col-dim);
-      text-align: center;
-    }
-
-    .page-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-family: var(--font-body);
-      font-size: var(--fs-small);
-      margin-top: 1.5rem;
-    }
-
-    .page-table th {
-      border-bottom: 2px solid var(--col-black);
-      padding: 0.5rem 0.75rem;
-      text-align: left;
-      font-family: var(--font-display);
-      font-weight: 700;
-    }
-
-    .page-table td {
-      border-bottom: 1px solid var(--col-rule);
-      padding: 0.5rem 0.75rem;
-    }
-
-    .page-table td.center {
-      text-align: center;
-    }
-
-    .page-section+.page-section {
-      border-top: 1px solid var(--col-rule);
-      padding-top: clamp(2rem, 4vw, 3rem);
-    }
-  </style>
+  <script src="js/site-disclaimer.js" defer></script>
 </head>
 
 <body>
 
   <site-header section="about" submenu="siteInformation"></site-header>
 
-  <main class="page-frame">
+  <main>
 
-    <a class="page-back" href="about.html">
-      <span class="eyebrow">
-        < À propos</span>
-    </a>
+    <p class="eyebrow"><a href="about.html">&lt; À propos</a></p>
 
-    <div class="legal-header">
-      <h2>Mentions légales</h2>
-      <p>
-        Conformément aux dispositions des Articles 6-III et 19 de la Loi n°2004-575 du 21 juin 2004
-        pour la Confiance dans l'économie numérique, dite L.C.E.N., il est porté à la connaissance
-        des utilisateurs et visiteurs du site https://brd-cnd.github.io/greenbeans/home.html (ci-après "le site") les
-        présentes mentions légales.
-      </p>
-    </div>
+    <h1>Mentions légales</h1>
+    <p class="lead">
+      Conformément aux dispositions des Articles 6-III et 19 de la Loi n°2004-575 du 21 juin 2004
+      pour la Confiance dans l'économie numérique, dite L.C.E.N., il est porté à la connaissance
+      des utilisateurs et visiteurs du site https://brd-cnd.github.io/greenbeans/home.html (ci-après "le site") les
+      présentes mentions légales.
+    </p>
 
-    <div class="legal-header">
+    <section class="page-section">
       <h2>Éditeur du site</h2>
       <p class="lead">
         Identité de la personne qui édite et publie le site Greenbeans.
       </p>
-    </div>
 
-    <div class="legal-content">
+      <h3>Édition à titre personnel</h3>
+      <p>
+        <span>Le site Greenbeans, accessible à l'adresse</span>
+        <a href="https://brd-cnd.github.io/greenbeans/home.html" target="_blank"
+          rel="noopener noreferrer">https://brd-cnd.github.io/greenbeans/home.html</a>
+        <span>(URL provisoire, le site étant actuellement hébergé à titre temporaire), est édité à
+          titre strictement personnel et non professionnel, sans aucune activité commerciale ni vente en ligne, à des
+          fins de présentation de projets et de démonstration.</span>
+      </p>
+      <p>
+        <span>Il est édité sous le pseudonyme</span>
+        <strong>greenbeans</strong>
+        <span>, qui en assure également la direction de la publication.</span>
+      </p>
 
-      <section>
-        <h3>Édition à titre personnel</h3>
-        <p>
-          <span>Le site Greenbeans, accessible à l'adresse</span>
-          <a href="https://brd-cnd.github.io/greenbeans/home.html" target="_blank"
-            rel="noopener noreferrer">https://brd-cnd.github.io/greenbeans/home.html</a>
-          <span>(URL provisoire, le site étant actuellement hébergé à titre temporaire), est édité à
-            titre strictement personnel et non professionnel, sans aucune activité commerciale ni vente en ligne, à des
-            fins de présentation de projets et de démonstration.</span>
-        </p>
-        <p>
-          <span>Il est édité sous le pseudonyme</span>
-          <strong>greenbeans</strong>
-          <span>, qui en assure également la direction de la publication.</span>
-        </p>
-      </section>
+      <h3>Anonymat de l'éditeur</h3>
+      <p>
+        Conformément à l'article 6-III-2 de la loi n°2004-575 du 21 juin
+        2004 pour la confiance dans l'économie numérique, les personnes
+        éditant un service de communication en ligne à titre non
+        professionnel peuvent préserver leur anonymat à l'égard du public,
+        à condition d'avoir communiqué leur identité réelle à leur
+        hébergeur. C'est le choix fait ici : l'identité civile de
+        l'éditeur n'est pas publiée sur cette page, mais a été transmise à
+        l'hébergeur du site (voir section suivante),
+        et ne peut être communiquée que sur réquisition d'une autorité
+        judiciaire.
+      </p>
 
-      <section>
-        <h3>Anonymat de l'éditeur</h3>
-        <p>
-          Conformément à l'article 6-III-2 de la loi n°2004-575 du 21 juin
-          2004 pour la confiance dans l'économie numérique, les personnes
-          éditant un service de communication en ligne à titre non
-          professionnel peuvent préserver leur anonymat à l'égard du public,
-          à condition d'avoir communiqué leur identité réelle à leur
-          hébergeur. C'est le choix fait ici : l'identité civile de
-          l'éditeur n'est pas publiée sur cette page, mais a été transmise à
-          l'hébergeur du site (voir section suivante),
-          et ne peut être communiquée que sur réquisition d'une autorité
-          judiciaire.
-        </p>
-      </section>
+      <h3>Contact</h3>
+      <p>
+        <span>Pour toute question relative au site ou pour signaler un contenu ou une activité
+          illicite, l'éditeur peut être contacté à l'adresse suivante :</span>
+        <a href="mailto:sbrand.mailpro@gmail.com">sbrand.mailpro@gmail.com</a><span>.</span>
+      </p>
+    </section>
 
-      <section>
-        <h3>Contact</h3>
-        <p>
-          <span>Pour toute question relative au site ou pour signaler un contenu ou une activité
-            illicite, l'éditeur peut être contacté à l'adresse suivante :</span>
-          <a href="mailto:sbrand.mailpro@gmail.com">sbrand.mailpro@gmail.com</a><span>.</span>
-        </p>
-      </section>
-
-    </div>
-
-    <header class="legal-header">
-
+    <section class="page-section">
       <h2>Hébergement</h2>
       <p class="lead">
         Identité du prestataire qui héberge le site Greenbeans.
       </p>
-    </header>
 
-    <div class="legal-content">
+      <h3>Hébergeur</h3>
+      <p>
+        <span>Le site est actuellement hébergé, à titre temporaire, sur</span>
+        <strong>GitHub Pages</strong>
+        <span>, un service d'hébergement de sites statiques fourni par :</span>
+      </p>
+      <p>
+        GitHub, Inc.<br />
+        88 Colin P. Kelly Jr. Street<br />
+        San Francisco, CA 94107<br />
+        États-Unis<br />
+        Téléphone : +1 (877) 448-4820<br />
+        <a href="https://pages.github.com/" target="_blank" rel="noopener noreferrer">pages.github.com</a>
+      </p>
 
-      <section>
-        <h3>Hébergeur</h3>
-        <p>
-          <span>Le site est actuellement hébergé, à titre temporaire, sur</span>
-          <strong>GitHub Pages</strong>
-          <span>, un service d'hébergement de sites statiques fourni par :</span>
-        </p>
-        <p>
-          GitHub, Inc.<br />
-          88 Colin P. Kelly Jr. Street<br />
-          San Francisco, CA 94107<br />
-          États-Unis<br />
-          Téléphone : +1 (877) 448-4820<br />
-          <a href="https://pages.github.com/" target="_blank" rel="noopener noreferrer">pages.github.com</a>
-        </p>
-      </section>
+      <h3>Caractère temporaire de cet hébergement</h3>
+      <p>
+        Cet hébergement est provisoire : le site est appelé à être
+        transféré vers un hébergement définitif, ce qui pourra modifier
+        les informations ci-dessus. Cette page sera mise à jour en
+        conséquence.
+      </p>
 
-      <section>
-        <h3>Caractère temporaire de cet hébergement</h3>
-        <p>
-          Cet hébergement est provisoire : le site est appelé à être
-          transféré vers un hébergement définitif, ce qui pourra modifier
-          les informations ci-dessus. Cette page sera mise à jour en
-          conséquence.
-        </p>
-      </section>
+      <h3>Données techniques liées à l'hébergement</h3>
+      <p>
+        Comme pour tout site web, la simple consultation du site amène le
+        navigateur de l'internaute à se connecter à l'infrastructure
+        technique de l'hébergeur (et du réseau de diffusion de contenu
+        qu'il utilise), ce qui implique nécessairement le traitement de
+        données de connexion (adresse IP notamment) par cette
+        infrastructure. Ce traitement, strictement technique et
+        nécessaire au fonctionnement de tout site Internet, est assuré
+        par l'hébergeur sous sa propre responsabilité ; il n'est ni
+        déclenché, ni consulté, ni exploité par l'éditeur du site (cf. ci-dessous).
+      </p>
+    </section>
 
-      <section>
-        <h3>Données techniques liées à l'hébergement</h3>
-        <p>
-          Comme pour tout site web, la simple consultation du site amène le
-          navigateur de l'internaute à se connecter à l'infrastructure
-          technique de l'hébergeur (et du réseau de diffusion de contenu
-          qu'il utilise), ce qui implique nécessairement le traitement de
-          données de connexion (adresse IP notamment) par cette
-          infrastructure. Ce traitement, strictement technique et
-          nécessaire au fonctionnement de tout site Internet, est assuré
-          par l'hébergeur sous sa propre responsabilité ; il n'est ni
-          déclenché, ni consulté, ni exploité par l'éditeur du site (cf. ci-dessous).
-        </p>
-      </section>
-
-    </div>
-
-    <header class="legal-header">
-
+    <section class="page-section">
       <h2>Données personnelles</h2>
       <p class="lead">
         Ce site ne collecte aucune donnée personnelle et ne dépose aucun
         cookie.
       </p>
-    </header>
 
-    <div class="legal-content">
+      <h3>Aucune collecte de données personnelles</h3>
+      <p>
+        Le site Greenbeans est un site de présentation, sans formulaire de
+        contact, sans création de compte, sans newsletter, sans espace de
+        commentaires et sans aucune fonctionnalité de mesure d'audience
+        (pas de Google Analytics ni d'outil équivalent). Aucune donnée à
+        caractère personnel n'est donc collectée ni traitée par l'éditeur
+        du site à l'occasion de votre navigation.
+      </p>
+      <p>
+        Le site n'effectue par ailleurs aucune vente ni transaction en
+        ligne, et ne nécessite donc aucune collecte d'informations de
+        paiement, de facturation ou de livraison.
+      </p>
 
-      <section>
-        <h3>Aucune collecte de données personnelles</h3>
-        <p>
-          Le site Greenbeans est un site de présentation, sans formulaire de
-          contact, sans création de compte, sans newsletter, sans espace de
-          commentaires et sans aucune fonctionnalité de mesure d'audience
-          (pas de Google Analytics ni d'outil équivalent). Aucune donnée à
-          caractère personnel n'est donc collectée ni traitée par l'éditeur
-          du site à l'occasion de votre navigation.
-        </p>
-        <p>
-          Le site n'effectue par ailleurs aucune vente ni transaction en
-          ligne, et ne nécessite donc aucune collecte d'informations de
-          paiement, de facturation ou de livraison.
-        </p>
-      </section>
+      <h3>Aucun cookie</h3>
+      <p>
+        Le site n'utilise aucun cookie : ni cookie de mesure d'audience,
+        ni cookie publicitaire, ni cookie de personnalisation. Il
+        n'importe pas non plus de polices ou de ressources externes
+        (telles que Google Fonts) susceptibles d'en déposer.
+      </p>
+      <p>
+        Comme indiqué précédemment,
+        l'infrastructure technique de l'hébergeur traite nécessairement
+        des données de connexion (adresse IP) pour transmettre les pages
+        à votre navigateur ; ce traitement, purement technique, relève de
+        la responsabilité de l'hébergeur et de sa propre politique de
+        confidentialité, non de celle de l'éditeur du site.
+      </p>
 
-      <section>
-        <h3>Aucun cookie</h3>
-        <p>
-          Le site n'utilise aucun cookie : ni cookie de mesure d'audience,
-          ni cookie publicitaire, ni cookie de personnalisation. Il
-          n'importe pas non plus de polices ou de ressources externes
-          (telles que Google Fonts) susceptibles d'en déposer.
-        </p>
-        <p>
-          Comme indiqué précédemment,
-          l'infrastructure technique de l'hébergeur traite nécessairement
-          des données de connexion (adresse IP) pour transmettre les pages
-          à votre navigateur ; ce traitement, purement technique, relève de
-          la responsabilité de l'hébergeur et de sa propre politique de
-          confidentialité, non de celle de l'éditeur du site.
-        </p>
-      </section>
+      <h3>Délégué à la protection des données</h3>
+      <p>
+        Le site ne traitant aucune donnée à caractère personnel, la
+        désignation d'un délégué à la protection des données n'est pas
+        applicable ici.
+      </p>
 
-      <section>
-        <h3>Délégué à la protection des données</h3>
-        <p>
-          Le site ne traitant aucune donnée à caractère personnel, la
-          désignation d'un délégué à la protection des données n'est pas
-          applicable ici.
-        </p>
-      </section>
-
-      <section>
-        <h3>Vos droits</h3>
-        <p>
-          <span>Si, malgré ce qui précède, vous pensez que des données vous concernant auraient été
-            collectées, vous disposez des droits prévus par le Règlement général sur la protection des données (accès,
-            rectification, effacement, limitation, opposition, portabilité), que vous pouvez exercer en écrivant
-            à</span>
-          <a href="mailto:sbrand.mailpro@gmail.com">sbrand.mailpro@gmail.com</a><span>. Vous disposez
-            également du droit d'introduire une réclamation auprès de la</span>
-          <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer">CNIL</a><span>.</span>
-        </p>
-      </section>
-
-    </div>
-
+      <h3>Vos droits</h3>
+      <p>
+        <span>Si, malgré ce qui précède, vous pensez que des données vous concernant auraient été
+          collectées, vous disposez des droits prévus par le Règlement général sur la protection des données (accès,
+          rectification, effacement, limitation, opposition, portabilité), que vous pouvez exercer en écrivant
+          à</span>
+        <a href="mailto:sbrand.mailpro@gmail.com">sbrand.mailpro@gmail.com</a><span>. Vous disposez
+          également du droit d'introduire une réclamation auprès de la</span>
+        <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer">CNIL</a><span>.</span>
+      </p>
+    </section>
 
   </main>
 

@@ -1,44 +1,18 @@
-/* =============================================================================
-   CHARTE-GRAPHIQUE.CSS — greenbeans
-   =============================================================================
-   Point central de la TYPOGRAPHIE ET DES COULEURS DE TEXTE du site : police,
-   taille, graisse, couleur pour les titres (h1 à h6), paragraphes, citations,
-   listes (y compris imbriquées), liens, tableaux, mise en valeur.
 
-   Ce fichier NE CONTIENT PAS de mise en page (largeurs de colonne, marges
-   entre sections, grilles...) : c'est le rôle de style.css.
-
-   Deux polices seulement :
-     --font-display : Georgia (titres, citations)
-     --font-body    : Arial (texte courant, libellés)
-
-   Esprit : épuré, minimaliste, élégant, moderne. Les niveaux de titre ne se
-   contentent pas de rétrécir : h1-h3 restent en Georgia (grand → moyen →
-   moyen italique), h4-h6 basculent en petites capitales Arial espacées,
-   dans l'esprit d'un "kicker" éditorial.
-
-   Chargement (dans cet ordre, dans le <head> de chaque page) :
-     <link rel="stylesheet" href="css/charte-graphique.css" />
-     <link rel="stylesheet" href="css/style.css" />
-   ============================================================================= */
 
 :root {
-  /* ── Palette (texte / fond / filets) ───────────────────────────────────── */
+  
   --col-white: #ffffff;
   --col-black: #1a1a1a;
   --col-dim:   #6b6b6b;
   --col-rule:  #cccccc;
 
-  /* ── Accent neutre (surlignage, texte en dégradé) ──────────────────────── */
   --grad-accent: linear-gradient(135deg, #1a1a1a 0%, #6e6e6e 100%);
   --grad-accent-soft: linear-gradient(135deg, rgba(26,26,26,0.08) 0%, rgba(26,26,26,0) 100%);
 
-  /* ── Polices ──────────────────────────────────────────────────────────── */
   --font-display: Georgia, "Times New Roman", serif;
   --font-body: Arial, Helvetica, sans-serif;
 
-  /* ── Échelle typographique — tailles fixes ──────────────────────────────
-     h1-h3 : grande échelle Georgia. h4-h6 : petites capitales Arial. */
   --fs-h1: 48px;
   --fs-h2: 36px;
   --fs-h3: 28px;
@@ -51,21 +25,14 @@
   --fs-small: 14px;
   --fs-tag:   12px;
 
-  /* ── Interlignes ─────────────────────────────────────────────────────── */
-  --lh-tight:   1.15; /* h1 */
-  --lh-heading: 1.3;  /* h2, h3 */
-  --lh-label:   1.4;  /* h4-h6 */
-  --lh-body:    1.6;  /* paragraphes, listes */
-  --lh-quote:   1.6;  /* citations */
-  --lh-small:   1.5;  /* légendes, notes */
+  --lh-tight:   1.15; 
+  --lh-heading: 1.3;  
+  --lh-label:   1.4;  
+  --lh-body:    1.6;  
+  --lh-quote:   1.6;  
+  --lh-small:   1.5;  
 }
 
-/* ── Police pour dyslexie (OpenDyslexic) ────────────────────────────────
-   4 fichiers déclarés sous UN SEUL nom de famille ("OpenDyslexic") : le
-   navigateur choisit automatiquement le bon fichier selon le gras/italique
-   déjà utilisés ailleurs dans la charte (h1-h3 et blockquote en italique,
-   h4-h6/strong en gras) — aucune règle à toucher au-delà de ce bloc.
-   Fichiers attendus dans /fonts, à la racine du projet. */
 @font-face {
   font-family: 'OpenDyslexic';
   src: url('../fonts/OpenDyslexic-Regular.otf') format('opentype');
@@ -98,21 +65,11 @@
   font-display: swap;
 }
 
-/* Activée/désactivée par js/site-settings.js, qui pose l'attribut
-   data-font="dyslexic" sur <html>. Remplace les deux polices de base
-   partout où --font-display/--font-body sont utilisées (titres, texte
-   courant, listes, liens...) : un seul point à changer, comme pour les
-   couleurs du mode sombre ci-dessous. */
 html[data-font="dyslexic"] {
   --font-display: 'OpenDyslexic', Georgia, "Times New Roman", serif;
   --font-body: 'OpenDyslexic', Arial, Helvetica, sans-serif;
 }
 
-/* ── Mode sombre ─────────────────────────────────────────────────────────
-   Point central : il suffit de redéfinir la palette de base ici pour que
-   tout le texte, les fonds et les filets s'adaptent automatiquement,
-   partout où ils sont utilisés via ces variables. Activé/désactivé par
-   js/site-settings.js, qui pose l'attribut data-theme="dark" sur <html>. */
 html[data-theme="dark"] {
   --col-white: #121212;
   --col-black: #f2f2f2;
@@ -123,7 +80,6 @@ html[data-theme="dark"] {
   --grad-accent-soft: linear-gradient(135deg, rgba(242,242,242,0.1) 0%, rgba(242,242,242,0) 100%);
 }
 
-/* ── Base : s'applique à tout le texte, quel que soit l'élément ─────────── */
 html, body {
   font-family: var(--font-body);
   color: var(--col-black);
@@ -136,10 +92,6 @@ body {
   -webkit-font-smoothing: antialiased;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
-
-/* =============================================================================
-   1. TITRES (h1 à h6)
-============================================================================= */
 
 h1 {
   font-family: var(--font-display);
@@ -168,8 +120,6 @@ h3 {
   color: var(--col-black);
 }
 
-/* h4-h6 : bascule volontaire vers Arial, en petites capitales espacées —
-   dans l'esprit d'un "kicker" éditorial plutôt qu'un simple rétrécissement. */
 h4 {
   font-family: var(--font-body);
   font-weight: 700;
@@ -200,10 +150,6 @@ h6 {
   color: var(--col-dim);
 }
 
-/* =============================================================================
-   2. PARAGRAPHES & TEXTE COURANT
-============================================================================= */
-
 p {
   font-family: var(--font-body);
   font-size: var(--fs-body);
@@ -224,13 +170,6 @@ small {
   line-height: var(--lh-small);
   color: var(--col-dim);
 }
-
-/* =============================================================================
-   3. CITATIONS
-   ────────────────────────────────────────────────────────────────────────────
-   Séparée du texte par deux filets fins et gris, sans indentation ni guillemet
-   décoratif : Georgia italique, légèrement plus grande que le corps de texte.
-============================================================================= */
 
 blockquote {
   font-family: var(--font-display);
@@ -259,10 +198,6 @@ blockquote cite {
 blockquote cite::before {
   content: '— ';
 }
-
-/* =============================================================================
-   4. MISE EN VALEUR
-============================================================================= */
 
 strong, b {
   font-weight: 700;
@@ -311,10 +246,6 @@ em, i {
   margin-bottom: 0.75rem;
 }
 
-/* =============================================================================
-   5. LIENS
-============================================================================= */
-
 a {
   color: var(--col-black);
   text-decoration: underline;
@@ -328,13 +259,6 @@ a:hover,
 a:focus-visible {
   text-decoration-color: var(--col-black);
 }
-
-/* =============================================================================
-   6. LISTES — y compris imbriquées
-   ────────────────────────────────────────────────────────────────────────────
-   Puces : disque plein → carré plein → disque plein (jamais de cercle creux).
-   Numérotées : décimal → alphabétique → romain.
-============================================================================= */
 
 ul, ol {
   font-family: var(--font-body);
@@ -355,19 +279,12 @@ li > ol {
 }
 
 ul { list-style-type: disc; }
-ul ul { list-style-type: square; }   /* remplace le cercle creux par un carré plein */
+ul ul { list-style-type: square; }   
 ul ul ul { list-style-type: disc; }
 
 ol { list-style-type: decimal; }
 ol ol { list-style-type: lower-alpha; }
 ol ol ol { list-style-type: lower-roman; }
-
-/* =============================================================================
-   7. TABLEAUX
-   ────────────────────────────────────────────────────────────────────────────
-   - table simple            : un seul jeu d'en-têtes (ligne d'en-tête)
-   - .table-double-entry     : double entrée (en-têtes de ligne ET de colonne)
-============================================================================= */
 
 table {
   width: 100%;
@@ -410,9 +327,6 @@ table tbody tr:last-child td {
   border-bottom: none;
 }
 
-/* ── Tableau à double entrée : en-têtes de ligne (première colonne) en plus
-   des en-têtes de colonne. Contenu centré, en-têtes distingués par un
-   filet vertical qui sépare la colonne d'en-tête du reste du tableau. ──── */
 .table-double-entry th,
 .table-double-entry td {
   text-align: center;
@@ -429,10 +343,6 @@ table tbody tr:last-child td {
   border-right: 1px solid var(--col-rule);
 }
 
-/* =============================================================================
-   8. RESPONSIVE
-============================================================================= */
-
 @media (max-width: 600px) {
   h1 { font-size: 36px; }
   h2 { font-size: 28px; }
@@ -440,8 +350,6 @@ table tbody tr:last-child td {
   blockquote { margin: 1.25em 0; }
 }
 
-/* === Cartes ateliers (ajout) === */
-/* Grille responsive — une carte par ligne sur mobile, deux sur tablette+. */
 .ateliers-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -449,7 +357,6 @@ table tbody tr:last-child td {
   margin-top: var(--space-4);
 }
 
-/* Chaque carte est un lien complet (card-as-link pattern). */
 .atelier-card {
   display: flex;
   flex-direction: column;
@@ -494,10 +401,6 @@ table tbody tr:last-child td {
   text-decoration-color: var(--col-rule);
 }
 
-/* === Figures : image + légende (ajout) ===
-   Utilisé par les pages "article individuel" (ex. pro-infrasite,
-   pro-evolsyswin, pro-parcinfo) pour intégrer proprement une capture
-   d'écran avec sa légende, sans avoir à dupliquer de <style> par page. */
 .fig {
   margin: var(--space-4) 0;
 }
@@ -519,11 +422,6 @@ table tbody tr:last-child td {
   text-align: center;
 }
 
-/* === Liens de téléchargement (ajout) ===
-   Icône + libellé entièrement cliquables (contrairement à la version
-   d'origine, où seule l'icône portait le lien). Élément de type bloc pour
-   qu'un enchaînement de plusieurs liens se place naturellement les uns
-   sous les autres, sans avoir besoin de <br>. */
 .dl-link {
   display: flex;
   align-items: center;
@@ -551,4 +449,72 @@ table tbody tr:last-child td {
 
 .dl-link svg {
   flex-shrink: 0;
+}
+
+.youtubeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.youtubeChannel {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--col-rule);
+  border-radius: 4px;
+}
+
+.youtubeChannel__photo {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-menu-bg);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--col-dim);
+}
+
+.youtubeChannel__photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.youtubeChannel__info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.youtubeChannel__name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--col-black);
+}
+
+.youtubeChannel__handle {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--col-dim);
+  text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.youtubeChannel__handle:hover,
+.youtubeChannel__handle:focus-visible {
+  color: var(--col-black);
+  text-decoration: underline;
 }
