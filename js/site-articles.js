@@ -8,6 +8,9 @@
 //   2. Expose une fonction pour charger TOUS les .csv du site, utilisée
 //      par js/site-search.js pour la recherche inter-pages — plus besoin
 //      de dupliquer chaque article à la main dans un second fichier.
+//   3. Gère aussi des listes de LIENS simples (pas d'articles), pour des
+//      renvois ponctuels vers une autre page : voir plus bas "Listes de
+//      liens simples".
 //
 // ⚠️ REGISTRE CENTRALISÉ : ARTICLES_PAGES ci-dessous fait le lien entre
 // une page, son .csv et son "chemin de menu" (utilisé par la recherche
@@ -37,19 +40,22 @@
 (function () {
   const ARTICLES_PAGES = [
     {
-      page: 'notions-informatique-reseaux.html',
+      page: 'notions-computerscience.html',
       csv: 'data/notions-informatique-reseaux.csv',
       path: 'Notions > Informatique > Réseaux',
+      list: 'networks',
     },
     {
-      page: 'notions-informatique-architecture_ordinateur.html',
+      page: 'notions-computerscience.html',
       csv: 'data/notions-informatique-architecture_ordinateur.csv',
       path: "Notions > Informatique > Architecture de l'ordinateur",
+      list: 'architecture',
     },
     {
-      page: 'notions-informatique-cybersecurite.html',
+      page: 'notions-computerscience.html',
       csv: 'data/notions-informatique-cybersecurite.csv',
       path: 'Notions > Informatique > Cybersécurité',
+      list: 'cybersecurity',
     },
     {
       page: 'notions-mathematiques.html',
@@ -57,8 +63,8 @@
       path: 'Notions > Mathématiques',
     },
     {
-      page: 'notions-ressources-veille-technologique.html',
-      csv: 'data/notions-ressources-veille-technologique.csv',
+      page: 'notions-vt-social_engineering_and_AI.html',
+      csv: 'data/notions-resources-veille-technologique.csv',
       path: 'Notions > Ressources > Veille technologique',
     },
     {
@@ -260,6 +266,68 @@
     }
   }
 
+  // ── Listes de liens simples (pas des articles) ──────────────────────────
+  // Utilisées pour des renvois ponctuels vers une autre page (ex. le lien
+  // vers "Veille technologique" sur notions-resources.html) : juste un
+  // lien vers une page dédiée, sans description ni recherche. Toujours
+  // alimentées par un .csv (colonnes : titre, lien), jamais écrites en dur
+  // dans le HTML — même principe que les articles, en plus minimal.
+  //
+  // UTILISATION DANS LA PAGE :
+  //   <ul class="articlesList" data-nav-csv="data/xxx-links.csv"></ul>
+  // (la classe "articlesList" suffit à hériter du bon style ; l'attribut
+  // "data-nav-csv" est ce que ce module utilise pour repérer ces listes-là
+  // et les distinguer des listes d'articles classiques.)
+  //
+  // FORMAT DU CSV : première ligne = en-têtes ("titre,lien"), une ligne par
+  // lien ensuite.
+  function rowsToLinks(rows) {
+    return rows
+      .slice(1)
+      .filter((r) => r.some((cell) => cell.trim() !== ''))
+      .map((r) => ({
+        title: (r[0] || '').trim(),
+        href: (r[1] || '').trim() || '#',
+      }));
+  }
+
+  function buildLinkLi(item) {
+    const li = document.createElement('li');
+    li.className = 'article';
+
+    const a = document.createElement('a');
+    a.className = 'titleArticle';
+    a.href = item.href;
+    a.textContent = item.title;
+    if (/^https?:\/\//i.test(item.href)) {
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+    }
+    li.appendChild(a);
+
+    return li;
+  }
+
+  async function renderLinkLists() {
+    const lists = document.querySelectorAll('.articlesList[data-nav-csv]');
+    for (const list of lists) {
+      try {
+        const res = await fetch(list.dataset.navCsv);
+        if (!res.ok) {
+          throw new Error(`CSV introuvable ou inaccessible : ${list.dataset.navCsv} (${res.status})`);
+        }
+        const text = await res.text();
+        const links = rowsToLinks(parseCSV(text));
+        list.innerHTML = '';
+        links.forEach((item) => list.appendChild(buildLinkLi(item)));
+      } catch (err) {
+        // Un .csv manquant/mal formé sur une liste ne doit pas casser le
+        // reste de la page : on log l'erreur et on passe à la suivante.
+        console.error(err);
+      }
+    }
+  }
+
   // Exposé pour que js/site-search.js (chargé après ce script) puisse
   // réutiliser la même source de données pour la recherche inter-pages.
   // Exposé aussi pour d'autres scripts qui ont besoin de lire un .csv sur
@@ -267,9 +335,14 @@
   // pour les chaînes YouTube : nom, utilisateur, photo).
   window.GreenbeansArticles = { getAllArticles, ARTICLES_PAGES, parseCSV };
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', renderCurrentPageList);
-  } else {
+  function init() {
     renderCurrentPageList();
+    renderLinkLists();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
   }
 })();

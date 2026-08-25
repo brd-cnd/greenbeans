@@ -56,11 +56,8 @@
         {
           key: 'computerScience',
           label: 'Informatique',
-          subsubmenu: [
-            { key: 'networks', label: 'Réseaux', href: 'notions-informatique-reseaux.html' },
-            { key: 'computerArchitecture', label: "Architecture de l'ordinateur", href: 'notions-informatique-architecture_ordinateur.html' },
-            { key: 'cybersecurityBestPractices', label: 'Cybersécurité', href: 'notions-informatique-cybersecurite.html' },
-          ],
+          subsubmenu: [],
+          href: 'notions-computerscience.html',
         },
         {
           key: 'mathematics',
@@ -71,11 +68,8 @@
         {
           key: 'resources',
           label: 'Ressources',
-          subsubmenu: [
-            { key: 'physicalResources', label: 'Ressources physiques', href: 'notions-ressources-physiques.html' },
-            { key: 'digitalResources', label: 'Ressources numériques', href: 'notions-ressources-numeriques.html' },
-            { key: 'techWatch', label: 'Veille technologique', href: 'notions-ressources-veille-technologique.html' },
-          ],
+          subsubmenu: [],
+          href: 'notions-resources.html',
         },
       ],
     },

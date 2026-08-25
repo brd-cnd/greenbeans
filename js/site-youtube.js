@@ -15,9 +15,11 @@
 //
 // FORMAT DU CSV : première ligne = en-têtes ("nom,utilisateur,photo"), une
 // ligne par chaîne ensuite.
-//   - "utilisateur" : le pseudo AVEC l'arobase (ex. "@Micode") — le lien
-//     vers la chaîne est reconstruit automatiquement
-//     (https://www.youtube.com/<utilisateur>), inutile de le renseigner.
+//   - "utilisateur" : le pseudo AVEC l'arobase (ex. "@Micode") — affiché
+//     comme simple texte sous le nom. Le lien vers la chaîne est porté par
+//     le NOM (en gras), reconstruit automatiquement à partir de ce pseudo
+//     (https://www.youtube.com/<utilisateur>), inutile de le renseigner
+//     ailleurs.
 //   - "photo" : chemin vers l'image, relatif à la racine du site (ex.
 //     "picture/youtube/micode.jpg"). Tant que le fichier n'existe pas
 //     encore, un simple rond avec l'initiale du nom s'affiche à la place
@@ -69,17 +71,24 @@
     const info = document.createElement('div');
     info.className = 'youtubeChannel__info';
 
-    const name = document.createElement('span');
+    // Le nom (en gras) est désormais le lien cliquable vers la chaîne ; le
+    // pseudo ("@...") en dessous n'est plus qu'un texte informatif.
+    let name;
+    if (channel.utilisateur) {
+      name = document.createElement('a');
+      name.href = `https://www.youtube.com/${channel.utilisateur}`;
+      name.target = '_blank';
+      name.rel = 'noopener noreferrer';
+    } else {
+      name = document.createElement('span');
+    }
     name.className = 'youtubeChannel__name';
     name.textContent = channel.nom;
     info.appendChild(name);
 
     if (channel.utilisateur) {
-      const handle = document.createElement('a');
+      const handle = document.createElement('span');
       handle.className = 'youtubeChannel__handle';
-      handle.href = `https://www.youtube.com/${channel.utilisateur}`;
-      handle.target = '_blank';
-      handle.rel = 'noopener noreferrer';
       handle.textContent = channel.utilisateur;
       info.appendChild(handle);
     }
