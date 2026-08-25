@@ -56,7 +56,6 @@
         {
           key: 'computerScience',
           label: 'Informatique',
-          disabled: true,
           subsubmenu: [
             { key: 'networks', label: 'Réseaux', href: 'notions-informatique-reseaux.html' },
             { key: 'computerArchitecture', label: "Architecture de l'ordinateur", href: 'notions-informatique-architecture_ordinateur.html' },
@@ -66,7 +65,6 @@
         {
           key: 'mathematics',
           label: 'Mathématiques',
-          disabled: true,
           subsubmenu: [],
           href: 'notions-mathematiques.html',
         },
@@ -87,18 +85,17 @@
       heroTitle: 'history',
       bodyClass: 'page-histoire',
       submenu: [
-        { key: 'portraits', label: 'Portraits', disabled: true, subsubmenu: [], href: 'histoire-portraits.html' },
+        { key: 'portraits', label: 'Portraits', subsubmenu: [], href: 'histoire-portraits.html' },
         {
           key: 'computingHistory',
           label: "Histoire de l'informatique",
-          disabled: true,
           subsubmenu: [
             { key: 'fromCalculatingMachinesToComputers', label: 'Des machines à calculer aux ordinateurs' },
             { key: 'riseOfNetworksAndInternet', label: "L'essor des réseaux et d'Internet" },
             { key: 'riseOfOpenSourceSoftware', label: "L'émergence du logiciel libre" },
           ],
         },
-        { key: 'cyberattacks', label: 'Cyberattaques', disabled: true, subsubmenu: [], href: 'histoire-cyberattaques.html' },
+        { key: 'cyberattacks', label: 'Cyberattaques', subsubmenu: [], href: 'histoire-cyberattaques.html' },
       ],
     },
     projects: {
@@ -110,18 +107,14 @@
         {
           key: 'professional',
           label: 'Professionnels',
-          subsubmenu: [
-            { key: 'cnedWorkshops', label: 'Ateliers du CNED', href: 'pro-ateliers-cned.html' },
-          ],
+          subsubmenu: [],
+          href: 'projects-professional.html',
         },
         {
           key: 'personal',
           label: 'Personnels',
-          disabled: true,
-          subsubmenu: [
-            { key: 'laboratories', label: 'Laboratoires' },
-            { key: 'miscellaneous', label: 'Divers', href: 'projets-personnels.html' },
-          ],
+          subsubmenu: [],
+          href: 'projects-personal.html',
         },
       ],
     },

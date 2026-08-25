@@ -14,9 +14,14 @@
 // pour afficher où se trouve un résultat trouvé sur une autre page).
 // Quand vous créez une nouvelle page collectionArticles :
 //   1. Ajoutez un fichier .csv dans /data (mêmes 3 colonnes).
-//   2. Ajoutez une entrée ici.
-//   3. Chargez ce script AVANT js/site-search.js dans le <head> de la page
-//      (site-search.js dépend de window.GreenbeansArticles).
+//   2. Ajoutez une entrée ici. Si la page a PLUSIEURS listes (ex. deux
+//      sections distinctes), ajoutez une entrée par liste avec la même
+//      `page` mais un `csv`/`path` propres, plus une clé `list` qui doit
+//      correspondre à l'attribut `data-list` du <ul class="articlesList">
+//      visé dans le HTML.
+//   3. Si la page a une barre de recherche, chargez ce script AVANT
+//      js/site-search.js dans le <head> (site-search.js dépend de
+//      window.GreenbeansArticles). Sinon, ce script suffit seul.
 //
 // FORMAT DU CSV : première ligne = en-têtes ("titre,description,lien"),
 // une ligne par article ensuite. Deux colonnes optionnelles peuvent suivre :
@@ -67,9 +72,21 @@
       path: 'Histoire > Cyberattaques',
     },
     {
-      page: 'projets-personnels.html',
-      csv: 'data/projets-personnels.csv',
+      page: 'projects-professional.html',
+      csv: 'data/projects-professional.csv',
+      path: 'Projets > Professionnels',
+    },
+    {
+      page: 'projects-personal.html',
+      csv: 'data/projects-personal-laboratory.csv',
+      path: 'Projets > Personnels > Laboratoire',
+      list: 'laboratory',
+    },
+    {
+      page: 'projects-personal.html',
+      csv: 'data/projects-personal-misc.csv',
       path: 'Projets > Personnels > Divers',
+      list: 'misc',
     },
   ];
 
@@ -217,19 +234,30 @@
     return li;
   }
 
-  // Remplit le <ul class="articlesList"> de la page courante à partir de
-  // son propre .csv (identifié via ARTICLES_PAGES). Ne fait rien si la
-  // page n'a pas de liste d'articles, ou n'est pas dans le registre.
+  // Remplit le(s) <ul class="articlesList"> de la page courante à partir de
+  // son (ou ses) propre(s) .csv (identifié(s) via ARTICLES_PAGES). Ne fait
+  // rien si la page n'a pas de liste d'articles, ou n'est pas dans le
+  // registre.
+  //
+  // Une page peut avoir PLUSIEURS listes distinctes (ex. "Laboratoire" et
+  // "Divers" sur projects-personal.html) : dans ce cas, chaque entrée du
+  // registre porte une clé `list`, qui doit correspondre à l'attribut
+  // `data-list` du <ul> ciblé. Une page à liste unique (cas le plus
+  // fréquent) n'a besoin ni de `list` ni de `data-list`.
   async function renderCurrentPageList() {
-    const list = document.querySelector('.articlesList');
-    if (!list) return;
+    const entries = ARTICLES_PAGES.filter((e) => e.page === currentPageFile());
+    if (!entries.length) return;
 
-    const entry = ARTICLES_PAGES.find((e) => e.page === currentPageFile());
-    if (!entry) return;
+    for (const entry of entries) {
+      const list = entry.list
+        ? document.querySelector(`.articlesList[data-list="${entry.list}"]`)
+        : document.querySelector('.articlesList');
+      if (!list) continue;
 
-    const articles = await fetchPageArticles(entry);
-    list.innerHTML = '';
-    articles.forEach((article) => list.appendChild(buildArticleLi(article)));
+      const articles = await fetchPageArticles(entry);
+      list.innerHTML = '';
+      articles.forEach((article) => list.appendChild(buildArticleLi(article)));
+    }
   }
 
   // Exposé pour que js/site-search.js (chargé après ce script) puisse
