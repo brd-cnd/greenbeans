@@ -26,6 +26,7 @@
   <script src="js/site-settings.js" defer></script>
   <script src="js/site-disclaimer.js" defer></script>
   <script src="js/site-articles.js" defer></script>
+  <script src="js/site-search.js" defer></script>
 </head>
 <body>
 
@@ -34,11 +35,22 @@
   <main>
     <h1>Personnels</h1>
 
-    <h2>Laboratoire</h2>
-    <ul class="articlesList" data-list="laboratory"></ul>
+    <div class="searchBarWrapper">
+      <input
+        type="search"
+        id="searchBar"
+        placeholder="Rechercher..."
+        aria-label="Rechercher un article"
+      >
+      <ul id="searchResults" class="searchResults" hidden></ul>
+    </div>
+
+    <h2>Laboratoires</h2>
+    <ul class="articlesList scrollList" data-list="labs"></ul>
 
     <h2>Divers</h2>
-    <ul class="articlesList" data-list="misc"></ul>
+    <ul class="articlesList scrollList" data-list="others"></ul>
+
   </main>
 
   <site-settings></site-settings>
