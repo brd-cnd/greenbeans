@@ -1,35 +1,7 @@
-// greenbeans — site-search.js
-// -----------------------------------------------------------------------
-// Recherche live sur les pages "collectionArticles" (celles qui affichent
-// une barre de recherche + une liste d'articles).
-//
-// Règles appliquées (validées avec l'utilisateur) :
-//   - La recherche porte sur le TITRE et la DESCRIPTION de chaque article,
-//     jamais sur le contenu de l'article lui-même.
-//   - Les résultats situés sur la page courante sont affichés en premier,
-//     puis ceux trouvés sur d'autres pages, accompagnés du chemin de menu
-//     à suivre pour y accéder (ex. "Notions > Informatique > Réseaux").
-//   - Les résultats apparaissent progressivement (léger décalage
-//     d'animation entre chaque élément) à chaque frappe.
-//   - Cliquer sur un résultat navigue directement vers l'article : aucune
-//     validation par "Entrée" n'est nécessaire (il n'y a pas de <form>,
-//     donc "Entrée" ne fait rien de particulier ici).
-//
-// ⚠️ SOURCE DES DONNÉES : ce fichier ne contient plus aucun article en dur.
-// La liste complète (toutes pages confondues) est chargée depuis les .csv
-// de /data via js/site-articles.js — CE SCRIPT DOIT ÊTRE CHARGÉ AVANT
-// site-search.js dans le <head> de la page (window.GreenbeansArticles doit
-// déjà exister). Pour ajouter/modifier un article, éditez uniquement le
-// .csv concerné : plus besoin de dupliquer quoi que ce soit ici.
-// -----------------------------------------------------------------------
-
 (function () {
-  // Décalage d'animation entre deux résultats consécutifs (effet
-  // d'apparition progressive plutôt que tout d'un bloc).
+
   const STAGGER_STEP_MS = 40;
 
-  // Comparaison insensible aux accents et à la casse (ex. "cybersecurite"
-  // doit retrouver "Cybersécurité").
   function normalize(str) {
     return str
       .normalize('NFD')
@@ -76,9 +48,6 @@
       a.appendChild(meta);
     }
 
-    // Le chemin d'accès ne s'affiche que pour un résultat qui n'est PAS
-    // sur la page courante : sur la page courante, il est déjà évident où
-    // l'on se trouve.
     if (!isCurrentPage) {
       const path = document.createElement('span');
       path.className = 'searchResultPath';
@@ -105,10 +74,6 @@
 
     const pageFile = currentPageFile();
 
-    // Chargement de tous les articles (tous CSV confondus) une seule fois,
-    // dès l'arrivée sur la page : par la suite, chaque frappe réutilise la
-    // même promesse déjà résolue (site-articles.js garde aussi son propre
-    // cache par page, donc aucun re-téléchargement inutile).
     const articlesPromise = window.GreenbeansArticles.getAllArticles();
 
     function render(query, articles) {
@@ -119,8 +84,6 @@
         return;
       }
 
-      // Priorité à la page courante : ses résultats sont toujours listés
-      // avant ceux d'ailleurs, quel que soit leur ordre d'origine.
       const onCurrentPage = articles.filter(
         (entry) => entry.page === pageFile && matchesQuery(entry, query)
       );
@@ -166,10 +129,6 @@
       }
     });
 
-    // Fermeture au clic en dehors du bloc barre + résultats. On utilise le
-    // "click" du document plutôt qu'un "blur" sur la barre de recherche :
-    // "blur" se déclenche AVANT le clic sur un résultat et fermerait la
-    // liste avant que la navigation n'ait eu lieu.
     document.addEventListener('click', (event) => {
       if (!event.target.closest('.searchBarWrapper')) {
         resultsList.hidden = true;

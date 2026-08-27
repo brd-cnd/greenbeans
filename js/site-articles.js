@@ -84,15 +84,15 @@
     },
     {
       page: 'projects-personal.html',
-      csv: 'data/projects-personal-laboratory.csv',
+      csv: 'data/projects-personal-labs.csv',
       path: 'Projets > Personnels > Laboratoire',
-      list: 'laboratory',
+      list: 'labs',
     },
     {
       page: 'projects-personal.html',
-      csv: 'data/projects-personal-misc.csv',
+      csv: 'data/projects-personal-others.csv',
       path: 'Projets > Personnels > Divers',
-      list: 'misc',
+      list: 'others',
     },
   ];
 
@@ -171,7 +171,8 @@
   const cache = new Map();
 
   function fetchPageArticles(entry) {
-    if (!cache.has(entry.page)) {
+    //if (!cache.has(entry.page)) {
+    if (!cache.has(entry.csv)) {    
       const promise = fetch(entry.csv)
         .then((res) => {
           if (!res.ok) {
@@ -187,9 +188,11 @@
           console.error(err);
           return [];
         });
-      cache.set(entry.page, promise);
+      //cache.set(entry.page, promise);
+      cache.set(entry.csv, promise);
     }
-    return cache.get(entry.page);
+    //return cache.get(entry.page);
+    return cache.get(entry.csv);
   }
 
   // Charge TOUS les .csv du registre (utilisé par la recherche inter-pages).
