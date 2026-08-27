@@ -1,5 +1,0 @@
-titre,description,lien
-Le modèle OSI,Les septs couches de ce modèle permettent de décomposer le déroulement d'une communication entre deux machines.,#
-Qu'est-ce qu'un protocole ?,Courte description de l'article,#
-IP : Internet Protocol,Courte description de l'article,#
-TCP : Transmission Control Protocol,"TCP permet de gérer le bon acheminement des paquets : il délivre des accusés de réception, les remet en ordre, prend en compte la congestion du réseau et bien d'autres choses.",#
